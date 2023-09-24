@@ -1,4 +1,4 @@
-(defproject effective "0.1.0"
+(defproject com.eureton/effective "0.1.0"
   :description "RSpec-style expect-to-change assertions for Clojure."
   :url "https://github.com/eureton/effective"
   :license {:name "MIT"
