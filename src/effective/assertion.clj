@@ -1,14 +1,12 @@
 (ns effective.assertion
-  (:require [clojure.test :refer [is]]))
-
-(defn- prefixed-symbol [prefix index]
-  (symbol (str prefix "-" index)))
+  (:require [clojure.test :refer [is]]
+            [effective.checkpoint :as checkpoint]))
 
 (defn make
   [config index]
   (let [{:keys [from to by]} config
-        before (prefixed-symbol "before" index)
-        after (prefixed-symbol "after" index)]
+        before (checkpoint/before index)
+        after (checkpoint/after index)]
     (cond-> []
       from (conj `(is (= ~from ~before           ) ":from check failed"))
       to   (conj `(is (= ~to   ~after            )   ":to check failed"))
