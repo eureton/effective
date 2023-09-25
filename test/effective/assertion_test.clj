@@ -20,16 +20,13 @@
 
 (deftest by
   (let [assertions (make {:by 10} 0)
-        [[_ [operator expected actual] _]] assertions
-        diff (nth actual 0 nil)
-        after (nth actual 1 nil)
-        before (nth actual 2 nil)]
+        [[_ [operator expected actual] _]] assertions]
     (is (= 1 (count assertions)))
     (is (= (symbol #'=) operator))
     (is (= 10 expected))
-    (is (= (symbol #'-) diff))
-    (is (= 'before-0 before))
-    (is (= 'after-0 after))))
+    (is (= (symbol #'-) (nth actual 0 nil)))
+    (is (= 'after-0 (nth actual 1 nil)))
+    (is (= 'before-0 (nth actual 2 nil)))))
 
 (deftest multiple
   (let [assertions (make {:from 1 :to 21 :by 20} 7)
