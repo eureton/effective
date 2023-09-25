@@ -2,6 +2,7 @@
   "Predicates represent the information which is required to produce a
    `clojure.test` assertion."
   (:require [clojure.test :refer [is]]
+            [effective.assertion :as assertion]
             [effective.monitor :as monitor]))
 
 (defn assert!
@@ -20,7 +21,8 @@
   [form config]
   (let [changes-seq (map :changes config)
         before-vars (interleave (prefixed-range "before") changes-seq)
-        after-vars (interleave (prefixed-range "after") changes-seq)]
+        after-vars (interleave (prefixed-range "after") changes-seq)
+        assertions (mapcat assertion/make config (range))]
     `(let [make-watcher# #(fn []
                             (get-in ~config [% :changes]))
            unimonitor# (->> ~config
@@ -33,5 +35,5 @@
        (let [~@before-vars
             ;_# ~form
              ~@after-vars]
-         (true? false))
+         (comment ~@assertions))
        (unimonitor# seed#))))
