@@ -17,3 +17,16 @@
     (is (= (symbol #'=) operator))
     (is (= -2 expected))
     (is (= 'after-2 actual))))
+
+(deftest by
+  (let [assertions (make {:by 10} 0)
+        [[_ [operator expected actual] _]] assertions
+        diff (nth actual 0 nil)
+        after (nth actual 1 nil)
+        before (nth actual 2 nil)]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'=) operator))
+    (is (= 10 expected))
+    (is (= (symbol #'-) diff))
+    (is (= 'before-0 before))
+    (is (= 'after-0 after))))
