@@ -30,3 +30,11 @@
     (is (= (symbol #'-) diff))
     (is (= 'before-0 before))
     (is (= 'after-0 after))))
+
+(deftest multiple
+  (let [assertions (make {:from 1 :to 21 :by 20} 7)
+        [from-assertion to-assertion by-assertion] assertions]
+    (is (= 3 (count assertions)))
+    (is (= 1 (-> from-assertion (nth 1 nil) (nth 1 nil))))
+    (is (= 21 (-> to-assertion (nth 1 nil) (nth 1 nil))))
+    (is (= 20 (-> by-assertion (nth 1 nil) (nth 1 nil))))))
