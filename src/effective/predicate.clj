@@ -10,16 +10,17 @@
   (let [[expected actual message] predicate]
     (is (= expected actual) message)))
 
+(defn- prefixed-range [prefix]
+  (map (comp symbol #(str prefix "-" %))
+       (range)))
+
 (defmacro collect
   "Processes the multi-monitor configuration (see `effective.core/effect`)
    and the effect form. Produces a vector of predicates."
   [form config]
-  (let [before-vars (interleave
-                      (map #(symbol (str "before-" %)) (range))
-                      (map :changes config))
-        after-vars (interleave
-                      (map #(symbol (str "after-" %)) (range))
-                      (map :changes config))]
+  (let [changes-seq (map :changes config)
+        before-vars (interleave (prefixed-range "before") changes-seq)
+        after-vars (interleave (prefixed-range "after") changes-seq)]
     `(let [make-watcher# #(fn []
                             (get-in ~config [% :changes]))
            unimonitor# (->> ~config
