@@ -10,6 +10,6 @@
         before (prefixed-symbol "before" index)
         after (prefixed-symbol "after" index)]
     (cond-> []
-      from (conj `(is (= ~from ~before            ":from check failed")))
-      to   (conj `(is (= ~to   ~after               ":to check failed")))
-      by   (conj `(is (= ~by   (- ~after ~before)   ":by check failed"))))))
+      from (conj `(is (= ~from ~before           ) ":from check failed"))
+      to   (conj `(is (= ~to   ~after            )   ":to check failed"))
+      by   (conj `(is (= ~by   (- ~after ~before))   ":by check failed")))))
