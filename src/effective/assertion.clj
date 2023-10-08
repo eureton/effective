@@ -8,7 +8,7 @@
                 from-gt from-greater-than from-gte from-greater-than-or-equal
                 to to-lt to-gt to-less-than to-greater-than
                 to-lte to-less-than-or-equal to-gte to-greater-than-or-equal
-                by by-lt by-less-than]} config
+                by by-lt by-less-than by-lte by-less-than-or-equal]} config
         from-lt (or from-lt from-less-than)
         from-lte (or from-lte from-less-than-or-equal)
         from-gt (or from-gt from-greater-than)
@@ -18,6 +18,7 @@
         to-gt (or to-gt to-greater-than)
         to-gte (or to-gte to-greater-than-or-equal)
         by-lt (or by-lt by-less-than)
+        by-lte (or by-lte by-less-than-or-equal)
         before (checkpoint/before index)
         after (checkpoint/after index)]
     (cond-> []
@@ -32,4 +33,5 @@
       to-gt    (conj `(is (<  ~to-gt    ~after            )    ":to-gt check failed"))
       to-gte   (conj `(is (<= ~to-gte   ~after            )   ":to-gte check failed"))
       by       (conj `(is (=  ~by       (- ~after ~before))       ":by check failed"))
-      by-lt    (conj `(is (>  ~by-lt    (- ~after ~before))    ":by-lt check failed")))))
+      by-lt    (conj `(is (>  ~by-lt    (- ~after ~before))    ":by-lt check failed"))
+      by-lte   (conj `(is (>= ~by-lte   (- ~after ~before))   ":by-lte check failed")))))
