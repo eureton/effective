@@ -66,6 +66,22 @@
     (is (= -1 expected))
     (is (= 'after-9 actual))))
 
+(deftest to-gte
+  (let [assertions (make {:to-gte 91} 4)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'<=) operator))
+    (is (= 91 expected))
+    (is (= 'after-4 actual))))
+
+(deftest to-greater-than-or-equal
+  (let [assertions (make {:to-greater-than-or-equal 103} 10)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'<=) operator))
+    (is (= 103 expected))
+    (is (= 'after-10 actual))))
+
 (deftest by
   (let [assertions (make {:by 10} 0)
         [[_ [operator expected actual] _]] assertions]

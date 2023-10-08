@@ -32,6 +32,16 @@
     (effect (swap! x inc)
             [{:changes @x :to-gt -1}])))
 
+(deftest to-gte-equality
+  (let [x (atom -1)]
+    (effect (swap! x inc)
+            [{:changes @x :to-gte 0}])))
+
+(deftest to-gte-inequality
+  (let [x (atom -1)]
+    (effect (swap! x inc)
+            [{:changes @x :to-gte -1}])))
+
 (deftest by
   (let [x (atom 4)]
     (effect (swap! x #(* % %))
