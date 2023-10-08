@@ -2,11 +2,37 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
 
 ## [Unreleased]
-### Changed
-### Removed
-### Fixed
+### Added
+Support for arithmetic comparisons. New `config` options:
+- `from-lt`
+- `from-lte`
+- `from-gt`
+- `from-gte`
+- `from-not`
+- `from-less-than`
+- `from-less-than-or-equal`
+- `from-greater-than`
+- `from-greater-than-or-equal`
+- `to-lt`
+- `to-lte`
+- `to-gt`
+- `to-gte`
+- `to-not`
+- `to-less-than`
+- `to-less-than-or-equal`
+- `to-greater-than`
+- `to-greater-than-or-equal`
+- `by-lt`
+- `by-lte`
+- `by-gt`
+- `by-gte`
+- `by-not`
+- `by-less-than`
+- `by-less-than-or-equal`
+- `by-greater-than`
+- `by-greater-than-or-equal`
 
-## 0.2.0 - 2023-09-25
+## [0.2.0] - 2023-09-25
 ### Changed
 - generated code relies on `clojure.core` functions only
 - all the action is encapsulated in a single `let` block
