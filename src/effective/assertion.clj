@@ -4,12 +4,15 @@
 
 (defn make
   [config index]
-  (let [{:keys [from from-lt from-less-than from-lte from-less-than-or-equal
-                from-gt from-greater-than from-gte from-greater-than-or-equal
-                to to-lt to-gt to-less-than to-greater-than
-                to-lte to-less-than-or-equal to-gte to-greater-than-or-equal
-                by by-lt by-less-than by-lte by-less-than-or-equal
-                by-gt by-greater-than by-gte by-greater-than-or-equal]} config
+  (let [{:keys [from from-lt from-lte from-gt from-gte
+                from-less-than from-less-than-or-equal
+                from-greater-than from-greater-than-or-equal
+                to to-lt to-lte to-gt to-gte
+                to-less-than to-less-than-or-equal
+                to-greater-than to-greater-than-or-equal
+                by by-lt by-lte by-gt by-gte
+                by-less-than by-less-than-or-equal
+                by-greater-than by-greater-than-or-equal]} config
         from-lt (or from-lt from-less-than)
         from-lte (or from-lte from-less-than-or-equal)
         from-gt (or from-gt from-greater-than)
