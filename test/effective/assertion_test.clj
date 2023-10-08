@@ -26,6 +26,22 @@
     (is (= 28 expected))
     (is (= 'before-18 actual))))
 
+(deftest from-lte
+  (let [assertions (make {:from-lte 68} 7)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'>=) operator))
+    (is (= 68 expected))
+    (is (= 'before-7 actual))))
+
+(deftest from-less-than-or-equal
+  (let [assertions (make {:from-less-than-or-equal -52} 13)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'>=) operator))
+    (is (= -52 expected))
+    (is (= 'before-13 actual))))
+
 (deftest to
   (let [assertions (make {:to -2} 2)
         [[_ [operator expected actual] _]] assertions]
