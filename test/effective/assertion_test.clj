@@ -50,6 +50,22 @@
     (is (= -5 expected))
     (is (= 'after-0 actual))))
 
+(deftest to-gt
+  (let [assertions (make {:to-gt 23} 3)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'<) operator))
+    (is (= 23 expected))
+    (is (= 'after-3 actual))))
+
+(deftest to-greater-than
+  (let [assertions (make {:to-greater-than -1} 9)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'<) operator))
+    (is (= -1 expected))
+    (is (= 'after-9 actual))))
+
 (deftest by
   (let [assertions (make {:by 10} 0)
         [[_ [operator expected actual] _]] assertions]
