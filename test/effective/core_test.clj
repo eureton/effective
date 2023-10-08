@@ -37,6 +37,11 @@
     (effect (swap! x dec)
             [{:changes @x :from-gte -2}])))
 
+(deftest from-not
+  (let [x (atom (rand-int 4))]
+    (effect (swap! x inc)
+            [{:changes @x :from-not 4}])))
+
 (deftest to
   (let [x (atom -1)]
     (effect (swap! x inc)

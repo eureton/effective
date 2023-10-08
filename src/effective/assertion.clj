@@ -4,7 +4,7 @@
 
 (defn make
   [config index]
-  (let [{:keys [from from-lt from-lte from-gt from-gte
+  (let [{:keys [from from-lt from-lte from-gt from-gte from-not
                 from-less-than from-less-than-or-equal
                 from-greater-than from-greater-than-or-equal
                 to to-lt to-lte to-gt to-gte to-not
@@ -33,6 +33,7 @@
       from-lte (conj `(is (>=   ~from-lte ~before           ) ":from-lte check failed"))
       from-gt  (conj `(is (<    ~from-gt  ~before           )  ":from-gt check failed"))
       from-gte (conj `(is (<=   ~from-gte ~before           ) ":from-gte check failed"))
+      from-not (conj `(is (not= ~from-not ~before           ) ":from-not check failed"))
       to       (conj `(is (=    ~to       ~after            )       ":to check failed"))
       to-lt    (conj `(is (>    ~to-lt    ~after            )    ":to-lt check failed"))
       to-lte   (conj `(is (>=   ~to-lte   ~after            )   ":to-lte check failed"))
