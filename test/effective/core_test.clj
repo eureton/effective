@@ -97,6 +97,16 @@
     (effect (swap! x #(* % %))
             [{:changes @x :by-gt 11}])))
 
+(deftest by-gte-equality
+  (let [x (atom 4)]
+    (effect (swap! x #(* % %))
+            [{:changes @x :by-gte 12}])))
+
+(deftest by-gte-inequality
+  (let [x (atom 4)]
+    (effect (swap! x #(* % %))
+            [{:changes @x :by-gte 11}])))
+
 (deftest multiple
   (let [x (atom {:a 1 :b 10})]
     (effect (swap! x assoc :a 10 :b 100)

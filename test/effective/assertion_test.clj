@@ -216,6 +216,26 @@
     (is (= 'after-29 (nth actual 1 nil)))
     (is (= 'before-29 (nth actual 2 nil)))))
 
+(deftest by-gte
+  (let [assertions (make {:by-gte 51} 33)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'<=) operator))
+    (is (= 51 expected))
+    (is (= (symbol #'-) (nth actual 0 nil)))
+    (is (= 'after-33 (nth actual 1 nil)))
+    (is (= 'before-33 (nth actual 2 nil)))))
+
+(deftest by-greater-than-or-equal
+  (let [assertions (make {:by-greater-than-or-equal 52} 46)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'<=) operator))
+    (is (= 52 expected))
+    (is (= (symbol #'-) (nth actual 0 nil)))
+    (is (= 'after-46 (nth actual 1 nil)))
+    (is (= 'before-46 (nth actual 2 nil)))))
+
 (deftest multiple
   (let [assertions (make {:from 1 :to 21 :by 20} 7)
         [from-assertion to-assertion by-assertion] assertions]
