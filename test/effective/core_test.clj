@@ -22,6 +22,11 @@
     (effect (swap! x dec)
             [{:changes @x :from-lte 2}])))
 
+(deftest from-gt
+  (let [x (atom -1)]
+    (effect (swap! x dec)
+            [{:changes @x :from-gt -2}])))
+
 (deftest to
   (let [x (atom -1)]
     (effect (swap! x inc)

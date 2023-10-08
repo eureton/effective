@@ -5,11 +5,12 @@
 (defn make
   [config index]
   (let [{:keys [from from-lt from-less-than from-lte from-less-than-or-equal
-                to to-lt to-gt to-less-than to-greater-than
+                from-gt from-greater-than to to-lt to-gt to-less-than to-greater-than
                 to-lte to-less-than-or-equal to-gte to-greater-than-or-equal
                 by]} config
         from-lt (or from-lt from-less-than)
         from-lte (or from-lte from-less-than-or-equal)
+        from-gt (or from-gt from-greater-than)
         to-lt (or to-lt to-less-than)
         to-lte (or to-lte to-less-than-or-equal)
         to-gt (or to-gt to-greater-than)
@@ -20,6 +21,7 @@
       from     (conj `(is (=  ~from     ~before           )     ":from check failed"))
       from-lt  (conj `(is (>  ~from-lt  ~before           )  ":from-lt check failed"))
       from-lte (conj `(is (>= ~from-lte ~before           ) ":from-lte check failed"))
+      from-gt  (conj `(is (<  ~from-gt  ~before           )  ":from-gt check failed"))
       to       (conj `(is (=  ~to       ~after            )       ":to check failed"))
       to-lt    (conj `(is (>  ~to-lt    ~after            )    ":to-lt check failed"))
       to-lte   (conj `(is (>= ~to-lte   ~after            )   ":to-lte check failed"))

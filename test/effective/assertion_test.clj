@@ -42,6 +42,22 @@
     (is (= -52 expected))
     (is (= 'before-13 actual))))
 
+(deftest from-gt
+  (let [assertions (make {:from-gt 44} 6)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'<) operator))
+    (is (= 44 expected))
+    (is (= 'before-6 actual))))
+
+(deftest from-greater-than
+  (let [assertions (make {:from-greater-than -25} 15)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'<) operator))
+    (is (= -25 expected))
+    (is (= 'before-15 actual))))
+
 (deftest to
   (let [assertions (make {:to -2} 2)
         [[_ [operator expected actual] _]] assertions]
