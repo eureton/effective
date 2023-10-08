@@ -146,6 +146,14 @@
     (is (= 103 expected))
     (is (= 'after-10 actual))))
 
+(deftest to-not
+  (let [assertions (make {:to-not 121} 22)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'not=) operator))
+    (is (= 121 expected))
+    (is (= 'after-22 actual))))
+
 (deftest by
   (let [assertions (make {:by 10} 0)
         [[_ [operator expected actual] _]] assertions]

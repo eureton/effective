@@ -72,6 +72,11 @@
     (effect (swap! x inc)
             [{:changes @x :to-gte -1}])))
 
+(deftest to-not
+  (let [x (atom 4)]
+    (effect (swap! x #(int (Math/sqrt %)))
+            [{:changes @x :to-not -2}])))
+
 (deftest by
   (let [x (atom 4)]
     (effect (swap! x #(* % %))
