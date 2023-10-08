@@ -12,6 +12,11 @@
     (effect (swap! x inc)
             [{:changes @x :to 0}])))
 
+(deftest to-lt
+  (let [x (atom -1)]
+    (effect (swap! x inc)
+            [{:changes @x :to-lt 1}])))
+
 (deftest by
   (let [x (atom 4)]
     (effect (swap! x #(* % %))

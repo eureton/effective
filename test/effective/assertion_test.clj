@@ -18,6 +18,22 @@
     (is (= -2 expected))
     (is (= 'after-2 actual))))
 
+(deftest to-lt
+  (let [assertions (make {:to-lt 39} 2)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'>) operator))
+    (is (= 39 expected))
+    (is (= 'after-2 actual))))
+
+(deftest to-less-than
+  (let [assertions (make {:to-less-than -17} 2)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'>) operator))
+    (is (= -17 expected))
+    (is (= 'after-2 actual))))
+
 (deftest by
   (let [assertions (make {:by 10} 0)
         [[_ [operator expected actual] _]] assertions]
