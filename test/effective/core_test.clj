@@ -17,6 +17,16 @@
     (effect (swap! x inc)
             [{:changes @x :to-lt 1}])))
 
+(deftest to-lte-equality
+  (let [x (atom -1)]
+    (effect (swap! x dec)
+            [{:changes @x :to-lte -2}])))
+
+(deftest to-lte-inequality
+  (let [x (atom -1)]
+    (effect (swap! x dec)
+            [{:changes @x :to-lte 0}])))
+
 (deftest by
   (let [x (atom 4)]
     (effect (swap! x #(* % %))
