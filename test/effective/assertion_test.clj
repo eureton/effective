@@ -252,6 +252,16 @@
     (is (= 'after-46 (nth actual 1 nil)))
     (is (= 'before-46 (nth actual 2 nil)))))
 
+(deftest by-not
+  (let [assertions (make {:by-not 71} 49)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'not=) operator))
+    (is (= 71 expected))
+    (is (= (symbol #'-) (nth actual 0 nil)))
+    (is (= 'after-49 (nth actual 1 nil)))
+    (is (= 'before-49 (nth actual 2 nil)))))
+
 (deftest multiple
   (let [assertions (make {:from 1 :to 21 :by 20} 7)
         [from-assertion to-assertion by-assertion] assertions]

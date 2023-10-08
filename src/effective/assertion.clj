@@ -10,7 +10,7 @@
                 to to-lt to-lte to-gt to-gte to-not
                 to-less-than to-less-than-or-equal
                 to-greater-than to-greater-than-or-equal
-                by by-lt by-lte by-gt by-gte
+                by by-lt by-lte by-gt by-gte by-not
                 by-less-than by-less-than-or-equal
                 by-greater-than by-greater-than-or-equal]} config
         from-lt (or from-lt from-less-than)
@@ -44,4 +44,5 @@
       by-lt    (conj `(is (>    ~by-lt    (- ~after ~before))    ":by-lt check failed"))
       by-lte   (conj `(is (>=   ~by-lte   (- ~after ~before))   ":by-lte check failed"))
       by-gt    (conj `(is (<    ~by-gt    (- ~after ~before))    ":by-gt check failed"))
-      by-gte   (conj `(is (<=   ~by-gte   (- ~after ~before))   ":by-gte check failed")))))
+      by-gte   (conj `(is (<=   ~by-gte   (- ~after ~before))   ":by-gte check failed"))
+      by-not   (conj `(is (not= ~by-not   (- ~after ~before))   ":by-not check failed")))))
