@@ -92,6 +92,11 @@
     (effect (swap! x #(* % %))
             [{:changes @x :by-lte 13}])))
 
+(deftest by-gt
+  (let [x (atom 4)]
+    (effect (swap! x #(* % %))
+            [{:changes @x :by-gt 11}])))
+
 (deftest multiple
   (let [x (atom {:a 1 :b 10})]
     (effect (swap! x assoc :a 10 :b 100)
