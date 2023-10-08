@@ -10,6 +10,22 @@
     (is (= 4 expected))
     (is (= 'before-3 actual))))
 
+(deftest from-lt
+  (let [assertions (make {:from-lt 31} 9)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'>) operator))
+    (is (= 31 expected))
+    (is (= 'before-9 actual))))
+
+(deftest from-less-than
+  (let [assertions (make {:from-less-than 28} 18)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'>) operator))
+    (is (= 28 expected))
+    (is (= 'before-18 actual))))
+
 (deftest to
   (let [assertions (make {:to -2} 2)
         [[_ [operator expected actual] _]] assertions]

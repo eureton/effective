@@ -7,6 +7,11 @@
     (effect (swap! x inc)
             [{:changes @x :from -1}])))
 
+(deftest from-lt
+  (let [x (atom -1)]
+    (effect (swap! x inc)
+            [{:changes @x :from-lt 0}])))
+
 (deftest to
   (let [x (atom -1)]
     (effect (swap! x inc)
