@@ -156,6 +156,26 @@
     (is (= 'after-0 (nth actual 1 nil)))
     (is (= 'before-0 (nth actual 2 nil)))))
 
+(deftest by-lt
+  (let [assertions (make {:by-lt 39} 16)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'>) operator))
+    (is (= 39 expected))
+    (is (= (symbol #'-) (nth actual 0 nil)))
+    (is (= 'after-16 (nth actual 1 nil)))
+    (is (= 'before-16 (nth actual 2 nil)))))
+
+(deftest by-less-than
+  (let [assertions (make {:by-less-than -8} 24)
+        [[_ [operator expected actual] _]] assertions]
+    (is (= 1 (count assertions)))
+    (is (= (symbol #'>) operator))
+    (is (= -8 expected))
+    (is (= (symbol #'-) (nth actual 0 nil)))
+    (is (= 'after-24 (nth actual 1 nil)))
+    (is (= 'before-24 (nth actual 2 nil)))))
+
 (deftest multiple
   (let [assertions (make {:from 1 :to 21 :by 20} 7)
         [from-assertion to-assertion by-assertion] assertions]
