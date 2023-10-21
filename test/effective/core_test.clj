@@ -42,6 +42,11 @@
     (effect (swap! x inc)
             [{:changes @x :from-not 4}])))
 
+(deftest from-within-of
+  (let [x (atom 0)]
+    (effect (swap! x inc)
+            [{:changes @x :from-within [0.6 :of -0.05]}])))
+
 (deftest to
   (let [x (atom -1)]
     (effect (swap! x inc)

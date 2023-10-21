@@ -9,7 +9,7 @@
 
 (defn make
   [config index]
-  (let [{:keys [from from-lt from-lte from-gt from-gte from-not
+  (let [{:keys [from from-lt from-lte from-gt from-gte from-not from-within
                 from-less-than from-less-than-or-equal
                 from-greater-than from-greater-than-or-equal
                 to to-lt to-lte to-gt to-gte to-not to-within
@@ -18,6 +18,7 @@
                 by by-lt by-lte by-gt by-gte by-not
                 by-less-than by-less-than-or-equal
                 by-greater-than by-greater-than-or-equal]} config
+        [from-radius _ from-origin] from-within
         [to-radius _ to-origin] to-within
         from-lt (or from-lt from-less-than)
         from-lte (or from-lte from-less-than-or-equal)
@@ -34,22 +35,23 @@
         before (checkpoint/before index)
         after (checkpoint/after index)]
     (cond-> []
-      from      (conj `(is (=    ~from      ~before                         )      ~(message :from)))
-      from-lt   (conj `(is (>    ~from-lt   ~before                         )   ~(message :from-lt)))
-      from-lte  (conj `(is (>=   ~from-lte  ~before                         )  ~(message :from-lte)))
-      from-gt   (conj `(is (<    ~from-gt   ~before                         )   ~(message :from-gt)))
-      from-gte  (conj `(is (<=   ~from-gte  ~before                         )  ~(message :from-gte)))
-      from-not  (conj `(is (not= ~from-not  ~before                         )  ~(message :from-not)))
-      to        (conj `(is (=    ~to        ~after                          )        ~(message :to)))
-      to-lt     (conj `(is (>    ~to-lt     ~after                          )     ~(message :to-lt)))
-      to-lte    (conj `(is (>=   ~to-lte    ~after                          )    ~(message :to-lte)))
-      to-gt     (conj `(is (<    ~to-gt     ~after                          )     ~(message :to-gt)))
-      to-gte    (conj `(is (<=   ~to-gte    ~after                          )    ~(message :to-gte)))
-      to-not    (conj `(is (not= ~to-not    ~after                          )    ~(message :to-not)))
-      to-within (conj `(is (>=   ~to-radius (Math/abs (- ~after ~to-origin))) ~(message :to-within)))
-      by        (conj `(is (=    ~by        (- ~after ~before)              )        ~(message :by)))
-      by-lt     (conj `(is (>    ~by-lt     (- ~after ~before)              )     ~(message :by-lt)))
-      by-lte    (conj `(is (>=   ~by-lte    (- ~after ~before)              )    ~(message :by-lte)))
-      by-gt     (conj `(is (<    ~by-gt     (- ~after ~before)              )     ~(message :by-gt)))
-      by-gte    (conj `(is (<=   ~by-gte    (- ~after ~before)              )    ~(message :by-gte)))
-      by-not    (conj `(is (not= ~by-not    (- ~after ~before)              )    ~(message :by-not))))))
+      from        (conj `(is (=    ~from        ~before                            )        ~(message :from)))
+      from-lt     (conj `(is (>    ~from-lt     ~before                            )     ~(message :from-lt)))
+      from-lte    (conj `(is (>=   ~from-lte    ~before                            )    ~(message :from-lte)))
+      from-gt     (conj `(is (<    ~from-gt     ~before                            )     ~(message :from-gt)))
+      from-gte    (conj `(is (<=   ~from-gte    ~before                            )    ~(message :from-gte)))
+      from-not    (conj `(is (not= ~from-not    ~before                            )    ~(message :from-not)))
+      from-within (conj `(is (>=   ~from-radius (Math/abs (- ~before ~from-origin))) ~(message :from-within)))
+      to          (conj `(is (=    ~to          ~after                             )          ~(message :to)))
+      to-lt       (conj `(is (>    ~to-lt       ~after                             )       ~(message :to-lt)))
+      to-lte      (conj `(is (>=   ~to-lte      ~after                             )      ~(message :to-lte)))
+      to-gt       (conj `(is (<    ~to-gt       ~after                             )       ~(message :to-gt)))
+      to-gte      (conj `(is (<=   ~to-gte      ~after                             )      ~(message :to-gte)))
+      to-not      (conj `(is (not= ~to-not      ~after                             )      ~(message :to-not)))
+      to-within   (conj `(is (>=   ~to-radius   (Math/abs (- ~after ~to-origin))   )   ~(message :to-within)))
+      by          (conj `(is (=    ~by          (- ~after ~before)                 )          ~(message :by)))
+      by-lt       (conj `(is (>    ~by-lt       (- ~after ~before)                 )       ~(message :by-lt)))
+      by-lte      (conj `(is (>=   ~by-lte      (- ~after ~before)                 )      ~(message :by-lte)))
+      by-gt       (conj `(is (<    ~by-gt       (- ~after ~before)                 )       ~(message :by-gt)))
+      by-gte      (conj `(is (<=   ~by-gte      (- ~after ~before)                 )      ~(message :by-gte)))
+      by-not      (conj `(is (not= ~by-not      (- ~after ~before)                 )      ~(message :by-not))))))
