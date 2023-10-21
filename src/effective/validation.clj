@@ -8,7 +8,7 @@
 
 (def ^:private assertion-config-valid?
   (every-pred map?
-              (comp some? :changes)
+              (comp some? :to-change)
               (some-fn #(not (contains? % :from-within))
                        (comp within-valid? :from-within))
               (some-fn #(not (contains? % :to-within))
