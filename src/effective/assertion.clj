@@ -2,6 +2,11 @@
   (:require [clojure.test :refer [is]]
             [effective.checkpoint :as checkpoint]))
 
+(defn- message
+  "Error message for the assertion generated for `option`."
+  [option]
+  (str option " check failed"))
+
 (defn make
   [config index]
   (let [{:keys [from from-lt from-lte from-gt from-gte from-not
@@ -29,22 +34,22 @@
         before (checkpoint/before index)
         after (checkpoint/after index)]
     (cond-> []
-      from      (conj `(is (=    ~from      ~before                         )     ":from check failed"))
-      from-lt   (conj `(is (>    ~from-lt   ~before                         )  ":from-lt check failed"))
-      from-lte  (conj `(is (>=   ~from-lte  ~before                         ) ":from-lte check failed"))
-      from-gt   (conj `(is (<    ~from-gt   ~before                         )  ":from-gt check failed"))
-      from-gte  (conj `(is (<=   ~from-gte  ~before                         ) ":from-gte check failed"))
-      from-not  (conj `(is (not= ~from-not  ~before                         ) ":from-not check failed"))
-      to        (conj `(is (=    ~to        ~after                          )       ":to check failed"))
-      to-lt     (conj `(is (>    ~to-lt     ~after                          )    ":to-lt check failed"))
-      to-lte    (conj `(is (>=   ~to-lte    ~after                          )   ":to-lte check failed"))
-      to-gt     (conj `(is (<    ~to-gt     ~after                          )    ":to-gt check failed"))
-      to-gte    (conj `(is (<=   ~to-gte    ~after                          )   ":to-gte check failed"))
-      to-not    (conj `(is (not= ~to-not    ~after                          )   ":to-not check failed"))
-      to-within (conj `(is (>=   ~to-radius (Math/abs (- ~after ~to-origin)))   ":to-within check failed"))
-      by        (conj `(is (=    ~by        (- ~after ~before)              )       ":by check failed"))
-      by-lt     (conj `(is (>    ~by-lt     (- ~after ~before)              )    ":by-lt check failed"))
-      by-lte    (conj `(is (>=   ~by-lte    (- ~after ~before)              )   ":by-lte check failed"))
-      by-gt     (conj `(is (<    ~by-gt     (- ~after ~before)              )    ":by-gt check failed"))
-      by-gte    (conj `(is (<=   ~by-gte    (- ~after ~before)              )   ":by-gte check failed"))
-      by-not    (conj `(is (not= ~by-not    (- ~after ~before)              )   ":by-not check failed")))))
+      from      (conj `(is (=    ~from      ~before                         )      ~(message :from)))
+      from-lt   (conj `(is (>    ~from-lt   ~before                         )   ~(message :from-lt)))
+      from-lte  (conj `(is (>=   ~from-lte  ~before                         )  ~(message :from-lte)))
+      from-gt   (conj `(is (<    ~from-gt   ~before                         )   ~(message :from-gt)))
+      from-gte  (conj `(is (<=   ~from-gte  ~before                         )  ~(message :from-gte)))
+      from-not  (conj `(is (not= ~from-not  ~before                         )  ~(message :from-not)))
+      to        (conj `(is (=    ~to        ~after                          )        ~(message :to)))
+      to-lt     (conj `(is (>    ~to-lt     ~after                          )     ~(message :to-lt)))
+      to-lte    (conj `(is (>=   ~to-lte    ~after                          )    ~(message :to-lte)))
+      to-gt     (conj `(is (<    ~to-gt     ~after                          )     ~(message :to-gt)))
+      to-gte    (conj `(is (<=   ~to-gte    ~after                          )    ~(message :to-gte)))
+      to-not    (conj `(is (not= ~to-not    ~after                          )    ~(message :to-not)))
+      to-within (conj `(is (>=   ~to-radius (Math/abs (- ~after ~to-origin))) ~(message :to-within)))
+      by        (conj `(is (=    ~by        (- ~after ~before)              )        ~(message :by)))
+      by-lt     (conj `(is (>    ~by-lt     (- ~after ~before)              )     ~(message :by-lt)))
+      by-lte    (conj `(is (>=   ~by-lte    (- ~after ~before)              )    ~(message :by-lte)))
+      by-gt     (conj `(is (<    ~by-gt     (- ~after ~before)              )     ~(message :by-gt)))
+      by-gte    (conj `(is (<=   ~by-gte    (- ~after ~before)              )    ~(message :by-gte)))
+      by-not    (conj `(is (not= ~by-not    (- ~after ~before)              )    ~(message :by-not))))))
