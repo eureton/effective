@@ -42,10 +42,15 @@
     (effect (swap! x inc)
             [{:changes @x :from-not 4}])))
 
-(deftest from-within-of
+(deftest from-within-of-lower
   (let [x (atom 0)]
     (effect (swap! x inc)
             [{:changes @x :from-within [0.6 :of -0.05]}])))
+
+(deftest from-within-of-upper
+  (let [x (atom 0)]
+    (effect (swap! x inc)
+            [{:changes @x :from-within [0.6 :of 0.05]}])))
 
 (deftest to
   (let [x (atom -1)]
@@ -87,10 +92,15 @@
     (effect (swap! x #(int (Math/sqrt %)))
             [{:changes @x :to-not -2}])))
 
-(deftest to-within-of
+(deftest to-within-of-lower
   (let [x (atom 0)]
     (effect (swap! x inc)
-            [{:changes @x :to-within [0.1 :of 0.95]}])))
+            [{:changes @x :to-within [0.1 :of 0.91]}])))
+
+(deftest to-within-of-upper
+  (let [x (atom 0)]
+    (effect (swap! x inc)
+            [{:changes @x :to-within [0.1 :of 1.09]}])))
 
 (deftest by
   (let [x (atom 4)]
@@ -132,10 +142,15 @@
     (effect (swap! x #(* % %))
             [{:changes @x :by-not 4}])))
 
-(deftest by-within-of
+(deftest by-within-of-lower
   (let [x (atom 10)]
     (effect (swap! x inc)
             [{:changes @x :by-within [0.1 :of 0.91]}])))
+
+(deftest by-within-of-upper
+  (let [x (atom 10)]
+    (effect (swap! x inc)
+            [{:changes @x :by-within [0.1 :of 1.09]}])))
 
 (deftest multiple
   (let [x (atom {:a 1 :b 10})]
