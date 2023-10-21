@@ -1,6 +1,7 @@
 (ns effective.core
   (:require [effective.assertion :as assertion]
-            [effective.checkpoint :as checkpoint]))
+            [effective.checkpoint :as checkpoint]
+            [effective.validation :as validation]))
 
 (defmacro effect
   "Asserts modifications specified by `config` using the `clojure.test` API.
@@ -56,6 +57,8 @@
        (is (= 2 after-1) \":to check failed\")))
    ```"
   [form config]
+  (when-not (validation/config-valid? config)
+    (throw (IllegalArgumentException.)))
   (let [changes-seq (map :changes config)
         before-vars (interleave (map checkpoint/before (range)) changes-seq)
         after-vars (interleave (map checkpoint/after (range)) changes-seq)

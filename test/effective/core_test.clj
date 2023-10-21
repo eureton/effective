@@ -82,6 +82,11 @@
     (effect (swap! x #(int (Math/sqrt %)))
             [{:changes @x :to-not -2}])))
 
+(deftest to-within-of
+  (let [x (atom 0)]
+    (effect (swap! x inc)
+            [{:changes @x :to-within [0.1 :of 0.95]}])))
+
 (deftest by
   (let [x (atom 4)]
     (effect (swap! x #(* % %))
