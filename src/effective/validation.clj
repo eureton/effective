@@ -12,7 +12,9 @@
               (some-fn #(not (contains? % :from-within))
                        (comp within-valid? :from-within))
               (some-fn #(not (contains? % :to-within))
-                       (comp within-valid? :to-within))))
+                       (comp within-valid? :to-within))
+              (some-fn #(not (contains? % :by-within))
+                       (comp within-valid? :by-within))))
 
 (def config-valid?
   (every-pred coll?

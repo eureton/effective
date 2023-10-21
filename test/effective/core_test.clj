@@ -132,6 +132,11 @@
     (effect (swap! x #(* % %))
             [{:changes @x :by-not 4}])))
 
+(deftest by-within-of
+  (let [x (atom 10)]
+    (effect (swap! x inc)
+            [{:changes @x :by-within [0.1 :of 0.91]}])))
+
 (deftest multiple
   (let [x (atom {:a 1 :b 10})]
     (effect (swap! x assoc :a 10 :b 100)
