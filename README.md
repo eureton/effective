@@ -7,19 +7,19 @@
 ### Leiningen/Boot
 
 ``` clj
-[com.eureton/effective "0.2.0"]
+[com.eureton/effective "0.3.0"]
 ```
 
 ### Clojure CLI/deps.edn
 
 ``` clj
-com.eureton/effective {:mvn/version "0.2.0"}
+com.eureton/effective {:mvn/version "0.3.0"}
 ```
 
 ### Gradle
 
 ``` java
-implementation("com.eureton:effective:0.2.0")
+implementation("com.eureton:effective:0.3.0")
 ```
 
 ### Maven
@@ -28,7 +28,7 @@ implementation("com.eureton:effective:0.2.0")
 <dependency>
   <groupId>com.eureton</groupId>
   <artifactId>effective</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
 </dependency>
 ```
 
