@@ -1,33 +1,38 @@
 (ns effective.core
   (:require [effective.assertion :as assertion]
-            [effective.checkpoint :as checkpoint]))
+            [effective.checkpoint :as checkpoint]
+            [effective.validation :as validation]))
 
-(defmacro effect
+(defmacro expect
   "Asserts modifications specified by `config` using the `clojure.test` API.
 
-   `form` is a Clojure form representing the effect to test.
+   `effect` is a Clojure form representing the effect to test.
 
    `config` is expected to be a collection of monitor configurations. Each of
    those to be a hashmap with the following keys:
 
-   | key        | required? | description                                      |
-   | ---------- | --------- | ------------------------------------------------ |
-   | `:changes` | **yes**   | expression to evaluate                           |
-   | `:from`    | **no**    | expected value of `:changes` before the effect   |
-   | `:to`      | **no**    | expected value of `:changes` after the effect    |
-   | `:by`      | **no**    | expected numerical difference of `:changes`      |
-   |            |           | before and after the effect                      |
+   | key          | required? | description                    |
+   | ------------ | --------- | ------------------------------ |
+   | `:to-change` | **yes**   | expression to evaluate         |
+   | `:from`      | **no**    | expected value of `:to-change` |
+   |              |           | before the effect              |
+   | `:to`        | **no**    | expected value of `:to-change` |
+   |              |           | after the effect               |
+   | `:by`        | **no**    | expected numerical difference  |
+   |              |           | of `:to-change` before and     |
+   |              |           | after the effect               |
   
    **Examples**:
    ``` clojure
    (let [x (atom 10)]
-     (effect (swap! x inc)
-             [{:changes @x
+     (expect (swap! x inc)
+             [{:to-change @x
                :from 0
                :to 1}]))
    ```
 
-   expands to the following:
+   The above expands to the following:
+
    ``` clojure
    (let [x (atom 10)]
      (let [before-0 @x
@@ -37,30 +42,48 @@
        (is (= 1 after-0) \":to check failed\")))
    ```
 
-   Multiple expressions can be monitored for changes:
+   ---
+
    ``` clojure
-   (let [x (atom {:a 100 :b -2})]
-     (effect (swap! assoc :a 0 :b 10)
-             [{:changes (:a @x) :by -100}
-              {:changes (:b @x) :to    2}]))
+   (let [x (atom [:a :b :c])]
+     (expect (swap! x pop)
+             [{:to-change (count @x) :by -1}]))
    ```
-   expands to the following:
+
+   The above expands to the following:
+
    ``` clojure
-   (let [x (atom {:a 100 :b -2})]
-     (let [before-0 (:a @x)
-           before-1 (:b @x)
-           _ (swap! x assoc :a 0 :b 10)
-           after-0 (:a @x)
-           after-1 (:b @x)]
-       (is (= -100 (- after-0 before-0)) \":by check failed\")
-       (is (= 2 after-1) \":to check failed\")))
+   (let [before-0 (count @x)
+         _ (swap! x pop)
+         after-0 (count @x)]
+     (is (= -1 (- after-0 before-0)) \":by check failed\"))
+   ```
+
+   ---
+
+   ``` clojure
+   (let [x (atom \"ABC\")]
+     (expect (swap! x clojure.string/upper-case)
+             [{:to-not-change @x}]))
+   ```
+
+   The above expands to the following:
+
+   ``` clojure
+   (let [x (atom \"ABC\")]
+     (let [before-0 @x
+           _ (swap! x clojure.string/upper-case)
+           after-0 @x]
+       (is (= after-0 before-0) \":to-not-change check failed\")))
    ```"
-  [form config]
-  (let [changes-seq (map :changes config)
-        before-vars (interleave (map checkpoint/before (range)) changes-seq)
-        after-vars (interleave (map checkpoint/after (range)) changes-seq)
-        assertions (mapcat assertion/make config (range))]
-    `(let [~@before-vars
-           _# ~form
-           ~@after-vars]
-       ~@assertions)))
+  [effect config]
+  (if (validation/config-valid? config)
+    (let [observables-seq (map #(or (:to-change %) (:to-not-change %)) config)
+          before-vars (interleave (map checkpoint/before (range)) observables-seq)
+          after-vars (interleave (map checkpoint/after (range)) observables-seq)
+          assertions (mapcat assertion/make config (range))]
+      `(let [~@before-vars
+             _# ~effect
+             ~@after-vars]
+         ~@assertions))
+    `(throw (IllegalArgumentException. "Invalid configuration"))))
