@@ -31,7 +31,8 @@
                :to 1}]))
    ```
 
-   expands to the following:
+   The above expands to the following:
+
    ``` clojure
    (let [x (atom 10)]
      (let [before-0 @x
@@ -41,23 +42,39 @@
        (is (= 1 after-0) \":to check failed\")))
    ```
 
-   Multiple expressions can be monitored for changes:
+   ---
+
    ``` clojure
-   (let [x (atom {:a 100 :b -2})]
-     (expect (swap! assoc :a 0 :b 10)
-             [{:to-change (:a @x) :by -100}
-              {:to-change (:b @x) :to    2}]))
+   (let [x (atom [:a :b :c])]
+     (expect (swap! x pop)
+             [{:to-change (count @x) :by -1}]))
    ```
-   expands to the following:
+
+   The above expands to the following:
+
    ``` clojure
-   (let [x (atom {:a 100 :b -2})]
-     (let [before-0 (:a @x)
-           before-1 (:b @x)
-           _ (swap! x assoc :a 0 :b 10)
-           after-0 (:a @x)
-           after-1 (:b @x)]
-       (is (= -100 (- after-0 before-0)) \":by check failed\")
-       (is (= 2 after-1) \":to check failed\")))
+   (let [before-0 (count @x)
+         _ (swap! x pop)
+         after-0 (count @x)]
+     (is (= -1 (- after-0 before-0)) \":by check failed\"))
+   ```
+
+   ---
+
+   ``` clojure
+   (let [x (atom \"ABC\")]
+     (expect (swap! x clojure.string/upper-case)
+             [{:to-not-change @x}]))
+   ```
+
+   The above expands to the following:
+
+   ``` clojure
+   (let [x (atom \"ABC\")]
+     (let [before-0 @x
+           _ (swap! x clojure.string/upper-case)
+           after-0 @x]
+       (is (= after-0 before-0) \":to-not-change check failed\")))
    ```"
   [effect config]
   (if (validation/config-valid? config)
