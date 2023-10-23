@@ -13,6 +13,7 @@ Support for arithmetic comparisons. New `config` options:
 - `from-less-than-or-equal`
 - `from-greater-than`
 - `from-greater-than-or-equal`
+- `from-within`
 - `to-lt`
 - `to-lte`
 - `to-gt`
@@ -22,6 +23,7 @@ Support for arithmetic comparisons. New `config` options:
 - `to-less-than-or-equal`
 - `to-greater-than`
 - `to-greater-than-or-equal`
+- `to-within`
 - `by-lt`
 - `by-lte`
 - `by-gt`
@@ -31,6 +33,15 @@ Support for arithmetic comparisons. New `config` options:
 - `by-less-than-or-equal`
 - `by-greater-than`
 - `by-greater-than-or-equal`
+- `by-within`
+
+Support for asserting no change:
+- `:to-not-change` option
+
+### Changed
+Renamed:
+- `:changes` to `:to-change` in order to conform with `:to-not-change`
+- `effect` to `expect`
 
 ## [0.2.0] - 2023-09-25
 ### Changed
