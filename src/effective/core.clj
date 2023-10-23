@@ -60,13 +60,13 @@
        (is (= 2 after-1) \":to check failed\")))
    ```"
   [effect config]
-  (when-not (validation/config-valid? config)
-    (throw (IllegalArgumentException.)))
-  (let [changes-seq (map :to-change config)
-        before-vars (interleave (map checkpoint/before (range)) changes-seq)
-        after-vars (interleave (map checkpoint/after (range)) changes-seq)
-        assertions (mapcat assertion/make config (range))]
-    `(let [~@before-vars
-           _# ~effect
-           ~@after-vars]
-       ~@assertions)))
+  (if (validation/config-valid? config)
+    (let [observables-seq (map #(or (:to-change %) (:to-not-change %)) config)
+          before-vars (interleave (map checkpoint/before (range)) observables-seq)
+          after-vars (interleave (map checkpoint/after (range)) observables-seq)
+          assertions (mapcat assertion/make config (range))]
+      `(let [~@before-vars
+             _# ~effect
+             ~@after-vars]
+         ~@assertions))
+    `(throw (IllegalArgumentException. "Invalid configuration"))))
