@@ -21,3 +21,11 @@
     (if (predicate? to)
       `(~to ~after)
       `(= ~to ~after))))
+
+(defmethod make :by
+  [_ by index]
+  (let [before (checkpoint/before index)
+        after (checkpoint/after index)]
+    (if (predicate? by)
+      `(~by (- ~after ~before))
+      `(= ~by (- ~after ~before)))))

@@ -52,7 +52,7 @@
       to-gte        (conj `(is (<=   ~to-gte      ~after                                      )      ~(message :to-gte)))
       to-not        (conj `(is (not= ~to-not      ~after                                      )      ~(message :to-not)))
       to-within     (conj `(is (>=   ~to-radius   (Math/abs (- ~after ~to-origin))            )   ~(message :to-within)))
-      by            (conj `(is (=    ~by          (- ~after ~before)                          )          ~(message :by)))
+      by            (conj `(is ~(predicate/make :by by index)     ~(message :by)))
       by-lt         (conj `(is (>    ~by-lt       (- ~after ~before)                          )       ~(message :by-lt)))
       by-lte        (conj `(is (>=   ~by-lte      (- ~after ~before)                          )      ~(message :by-lte)))
       by-gt         (conj `(is (<    ~by-gt       (- ~after ~before)                          )       ~(message :by-gt)))
