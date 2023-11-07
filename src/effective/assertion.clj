@@ -1,6 +1,7 @@
 (ns effective.assertion
   (:require [clojure.test :refer [is]]
-            [effective.checkpoint :as checkpoint]))
+            [effective.checkpoint :as checkpoint]
+            [effective.predicate :as predicate]))
 
 (defn- message
   "Error message for the assertion generated for `option`."
@@ -37,7 +38,7 @@
         after (checkpoint/after index)
         [by-radius _ by-origin] by-within]
     (cond-> []
-      from          (conj `(is (=    ~from        ~before                                     )        ~(message :from)))
+      from          (conj `(is ~(predicate/make :from from index)     ~(message :from)))
       from-lt       (conj `(is (>    ~from-lt     ~before                                     )     ~(message :from-lt)))
       from-lte      (conj `(is (>=   ~from-lte    ~before                                     )    ~(message :from-lte)))
       from-gt       (conj `(is (<    ~from-gt     ~before                                     )     ~(message :from-gt)))
