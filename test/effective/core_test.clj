@@ -57,10 +57,15 @@
     (expect (swap! x inc)
             [{:to-change @x :from-within [0.6 :of 0.05]}])))
 
-(deftest to
+(deftest to-value
   (let [x (atom -1)]
     (expect (swap! x inc)
             [{:to-change @x :to 0}])))
+
+(deftest to-function
+  (let [x (atom -1)]
+    (expect (swap! x inc)
+            [{:to-change @x :to zero?}])))
 
 (deftest to-lt
   (let [x (atom -1)]

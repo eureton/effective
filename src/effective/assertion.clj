@@ -45,7 +45,7 @@
       from-gte      (conj `(is (<=   ~from-gte    ~before                                     )    ~(message :from-gte)))
       from-not      (conj `(is (not= ~from-not    ~before                                     )    ~(message :from-not)))
       from-within   (conj `(is (>=   ~from-radius (Math/abs (- ~before ~from-origin))         ) ~(message :from-within)))
-      to            (conj `(is (=    ~to          ~after                                      )          ~(message :to)))
+      to            (conj `(is ~(predicate/make :to to index)     ~(message :to)))
       to-lt         (conj `(is (>    ~to-lt       ~after                                      )       ~(message :to-lt)))
       to-lte        (conj `(is (>=   ~to-lte      ~after                                      )      ~(message :to-lte)))
       to-gt         (conj `(is (<    ~to-gt       ~after                                      )       ~(message :to-gt)))
