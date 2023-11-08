@@ -1,4 +1,5 @@
 (ns effective.assertion
+  "Generates assertions based on `clojure.test/is`."
   (:require [clojure.set :as cljset]
             [clojure.test :refer [is]]
             [effective.predicate :as predicate]))
@@ -9,6 +10,14 @@
   (str option " check failed"))
 
 (def ^:private ^:const CONFIG_KEY_ABBREVIATION_MAP
+  "Associates config keys which resolve to the same predicate.
+   Left-hand-side keys are lower precedence than right-hand-side keys.
+
+   Helps avoid inconsistency in case of bad input, such as:
+
+   ``` clojure
+   {:from-lt 10 :from-less-than 11}
+   ```"
   {:from-less-than             :from-lt
    :from-less-than-or-equal    :from-lte
    :from-greater-than          :from-gt
@@ -23,6 +32,8 @@
    :by-greater-than-or-equal   :by-gte})
 
 (def ^:private ^:const CONFIG_KEYS
+  "Authoritative source of valid config keys.
+   Ordered, so as to generate assertions predictably."
   [:from :from-lt :from-lte :from-gt :from-gte :from-not :from-within
    :from-less-than :from-less-than-or-equal
    :from-greater-than :from-greater-than-or-equal
@@ -34,11 +45,15 @@
    :by-greater-than :by-greater-than-or-equal
    :to-not-change])
 
-(defn- normalize [config]
+(defn- normalize
+  "Transforms user input to a consistent, unambiguous format."
+  [config]
   (merge (cljset/rename-keys config CONFIG_KEY_ABBREVIATION_MAP)
          (select-keys config (vals CONFIG_KEY_ABBREVIATION_MAP))))
 
 (defn make
+  "Vector of the assertions which correspond to `config`.
+   Generates checkpoint references for position `index`."
   [config index]
   (->> (select-keys (normalize config) CONFIG_KEYS)
        (map (fn [[k v]] `(is ~(predicate/make k v index) ~(message k))))

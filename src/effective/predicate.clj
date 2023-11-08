@@ -2,7 +2,8 @@
   (:require [effective.checkpoint :as checkpoint]))
 
 (defmulti make
-  (fn [option _ _] option))
+  "Quoted expression representing the check specified by `flag`."
+  (fn [flag _ _] flag))
 
 (def ^:private predicate?
   (every-pred symbol?
