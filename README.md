@@ -92,6 +92,26 @@ The above expands to the following:
     (is (= after-0 before-0) ":to-not-change check failed")))
 ```
 
+---
+
+`:from`, `:to` and `:by` could also be assigned a function. In that case, we assert the result of applying the function to the corresponding checkpoint:
+
+``` clojure
+(let [x (atom 1)]
+  (expect (swap! x inc)
+          [{:to-change @x :from odd? :to even?}]))
+```
+
+The above expands to the following:
+
+``` clojure
+(let [before-0 @x
+      _ (swap! x inc)
+      after-0 @x]
+  (is (odd? before-0) ":from check failed")
+  (is (even? after-0) ":to check failed"))
+```
+
 ## Development
 
 Run tests:
