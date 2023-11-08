@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file. This change
 
 ## [Unreleased]
 
+## [0.4.0] - 2023-11-09
+### Added
+- Support for function arguments to:
+  - `:from`
+  - `:to`
+  - `:by`
+
 ## [0.3.0] - 2023-10-23
 ### Added
 Support for arithmetic comparisons. New `config` options:
@@ -64,6 +71,7 @@ Renamed:
 - Initial commit.
 - asserts only, i.e. runs effect and monitors in a function.
 
-[Unreleased]: https://github.com/eureton/effective/compare/0.3.0...HEAD
+[Unreleased]: https://github.com/eureton/effective/compare/0.4.0...HEAD
+[0.4.0]: https://github.com/eureton/effective/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/eureton/effective/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/eureton/effective/compare/0.1.0...0.2.0
