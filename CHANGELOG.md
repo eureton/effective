@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file. This change
 
 ## [Unreleased]
 
-## [0.4.0] - 2023-11-09
+## [0.4.0] - 2023-11-18
 ### Added
 - Support for function arguments to:
   - `:from`
