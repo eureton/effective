@@ -6,6 +6,7 @@
   (fn [flag _ _] flag))
 
 (def ^:private function?
+  "True if value is a symbol which represents a function, false otherwise."
   (every-pred symbol?
               (comp fn? var-get resolve)))
 
