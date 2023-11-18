@@ -2,10 +2,15 @@
   (:require [clojure.test :refer [deftest]]
             [effective.core :refer [expect]]))
 
-(deftest from
+(deftest from-value
   (let [x (atom -1)]
     (expect (swap! x inc)
             [{:to-change @x :from -1}])))
+
+(deftest from-predicate
+  (let [x (atom -1)]
+    (expect (swap! x inc)
+            [{:to-change @x :from neg?}])))
 
 (deftest from-lt
   (let [x (atom -1)]
@@ -52,10 +57,15 @@
     (expect (swap! x inc)
             [{:to-change @x :from-within [0.6 :of 0.05]}])))
 
-(deftest to
+(deftest to-value
   (let [x (atom -1)]
     (expect (swap! x inc)
             [{:to-change @x :to 0}])))
+
+(deftest to-function
+  (let [x (atom -1)]
+    (expect (swap! x inc)
+            [{:to-change @x :to zero?}])))
 
 (deftest to-lt
   (let [x (atom -1)]
@@ -102,10 +112,15 @@
     (expect (swap! x inc)
             [{:to-change @x :to-within [0.1 :of 1.09]}])))
 
-(deftest by
+(deftest by-value
   (let [x (atom 4)]
     (expect (swap! x #(* % %))
             [{:to-change @x :by 12}])))
+
+(deftest by-function
+  (let [x (atom -2)]
+    (expect (swap! x #(* % 2))
+            [{:to-change @x :by neg?}])))
 
 (deftest by-lt
   (let [x (atom 4)]
