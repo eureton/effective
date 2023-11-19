@@ -51,10 +51,17 @@
   (merge (cljset/rename-keys config CONFIG_KEY_ABBREVIATION_MAP)
          (select-keys config (vals CONFIG_KEY_ABBREVIATION_MAP))))
 
+(defn- sanitize
+  "Culls unknown keys in user input."
+  [config]
+  (select-keys config CONFIG_KEYS))
+
 (defn make
   "Vector of the assertions which correspond to `config`.
    Generates checkpoint references for position `index`."
   [config index]
-  (->> (select-keys (normalize config) CONFIG_KEYS)
+  (->> config
+       (normalize)
+       (sanitize)
        (map (fn [[k v]] `(is ~(predicate/make k v index) ~(message k))))
        (reduce conj [])))
