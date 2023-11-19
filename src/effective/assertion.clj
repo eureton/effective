@@ -63,5 +63,4 @@
   (->> config
        (normalize)
        (sanitize)
-       (map (fn [[k v]] `(is ~(predicate/make k v index) ~(message k))))
-       (reduce conj [])))
+       (map (fn [[k v]] `(is ~(predicate/make k v index) ~(message k))))))
