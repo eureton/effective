@@ -1,5 +1,6 @@
 (ns effective.core
   (:require [effective.assertion :as assertion]
+            [effective.assertion.composer :as composer]
             [effective.checkpoint :as checkpoint]
             [effective.validation :as validation]))
 
@@ -76,14 +77,21 @@
            after-0 @x]
        (is (= after-0 before-0) \":to-not-change check failed\")))
    ```"
-  [effect config]
-  (if (validation/config-valid? config)
-    (let [observables-seq (map #(or (:to-change %) (:to-not-change %)) config)
-          before-vars (interleave (map checkpoint/before (range)) observables-seq)
-          after-vars (interleave (map checkpoint/after (range)) observables-seq)
-          assertions (mapcat assertion/make config (range))]
-      `(let [~@before-vars
-             _# ~effect
-             ~@after-vars]
-         ~@assertions))
-    `(throw (IllegalArgumentException. "Invalid configuration"))))
+  ([effect config]
+   `(expect ~effect :all ~config))
+  ([effect composition config]
+   (if (validation/config-valid? config)
+     (let [observables-seq (map #(or (:to-change %) (:to-not-change %)) config)
+           before-vars (interleave (map checkpoint/before (range)) observables-seq)
+           after-vars (interleave (map checkpoint/after (range)) observables-seq)
+           [intra-joiner inter-joiner] (->> (composer/make composition)
+                                            (vector)
+                                            (apply (juxt composer/intra composer/inter)))
+           assertions (->> (map assertion/make config (range))
+                           (map intra-joiner)
+                           (inter-joiner))]
+       `(let [~@before-vars
+              _# ~effect
+              ~@after-vars]
+          ~@assertions))
+     `(throw (IllegalArgumentException. "Invalid configuration")))))
