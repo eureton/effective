@@ -34,7 +34,9 @@ implementation("com.eureton:effective:0.3.0")
 
 ## Usage
 
-Use the `expect` macro to string up any number of assertions with respect to a given Clojure form.
+Use the `expect` macro to string up any number of assertions with respect to a given Clojure form. Assertions are grouped by expressions - use `:to-change` and `:to-not-change` to specify expressions.
+
+Multiple expressions may be specified. By default, `expect` generates code which asserts that they **all** hold. You may use the keyword `:any` (see example below) to specify that **one or more** of them hold.
 
 #### Examples
 
@@ -79,17 +81,23 @@ The above expands to the following:
 ``` clojure
 (let [x (atom "ABC")]
   (expect (swap! x clojure.string/upper-case)
-          [{:to-not-change @x}]))
+          :any
+          [{:to-change (count @x) :from 3 :to 4}
+           {:to-not-change @x}]))
 ```
 
 The above expands to the following:
 
 ``` clojure
 (let [x (atom "ABC")]
-  (let [before-0 @x
+  (let [before-0 (count @x)
+        before-1 @x
         _ (swap! x clojure.string/upper-case)
-        after-0 @x]
-    (is (= after-0 before-0) ":to-not-change check failed")))
+        after-0 (count @x)
+        after-1 @x]
+    (is (or (and (= 3 before-0)
+                 (= 4 after-0))
+            (= after-1 before-1)))))
 ```
 
 ---
