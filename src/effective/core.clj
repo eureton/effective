@@ -82,16 +82,16 @@
   ([effect composition config]
    (if (validation/config-valid? config)
      (let [observables-seq (map #(or (:to-change %) (:to-not-change %)) config)
-           before-vars (interleave (map checkpoint/before (range)) observables-seq)
-           after-vars (interleave (map checkpoint/after (range)) observables-seq)
-           [intra-joiner inter-joiner] (->> (composer/make composition)
-                                            (vector)
-                                            (apply (juxt composer/intra composer/inter)))
+           before (interleave (map checkpoint/before (range)) observables-seq)
+           after (interleave (map checkpoint/after (range)) observables-seq)
+           composer (composer/make composition)
+           join-intra (composer/intra composer)
+           join-inter (composer/inter composer)
            assertions (->> (map assertion/make config (range))
-                           (map intra-joiner)
-                           (inter-joiner))]
-       `(let [~@before-vars
+                           (map join-intra)
+                           (join-inter))]
+       `(let [~@before
               _# ~effect
-              ~@after-vars]
+              ~@after]
           ~@assertions))
      `(throw (IllegalArgumentException. "Invalid configuration")))))
