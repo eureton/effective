@@ -1,7 +1,6 @@
 (ns effective.assertion
-  "Generates assertions based on `clojure.test/is`."
+  "Generates data representations of assertions."
   (:require [clojure.set :as cljset]
-            [clojure.test :refer [is]]
             [effective.predicate :as predicate]))
 
 (defn- message
@@ -51,10 +50,25 @@
   (merge (cljset/rename-keys config CONFIG_KEY_ABBREVIATION_MAP)
          (select-keys config (vals CONFIG_KEY_ABBREVIATION_MAP))))
 
+(defn- sanitize
+  "Culls unknown keys in user input."
+  [config]
+  (select-keys config CONFIG_KEYS))
+
+(defn- inflate
+  "Builds a function which turns a flag-value pair into a data structure."
+  [index]
+  (fn [[k v]]
+    {:flag k
+     :value v
+     :predicate (predicate/make k v index)
+     :message (message k)}))
+
 (defn make
   "Vector of the assertions which correspond to `config`.
    Generates checkpoint references for position `index`."
   [config index]
-  (->> (select-keys (normalize config) CONFIG_KEYS)
-       (map (fn [[k v]] `(is ~(predicate/make k v index) ~(message k))))
-       (reduce conj [])))
+  (->> config
+       (normalize)
+       (sanitize)
+       (map (inflate index))))

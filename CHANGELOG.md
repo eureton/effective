@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file. This change
 
 ## [Unreleased]
 
+## [0.5.0] - 2024-01-24
+### Added
+- Support for disjunction of generated assertions
+
 ## [0.4.0] - 2023-11-18
 ### Added
 - Support for function arguments to:
@@ -71,7 +75,8 @@ Renamed:
 - Initial commit.
 - asserts only, i.e. runs effect and monitors in a function.
 
-[Unreleased]: https://github.com/eureton/effective/compare/0.4.0...HEAD
+[Unreleased]: https://github.com/eureton/effective/compare/0.5.0...HEAD
+[0.5.0]: https://github.com/eureton/effective/compare/0.4.0...0.5.0
 [0.4.0]: https://github.com/eureton/effective/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/eureton/effective/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/eureton/effective/compare/0.1.0...0.2.0

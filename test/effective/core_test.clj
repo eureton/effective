@@ -177,3 +177,10 @@
     (expect (swap! x assoc :a 10 :b 100)
             [{:to-change (:a @x) :by 9}
              {:to-change (:b @x) :by 90}])))
+
+(deftest multiple-disjunction
+  (let [x (atom 1)]
+    (expect (swap! x inc)
+            :any
+            [{:to-change @x :from odd? :to even?}
+             {:to-change @x :from 10}])))

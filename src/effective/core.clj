@@ -1,5 +1,6 @@
 (ns effective.core
   (:require [effective.assertion :as assertion]
+            [effective.assertion.composer :as composer]
             [effective.checkpoint :as checkpoint]
             [effective.validation :as validation]))
 
@@ -53,10 +54,11 @@
    The above expands to the following:
 
    ``` clojure
-   (let [before-0 (count @x)
-         _ (swap! x pop)
-         after-0 (count @x)]
-     (is (= -1 (- after-0 before-0)) \":by check failed\"))
+   (let [x (atom [:a :b :c])]
+     (let [before-0 (count @x)
+           _ (swap! x pop)
+           after-0 (count @x)]
+       (is (= -1 (- after-0 before-0)) \":by check failed\")))
    ```
 
    ---
@@ -64,26 +66,39 @@
    ``` clojure
    (let [x (atom \"ABC\")]
      (expect (swap! x clojure.string/upper-case)
-             [{:to-not-change @x}]))
+             :any
+             [{:to-change (count @x) :from 3 :to 4}
+              {:to-not-change @x}]))
    ```
 
    The above expands to the following:
 
    ``` clojure
    (let [x (atom \"ABC\")]
-     (let [before-0 @x
+     (let [before-0 (count @x)
+           before-1 @x
            _ (swap! x clojure.string/upper-case)
-           after-0 @x]
-       (is (= after-0 before-0) \":to-not-change check failed\")))
+           after-0 (count @x)
+           after-1 @x]
+       (is (or (and (= 3 before-0)
+                    (= 4 after-0))
+               (= after-1 before-1)))))
    ```"
-  [effect config]
-  (if (validation/config-valid? config)
-    (let [observables-seq (map #(or (:to-change %) (:to-not-change %)) config)
-          before-vars (interleave (map checkpoint/before (range)) observables-seq)
-          after-vars (interleave (map checkpoint/after (range)) observables-seq)
-          assertions (mapcat assertion/make config (range))]
-      `(let [~@before-vars
-             _# ~effect
-             ~@after-vars]
-         ~@assertions))
-    `(throw (IllegalArgumentException. "Invalid configuration"))))
+  ([effect config]
+   `(expect ~effect :all ~config))
+  ([effect composition config]
+   (if (validation/config-valid? config)
+     (let [observables-seq (map #(or (:to-change %) (:to-not-change %)) config)
+           before (interleave (map checkpoint/before (range)) observables-seq)
+           after (interleave (map checkpoint/after (range)) observables-seq)
+           composer (composer/make composition)
+           join-intra (composer/intra composer)
+           join-inter (composer/inter composer)
+           assertions (->> (map assertion/make config (range))
+                           (map join-intra)
+                           (join-inter))]
+       `(let [~@before
+              _# ~effect
+              ~@after]
+          ~@assertions))
+     `(throw (IllegalArgumentException. "Invalid configuration")))))
