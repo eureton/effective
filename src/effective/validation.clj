@@ -7,11 +7,6 @@
               (comp #{:of} #(nth % 1))
               (comp number? #(nth % 2))))
 
-(def ^:private to-conjoin-valid?
-  (every-pred map?
-              :to-conjoin
-              :with))
-
 (defn- single-observable? [assertion]
   (->> assertion
        (keys)
@@ -24,6 +19,13 @@
   "Predicate which returns `true` if the input contains `x`, `false` otherwise."
   [x]
   #(not (contains? % x)))
+
+(def ^:private to-conjoin-valid?
+  (every-pred map?
+              :to-conjoin
+              (some-fn :with :with-hash-containing)
+              (some-fn (missing? :with-hash-containing)
+                       (comp map? :with-hash-containing))))
 
 (def ^:private assertion-config-valid?
   (every-pred map?
