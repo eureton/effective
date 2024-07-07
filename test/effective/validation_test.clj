@@ -27,3 +27,9 @@
                           #"(?i)invalid"
                           (expect (swap! x inc) [{:to-not-change @x
                                                   :to-conjoin @x}])))))
+
+(deftest to-conjoin-without-value
+  (let [x (atom 0)]
+    (is (thrown-with-msg? IllegalArgumentException
+                          #"(?i)invalid"
+                          (expect (swap! x inc) [{:to-conjoin @x}])))))

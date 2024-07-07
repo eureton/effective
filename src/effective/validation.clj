@@ -7,6 +7,11 @@
               (comp #{:of} #(nth % 1))
               (comp number? #(nth % 2))))
 
+(def ^:private to-conjoin-valid?
+  (every-pred map?
+              :to-conjoin
+              :with))
+
 (defn- single-observable? [assertion]
   (->> assertion
        (keys)
@@ -18,6 +23,8 @@
 (def ^:private assertion-config-valid?
   (every-pred map?
               single-observable?
+              (some-fn #(not (contains? % :to-conjoin))
+                       to-conjoin-valid?)
               (some-fn #(not (contains? % :from-within))
                        (comp within-valid? :from-within))
               (some-fn #(not (contains? % :to-within))
