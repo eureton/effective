@@ -61,7 +61,7 @@
   (fn [[k v]]
     {:flag k
      :value v
-     :predicate (predicate/make k v index)
+     :predicates (predicate/make k v index)
      :message (message k)}))
 
 (defn make
