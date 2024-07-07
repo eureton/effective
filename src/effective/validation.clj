@@ -20,16 +20,21 @@
        (count)
        (= 1)))
 
+(defn- missing?
+  "Predicate which returns `true` if the input contains `x`, `false` otherwise."
+  [x]
+  #(not (contains? % x)))
+
 (def ^:private assertion-config-valid?
   (every-pred map?
               single-observable?
-              (some-fn #(not (contains? % :to-conjoin))
+              (some-fn (missing? :to-conjoin)
                        to-conjoin-valid?)
-              (some-fn #(not (contains? % :from-within))
+              (some-fn (missing? :from-within)
                        (comp within-valid? :from-within))
-              (some-fn #(not (contains? % :to-within))
+              (some-fn (missing? :to-within)
                        (comp within-valid? :to-within))
-              (some-fn #(not (contains? % :by-within))
+              (some-fn (missing? :by-within)
                        (comp within-valid? :by-within))))
 
 (def config-valid?
