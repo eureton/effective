@@ -184,3 +184,8 @@
             :any
             [{:to-change @x :from odd? :to even?}
              {:to-change @x :from 10}])))
+
+(deftest conjoin
+  (let [x (atom [:a :b])]
+    (expect (swap! x conj :c)
+            [{:to-conjoin @x :with :c}])))

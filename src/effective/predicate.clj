@@ -113,3 +113,7 @@
 (defmethod make :to-not-change
   [_ _ index]
   `(= ~(checkpoint/after index) ~(checkpoint/before index)))
+
+(defmethod make :with
+  [_ with index]
+  `(= ~(checkpoint/after index) (conj ~(checkpoint/before index) ~with)))
