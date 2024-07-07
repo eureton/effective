@@ -2,6 +2,7 @@
   (:require [effective.assertion :as assertion]
             [effective.assertion.composer :as composer]
             [effective.checkpoint :as checkpoint]
+            [effective.config :as config]
             [effective.validation :as validation]))
 
 (defmacro expect
@@ -88,7 +89,7 @@
    `(expect ~effect :all ~config))
   ([effect composition config]
    (if (validation/config-valid? config)
-     (let [observables-seq (map #(or (:to-change %) (:to-not-change %)) config)
+     (let [observables-seq (config/observables config)
            before (interleave (map checkpoint/before (range)) observables-seq)
            after (interleave (map checkpoint/after (range)) observables-seq)
            composer (composer/make composition)
