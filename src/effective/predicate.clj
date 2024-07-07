@@ -118,3 +118,11 @@
 (defmethod make :with
   [_ with index]
   [`(= ~(checkpoint/after index) (conj ~(checkpoint/before index) ~with))])
+
+(defmethod make :with-hash-containing
+  [_ value index]
+  [`(= ~(checkpoint/before index) (butlast ~(checkpoint/after index)))
+   `(= ~value (->> ~value
+                   (keys)
+                   (vec)
+                   (select-keys (last ~(checkpoint/after index)))))])

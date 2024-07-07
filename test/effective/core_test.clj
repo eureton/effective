@@ -185,7 +185,13 @@
             [{:to-change @x :from odd? :to even?}
              {:to-change @x :from 10}])))
 
-(deftest conjoin
+(deftest conjoin-with
   (let [x (atom [:a :b])]
     (expect (swap! x conj :c)
             [{:to-conjoin @x :with :c}])))
+
+(deftest conjoin-with-hash-containing
+  (let [x (atom [{:a 1 :w 0 :z -9}
+                 {:b 2 :w 0 :z -8}])]
+    (expect (swap! x conj {:c 3 :w 0 :z -7})
+            [{:to-conjoin @x :with-hash-containing {:c 3 :z -7}}])))
