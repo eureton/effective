@@ -124,4 +124,4 @@
   [`(= ~(checkpoint/before index) (pop ~(checkpoint/after index)))
    `(= ~value (-> ~(checkpoint/after index)
                   (peek)
-                  (select-keys (vec (keys ~value)))))])
+                  (select-keys (keys ~value))))])
