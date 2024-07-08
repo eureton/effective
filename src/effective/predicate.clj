@@ -6,9 +6,11 @@
   (fn [flag _ _] flag))
 
 (def ^:private function?
-  "True if value is a symbol which represents a function, false otherwise."
-  (every-pred symbol?
-              (comp fn? var-get resolve)))
+  "True if input represents a function, false otherwise."
+  (some-fn (every-pred symbol?
+                       (comp fn? var-get resolve))
+           (every-pred list?
+                       (comp symbol? first))))
 
 (defmethod make :from
   [_ from index]
