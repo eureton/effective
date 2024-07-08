@@ -4,7 +4,7 @@
 
 (deftest from
   (let [assertions (make {:from 4} 3)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'=) operator))
     (is (= 4 expected))
@@ -12,7 +12,7 @@
 
 (deftest from-lt
   (let [assertions (make {:from-lt 31} 9)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>) operator))
     (is (= 31 expected))
@@ -20,7 +20,7 @@
 
 (deftest from-less-than
   (let [assertions (make {:from-less-than 28} 18)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>) operator))
     (is (= 28 expected))
@@ -28,7 +28,7 @@
 
 (deftest from-lte
   (let [assertions (make {:from-lte 68} 7)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>=) operator))
     (is (= 68 expected))
@@ -36,7 +36,7 @@
 
 (deftest from-less-than-or-equal
   (let [assertions (make {:from-less-than-or-equal -52} 13)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>=) operator))
     (is (= -52 expected))
@@ -44,7 +44,7 @@
 
 (deftest from-gt
   (let [assertions (make {:from-gt 44} 6)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<) operator))
     (is (= 44 expected))
@@ -52,7 +52,7 @@
 
 (deftest from-greater-than
   (let [assertions (make {:from-greater-than -25} 15)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<) operator))
     (is (= -25 expected))
@@ -60,7 +60,7 @@
 
 (deftest from-gte
   (let [assertions (make {:from-gte 14} 31)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<=) operator))
     (is (= 14 expected))
@@ -68,7 +68,7 @@
 
 (deftest from-greater-than-or-equal
   (let [assertions (make {:from-greater-than-or-equal 26} 4)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<=) operator))
     (is (= 26 expected))
@@ -76,7 +76,7 @@
 
 (deftest from-not
   (let [assertions (make {:from-not 228} 42)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'not=) operator))
     (is (= 228 expected))
@@ -84,7 +84,7 @@
 
 (deftest to
   (let [assertions (make {:to -2} 2)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'=) operator))
     (is (= -2 expected))
@@ -92,7 +92,7 @@
 
 (deftest to-lt
   (let [assertions (make {:to-lt 39} 2)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>) operator))
     (is (= 39 expected))
@@ -100,7 +100,7 @@
 
 (deftest to-less-than
   (let [assertions (make {:to-less-than -17} 2)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>) operator))
     (is (= -17 expected))
@@ -108,7 +108,7 @@
 
 (deftest to-lte
   (let [assertions (make {:to-lte 74} 8)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>=) operator))
     (is (= 74 expected))
@@ -116,7 +116,7 @@
 
 (deftest to-less-than-or-equal
   (let [assertions (make {:to-less-than-or-equal -5} 0)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>=) operator))
     (is (= -5 expected))
@@ -124,7 +124,7 @@
 
 (deftest to-gt
   (let [assertions (make {:to-gt 23} 3)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<) operator))
     (is (= 23 expected))
@@ -132,7 +132,7 @@
 
 (deftest to-greater-than
   (let [assertions (make {:to-greater-than -1} 9)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<) operator))
     (is (= -1 expected))
@@ -140,7 +140,7 @@
 
 (deftest to-gte
   (let [assertions (make {:to-gte 91} 4)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<=) operator))
     (is (= 91 expected))
@@ -148,7 +148,7 @@
 
 (deftest to-greater-than-or-equal
   (let [assertions (make {:to-greater-than-or-equal 103} 10)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<=) operator))
     (is (= 103 expected))
@@ -156,7 +156,7 @@
 
 (deftest to-not
   (let [assertions (make {:to-not 121} 22)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'not=) operator))
     (is (= 121 expected))
@@ -164,7 +164,7 @@
 
 (deftest by
   (let [assertions (make {:by 10} 0)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'=) operator))
     (is (= 10 expected))
@@ -174,7 +174,7 @@
 
 (deftest by-lt
   (let [assertions (make {:by-lt 39} 16)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>) operator))
     (is (= 39 expected))
@@ -184,7 +184,7 @@
 
 (deftest by-less-than
   (let [assertions (make {:by-less-than -8} 24)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>) operator))
     (is (= -8 expected))
@@ -194,7 +194,7 @@
 
 (deftest by-lte
   (let [assertions (make {:by-lte 43} 34)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>=) operator))
     (is (= 43 expected))
@@ -204,7 +204,7 @@
 
 (deftest by-less-than-or-equal
   (let [assertions (make {:by-less-than-or-equal 66} 26)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>=) operator))
     (is (= 66 expected))
@@ -214,7 +214,7 @@
 
 (deftest by-gt
   (let [assertions (make {:by-gt 40} 38)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<) operator))
     (is (= 40 expected))
@@ -224,7 +224,7 @@
 
 (deftest by-greater-than
   (let [assertions (make {:by-greater-than -10} 29)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<) operator))
     (is (= -10 expected))
@@ -234,7 +234,7 @@
 
 (deftest by-gte
   (let [assertions (make {:by-gte 51} 33)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<=) operator))
     (is (= 51 expected))
@@ -244,7 +244,7 @@
 
 (deftest by-greater-than-or-equal
   (let [assertions (make {:by-greater-than-or-equal 52} 46)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<=) operator))
     (is (= 52 expected))
@@ -254,7 +254,7 @@
 
 (deftest by-not
   (let [assertions (make {:by-not 71} 49)
-        [[operator expected actual]] (:predicates (first assertions))]
+        [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'not=) operator))
     (is (= 71 expected))
@@ -266,6 +266,6 @@
   (let [assertions (make {:from 1 :to 21 :by 20} 7)
         [from-assertion to-assertion by-assertion] assertions]
     (is (= 3 (count assertions)))
-    (is (= 1 (-> from-assertion :predicates first (nth 1 nil))))
-    (is (= 21 (-> to-assertion :predicates first (nth 1 nil))))
-    (is (= 20 (-> by-assertion :predicates first (nth 1 nil))))))
+    (is (= 1 (-> from-assertion :predicate (nth 1 nil))))
+    (is (= 21 (-> to-assertion :predicate (nth 1 nil))))
+    (is (= 20 (-> by-assertion :predicate (nth 1 nil))))))

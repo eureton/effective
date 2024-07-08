@@ -11,11 +11,7 @@
 
   (intra [_]
     (fn [assertions]
-      (->> assertions
-           (mapcat (fn [x] (for [predicate (:predicates x)]
-                             {:predicate predicate
-                              :message (:message x)})))
-           (map (fn [x] `(is ~(:predicate x) ~(:message x)))))))
+      (map (fn [x] `(is ~(:predicate x) ~(:message x))) assertions)))
 
   (inter [_]
     (fn [assertions] (mapcat identity assertions))))
@@ -25,7 +21,9 @@
 
   (intra [_]
     (fn [assertions]
-      `(and ~@(mapcat :predicates assertions))))
+      (if (-> assertions (count) (> 1))
+        `(and ~@(map :predicate assertions))
+        (-> assertions first :predicate))))
 
   (inter [_]
     (fn [assertions] `[(is (or ~@assertions))])))

@@ -56,13 +56,16 @@
   (select-keys config CONFIG_KEYS))
 
 (defn- inflate
-  "Builds a function which turns a flag-value pair into a data structure."
+  "Builds a function which turns a flag-value pair into a collection
+   of data structures."
   [index]
   (fn [[k v]]
-    {:flag k
-     :value v
-     :predicates (predicate/make k v index)
-     :message (message k)}))
+    (map (fn [x]
+           {:flag k
+            :value v
+            :predicate x
+            :message (message k)})
+         (predicate/make k v index))))
 
 (defn make
   "Vector of the assertions which correspond to `config`.
@@ -71,4 +74,4 @@
   (->> config
        (normalize)
        (sanitize)
-       (map (inflate index))))
+       (mapcat (inflate index))))
