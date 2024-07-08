@@ -122,7 +122,6 @@
 (defmethod make :with-hash-containing
   [_ value index]
   [`(= ~(checkpoint/before index) (pop ~(checkpoint/after index)))
-   `(= ~value (->> ~value
-                   (keys)
-                   (vec)
-                   (select-keys (peek ~(checkpoint/after index)))))])
+   `(= ~value (-> ~(checkpoint/after index)
+                  (peek)
+                  (select-keys (vec (keys ~value)))))])
