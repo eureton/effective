@@ -119,11 +119,9 @@
 
 (defmethod make :with
   [_ with index]
-  [`(= ~(checkpoint/after index) (conj ~(checkpoint/before index) ~with))])
-
-(defmethod make :with-hash-containing
-  [_ value index]
-  [`(= ~(checkpoint/before index) (pop ~(checkpoint/after index)))
-   `(= ~value (-> ~(checkpoint/after index)
-                  (peek)
-                  (select-keys (keys ~value))))])
+  (let [before (checkpoint/before index)
+        after (checkpoint/after index)]
+    (if (function? with)
+      [`(= ~before (pop ~after))
+       `(~with (peek ~after))]
+      [`(= ~after (conj ~before ~with))])))

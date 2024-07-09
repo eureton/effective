@@ -29,14 +29,11 @@
                           (expect (swap! x inc) [{:to-not-change @x
                                                   :to-conjoin @x}])))))
 
-(deftest to-conjoin-with
+(deftest to-conjoin-with-value
   (is (config-valid? [{:to-conjoin :x :with 123}])))
 
-(deftest to-conjoin-with-hash-containing
-  (is (config-valid? [{:to-conjoin :x :with-hash-containing {:y 123}}])))
-
-(deftest to-conjoin-with-hash-containing-invalid-value
-  (is (not (config-valid? [{:to-conjoin :x :with-hash-containing 123}]))))
+(deftest to-conjoin-with-function
+  (is (config-valid? [{:to-conjoin :x :with (constantly nil)}])))
 
 (deftest to-conjoin-without-value
   (let [x (atom 0)]

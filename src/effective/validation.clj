@@ -23,9 +23,7 @@
 (def ^:private to-conjoin-valid?
   (every-pred map?
               :to-conjoin
-              (some-fn :with :with-hash-containing)
-              (some-fn (missing? :with-hash-containing)
-                       (comp map? :with-hash-containing))))
+              :with))
 
 (def ^:private assertion-config-valid?
   (every-pred map?

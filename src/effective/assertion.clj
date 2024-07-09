@@ -42,7 +42,7 @@
    :by :by-lt :by-lte :by-gt :by-gte :by-not :by-within
    :by-less-than :by-less-than-or-equal
    :by-greater-than :by-greater-than-or-equal
-   :to-not-change :with :with-hash-containing])
+   :to-not-change :with])
 
 (defn- normalize
   "Transforms user input to a consistent, unambiguous format."
