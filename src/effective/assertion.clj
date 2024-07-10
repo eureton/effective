@@ -1,6 +1,7 @@
 (ns effective.assertion
   "Generates data representations of assertions."
   (:require [clojure.set :as cljset]
+            [effective.config :as config]
             [effective.predicate :as predicate]))
 
 (defn- message
@@ -58,14 +59,15 @@
 (defn- inflate
   "Builds a function which turns a flag-value pair into a collection
    of data structures."
-  [index]
+  [index operation]
   (fn [[k v]]
     (map (fn [x]
            {:flag k
             :value v
+            :operation operation
             :predicate x
             :message (message k)})
-         (predicate/make k v index))))
+         (predicate/make operation k v index))))
 
 (defn make
   "Vector of the assertions which correspond to `config`.
@@ -74,4 +76,4 @@
   (->> config
        (normalize)
        (sanitize)
-       (mapcat (inflate index))))
+       (mapcat (inflate index (config/operation config)))))
