@@ -117,11 +117,30 @@
   [_ _ _ index]
   [`(= ~(checkpoint/after index) ~(checkpoint/before index))])
 
+(defn- pop-times
+  "Builds a form which `pop`s `coll` `n` times."
+  [coll n]
+  (loop [form coll
+         i n]
+    (if (zero? i)
+      form
+      (recur `(pop ~form)
+             (dec i)))))
+
 (defmethod make [:to-conjoin :with]
   [_ _ with index]
   (let [before (checkpoint/before index)
-        after (checkpoint/after index)]
-    (if (function? with)
-      [`(= ~before (pop ~after))
-       `(~with (peek ~after))]
-      [`(= ~after (conj ~before ~with))])))
+        after (checkpoint/after index)
+        tally (count with)
+        pick (fn [x]
+               `(peek ~(pop-times after (- tally x 1))))]
+    (if (not-any? function? with)
+      [`(= ~after (conj ~before ~@with))]
+      (cons `(= ~before ~(pop-times after tally))
+            (->> with
+                 (map-indexed vector)
+                 (map (fn [[i x]]
+                        (let [p (pick i)]
+                          (if (function? x)
+                            `(~x ~p)
+                            `(= ~x ~p))))))))))

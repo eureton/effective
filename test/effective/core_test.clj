@@ -193,21 +193,31 @@
 (deftest conjoin-vector-with-value
   (let [x (atom [:a :b])]
     (expect (swap! x conj :c)
-            [{:to-conjoin @x :with :c}])))
+            [{:to-conjoin @x :with [:c]}])))
+
+(deftest conjoin-vector-with-multiple-values
+  (let [x (atom [:a :b])]
+    (expect (swap! x conj :c :d)
+            [{:to-conjoin @x :with [:c :d]}])))
 
 (deftest conjoin-list-with-value
   (let [x (atom '(:b :c))]
     (expect (swap! x conj :a) :all
-            [{:to-conjoin @x :with :a}])))
+            [{:to-conjoin @x :with [:a]}])))
+
+(deftest conjoin-list-with-multiple-values
+  (let [x (atom '(:c :d))]
+    (expect (swap! x conj :b :a) :all
+            [{:to-conjoin @x :with [:b :a]}])))
 
 (deftest conjoin-vector-with-function
   (let [x (atom [{:a 1 :w 0 :z -9}
                  {:b 2 :w 0 :z -8}])]
     (expect (swap! x conj {:c 3 :w 0 :z -7})
-            [{:to-conjoin @x :with (contains-hash? {:c 3 :z -7})}])))
+            [{:to-conjoin @x :with [(contains-hash? {:c 3 :z -7})]}])))
 
 (deftest conjoin-list-with-function
   (let [x (atom '({:a 1 :w 0 :z -9}
                   {:b 2 :w 0 :z -8}))]
     (expect (swap! x conj {:c 3 :w 0 :z -7})
-            [{:to-conjoin @x :with (contains-hash? {:c 3 :z -7})}])))
+            [{:to-conjoin @x :with [(contains-hash? {:c 3 :z -7})]}])))
