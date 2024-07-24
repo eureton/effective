@@ -23,7 +23,7 @@
 (def ^:private to-conjoin-valid?
   (every-pred map?
               :to-conjoin
-              :with))
+              (comp vector? :with)))
 
 (def ^:private assertion-config-valid?
   (every-pred map?
