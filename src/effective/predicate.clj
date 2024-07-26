@@ -132,15 +132,15 @@
   (let [before (checkpoint/before index)
         after (checkpoint/after index)
         tally (count with)
-        pick (fn [x]
-               `(peek ~(pop-times after (- tally x 1))))]
+        pick (fn [i]
+               `(peek ~(pop-times after (- tally i 1))))]
     (if (not-any? function? with)
       [`(= ~after (conj ~before ~@with))]
       (cons `(= ~before ~(pop-times after tally))
             (->> with
                  (map-indexed vector)
                  (map (fn [[i x]]
-                        (let [p (pick i)]
+                        (let [head (pick i)]
                           (if (function? x)
-                            `(~x ~p)
-                            `(= ~x ~p))))))))))
+                            `(~x ~head)
+                            `(= ~x ~head))))))))))
