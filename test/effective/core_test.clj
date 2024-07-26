@@ -186,38 +186,42 @@
             [{:to-change @x :from odd? :to even?}
              {:to-change @x :from 10}])))
 
-(defn- contains-hash? [h1]
-  (fn [h2]
-    (cljset/subset? (set h1) (set h2))))
-
 (deftest conjoin-vector-with-value
   (let [x (atom [:a :b])]
-    (expect (swap! x conj :c)
+    (expect (reset! x [:a :b :c])
             [{:to-conjoin @x :with [:c]}])))
 
 (deftest conjoin-vector-with-multiple-values
   (let [x (atom [:a :b])]
-    (expect (swap! x conj :c :d)
+    (expect (reset! x [:a :b :c :d])
             [{:to-conjoin @x :with [:c :d]}])))
 
 (deftest conjoin-list-with-value
   (let [x (atom '(:b :c))]
-    (expect (swap! x conj :a) :all
+    (expect (reset! x '(:a :b :c))
             [{:to-conjoin @x :with [:a]}])))
 
 (deftest conjoin-list-with-multiple-values
   (let [x (atom '(:c :d))]
-    (expect (swap! x conj :b :a) :all
+    (expect (reset! x '(:a :b :c :d))
             [{:to-conjoin @x :with [:b :a]}])))
+
+(defn- contains-hash? [h1]
+  (fn [h2]
+    (cljset/subset? (set h1) (set h2))))
 
 (deftest conjoin-vector-with-function
   (let [x (atom [{:a 1 :w 0 :z -9}
                  {:b 2 :w 0 :z -8}])]
-    (expect (swap! x conj {:c 3 :w 0 :z -7})
+    (expect (reset! x [{:a 1 :w 0 :z -9}
+                       {:b 2 :w 0 :z -8}
+                       {:c 3 :w 0 :z -7}])
             [{:to-conjoin @x :with [(contains-hash? {:c 3 :z -7})]}])))
 
 (deftest conjoin-list-with-function
-  (let [x (atom '({:a 1 :w 0 :z -9}
-                  {:b 2 :w 0 :z -8}))]
-    (expect (swap! x conj {:c 3 :w 0 :z -7})
-            [{:to-conjoin @x :with [(contains-hash? {:c 3 :z -7})]}])))
+  (let [x (atom '({:b 2 :w 0 :z -8}
+                  {:c 3 :w 0 :z -7}))]
+    (expect (reset! x '({:a 1 :w 0 :z -9}
+                        {:b 2 :w 0 :z -8}
+                        {:c 3 :w 0 :z -7}))
+            [{:to-conjoin @x :with [(contains-hash? {:a 1 :z -9})]}])))
