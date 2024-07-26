@@ -196,6 +196,11 @@
     (expect (reset! x [:a :b :c :d])
             [{:to-conjoin @x :with [:c :d]}])))
 
+(deftest conjoin-vector-with-value-and-function
+  (let [x (atom [-2 -1])]
+    (expect (reset! x [-2 -1 0 1 2])
+            [{:to-conjoin @x :with [zero? 1 even?]}])))
+
 (deftest conjoin-list-with-value
   (let [x (atom '(:b :c))]
     (expect (reset! x '(:a :b :c))
@@ -205,6 +210,11 @@
   (let [x (atom '(:c :d))]
     (expect (reset! x '(:a :b :c :d))
             [{:to-conjoin @x :with [:b :a]}])))
+
+(deftest conjoin-list-with-value-and-function
+  (let [x (atom '(1 2))]
+    (expect (reset! x '(-2 -1 0 1 2))
+            [{:to-conjoin @x :with [zero? -1 (every-pred neg? even?)]}])))
 
 (defn- contains-hash? [h1]
   (fn [h2]
