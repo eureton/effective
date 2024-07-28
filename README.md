@@ -96,7 +96,7 @@ The above expands to the following:
 
 ---
 
-`:from-within` / `:to-within` let us assert that a checkpoint lies within some continuous numerical range. Use a `[radius :of origin]` vector as follows:
+`:from-within` / `:to-within` let us assert that a checkpoint lies within some continuous numerical range. Use them with a `[radius :of origin]` vector as follows:
 
 ``` clojure
 (let [x (atom 0)]
