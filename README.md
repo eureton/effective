@@ -112,12 +112,12 @@ The above expands to the following:
         _ (swap! x inc)
         after-0 @x]
     (is (>= 0.6 (java.lang.Math/abs (- before-0 -0.05)))
-        \":from-within check failed\")))
+        ":from-within check failed")))
 ```
 
 ---
 
-Assert growth of sequential collections by means of `:to-conjoin`. It may be given either static values or predicates:
+Assert growth of sequential collections with `:to-conjoin`. It may be given either static values or predicates:
 
 ``` clojure
 (let [x (atom [-2 -1])]
@@ -132,11 +132,11 @@ The above expands to the following:
   (let [before-0 @x
         _ (reset! x [-2 -1 0 1 2])
         after-0 @x]
-    (is (= before-0 (pop (pop (pop after-0)))) \":with check failed\")
-    (is (zero? (peek (pop (pop after-0)))) \":with check failed\")
-    (is (= 1 (peek (pop after-0))) \":with check failed\")
-    (is (even? (peek after-0)) \":with check failed\")))
-```"
+    (is (= before-0 (pop (pop (pop after-0)))) ":with check failed")
+    (is (zero? (peek (pop (pop after-0)))) ":with check failed")
+    (is (= 1 (peek (pop after-0))) ":with check failed")
+    (is (even? (peek after-0)) ":with check failed")))
+```
 
 ## Development
 
