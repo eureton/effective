@@ -1,5 +1,6 @@
 (ns effective.validation
-  (:require [clojure.set :as cljset]))
+  (:require [clojure.set :as cljset]
+            [effective.config :as config]))
 
 (def ^:private within-valid?
   (every-pred vector?
@@ -11,7 +12,7 @@
   (->> assertion
        (keys)
        (set)
-       (cljset/intersection #{:to-change :to-not-change :to-conjoin})
+       (cljset/intersection config/OPERATIONS)
        (count)
        (= 1)))
 
