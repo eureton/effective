@@ -4,33 +4,7 @@
 
 ## Installation
 
-### Leiningen/Boot
-
-``` clj
-[com.eureton/effective "0.5.0"]
-```
-
-### Clojure CLI/deps.edn
-
-``` clj
-com.eureton/effective {:mvn/version "0.5.0"}
-```
-
-### Gradle
-
-``` java
-implementation("com.eureton:effective:0.5.0")
-```
-
-### Maven
-
-``` xml
-<dependency>
-  <groupId>com.eureton</groupId>
-  <artifactId>effective</artifactId>
-  <version>0.5.0</version>
-</dependency>
-```
+[![Clojars Project](https://img.shields.io/clojars/v/com.eureton/effective.svg)](https://clojars.org/com.eureton/effective)
 
 ## Usage
 
@@ -119,6 +93,50 @@ The above expands to the following:
   (is (odd? before-0) ":from check failed")
   (is (even? after-0) ":to check failed"))
 ```
+
+---
+
+`:from-within` / `:to-within` let us assert that a checkpoint lies within some continuous numerical range. Use a `[radius :of origin]` vector as follows:
+
+``` clojure
+(let [x (atom 0)]
+  (expect (swap! x inc)
+          [{:to-change @x :from-within [0.6 :of -0.05]}]))
+```
+
+The above expands to the following:
+
+``` clojure
+(let [x (atom 0)]
+  (let [before-0 @x
+        _ (swap! x inc)
+        after-0 @x]
+    (is (>= 0.6 (java.lang.Math/abs (- before-0 -0.05)))
+        \":from-within check failed\")))
+```
+
+---
+
+Assert growth of sequential collections by means of `:to-conjoin`. It may be given either static values or predicates:
+
+``` clojure
+(let [x (atom [-2 -1])]
+  (expect (reset! x [-2 -1 0 1 2])
+          [{:to-conjoin @x :with [zero? 1 even?]}]))
+```
+
+The above expands to the following:
+
+``` clojure
+(let [x (atom [-2 -1])]
+  (let [before-0 @x
+        _ (reset! x [-2 -1 0 1 2])
+        after-0 @x]
+    (is (= before-0 (pop (pop (pop after-0)))) \":with check failed\")
+    (is (zero? (peek (pop (pop after-0)))) \":with check failed\")
+    (is (= 1 (peek (pop after-0))) \":with check failed\")
+    (is (even? (peek after-0)) \":with check failed\")))
+```"
 
 ## Development
 
