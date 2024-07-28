@@ -144,3 +144,7 @@
                           (if (function? x)
                             `(~x ~head)
                             `(= ~x ~head))))))))))
+
+(defmethod make [:to-pop :to-pop]
+  [_ _ _ index]
+  [`(= ~(checkpoint/after index) (pop ~(checkpoint/before index)))])

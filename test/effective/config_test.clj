@@ -6,5 +6,5 @@
   (is (= [:w :x :y :z]
          (config/observables [{:to-change :w :from odd? :to even?}
                               {:to-conjoin :x :with 12}
-                              {:to-change :y :by 1}
+                              {:to-pop :y}
                               {:to-not-change :z}]))))

@@ -235,3 +235,13 @@
                         {:b 2 :w 0 :z -8}
                         {:c 3 :w 0 :z -7}))
             [{:to-conjoin @x :with [(contains-hash? {:a 1 :z -9})]}])))
+
+(deftest pop-vector-single
+  (let [x (atom [:a :b :c])]
+    (expect (reset! x [:a :b])
+            [{:to-pop @x}])))
+
+(deftest pop-list-single
+  (let [x (atom '(:a :b :c))]
+    (expect (reset! x '(:b :c))
+            [{:to-pop @x}])))
