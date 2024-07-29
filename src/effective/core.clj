@@ -21,6 +21,7 @@
    | :to-change     | to change with the effect                        |
    | :to-not-change | to remain unchanged by the effect                |
    | :to-conjoin    | to be a collection which the effect conjoins to  |
+   | :to-pop        | to be a collection which the effect pops         |
 
    Assertions are bound to **checkpoints**. Each observable has two checkpoints:
      * **before** the effect (**b-val**)
@@ -46,6 +47,7 @@
    | :to-within   | radius declaration vector (see example below) on a-val    |
    | :by          | numerical difference between b-val and a-val or predicate |
    |              |  to assert on that difference.                            |
+   | :times       | number of times to pop b-val collection                   |
 
    **Examples**:
    ``` clojure

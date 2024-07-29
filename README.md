@@ -8,7 +8,7 @@
 
 ## Usage
 
-Use the `expect` macro to string up any number of assertions with respect to a given Clojure form. Assertions are grouped by expressions - use `:to-change`, `:to-not-change` and `:to-conjoin` to specify expressions.
+Use the `expect` macro to string up any number of assertions with respect to a given Clojure form. Assertions are grouped by expressions - use `:to-change`, `:to-not-change`, `:to-conjoin` and `:to-pop` to specify expressions.
 
 Multiple expressions may be specified. By default, `expect` generates code which asserts that they **all** hold. You may use the keyword `:any` (see example below) to specify that **one or more** of them hold.
 
