@@ -43,7 +43,7 @@
    :by :by-lt :by-lte :by-gt :by-gte :by-not :by-within
    :by-less-than :by-less-than-or-equal
    :by-greater-than :by-greater-than-or-equal
-   :to-not-change :with :to-pop])
+   :to-not-change :with :times])
 
 (defn- normalize
   "Transforms user input to a consistent, unambiguous format."
@@ -55,6 +55,12 @@
   "Culls unknown keys in user input."
   [config]
   (select-keys config CONFIG_KEYS))
+
+(defn- initialize
+  "Applies default values, where necessary."
+  [config]
+  (cond->> config
+    (:to-pop config) (merge {:times 1})))
 
 (defn- inflate
   "Builds a function which turns a flag-value pair into a collection
@@ -76,4 +82,5 @@
   (->> config
        (normalize)
        (sanitize)
+       (initialize)
        (mapcat (inflate index (config/operation config)))))

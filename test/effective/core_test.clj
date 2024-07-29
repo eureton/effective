@@ -241,7 +241,17 @@
     (expect (reset! x [:a :b])
             [{:to-pop @x}])))
 
+(deftest pop-vector-multiple
+  (let [x (atom [:a :b :c :d :e])]
+    (expect (reset! x [:a :b])
+            [{:to-pop @x :times 3}])))
+
 (deftest pop-list-single
   (let [x (atom '(:a :b :c))]
     (expect (reset! x '(:b :c))
             [{:to-pop @x}])))
+
+(deftest pop-list-multiple
+  (let [x (atom '(:a :b :c :d :e))]
+    (expect (reset! x '(:d :e))
+            [{:to-pop @x :times 3}])))

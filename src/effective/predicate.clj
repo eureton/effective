@@ -145,6 +145,7 @@
                             `(~x ~head)
                             `(= ~x ~head))))))))))
 
-(defmethod make [:to-pop :to-pop]
-  [_ _ _ index]
-  [`(= ~(checkpoint/after index) (pop ~(checkpoint/before index)))])
+(defmethod make [:to-pop :times]
+  [_ _ times index]
+  [`(= ~(checkpoint/after index)
+       ~(pop-times (checkpoint/before index) times))])
