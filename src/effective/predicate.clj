@@ -12,6 +12,10 @@
            (every-pred list?
                        (comp symbol? first))))
 
+(defmethod make :default
+  [_ _ _ _]
+  [])
+
 (defmethod make [:to-change :from]
   [_ _ from index]
   (let [before (checkpoint/before index)]
