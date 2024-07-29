@@ -3,7 +3,7 @@
             [effective.assertion :refer [make]]))
 
 (deftest from
-  (let [assertions (make {:from 4} 3)
+  (let [assertions (make {:to-change nil :from 4} 3)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'=) operator))
@@ -11,7 +11,7 @@
     (is (= 'before-3 actual))))
 
 (deftest from-lt
-  (let [assertions (make {:from-lt 31} 9)
+  (let [assertions (make {:to-change nil :from-lt 31} 9)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>) operator))
@@ -19,7 +19,7 @@
     (is (= 'before-9 actual))))
 
 (deftest from-less-than
-  (let [assertions (make {:from-less-than 28} 18)
+  (let [assertions (make {:to-change nil :from-less-than 28} 18)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>) operator))
@@ -27,7 +27,7 @@
     (is (= 'before-18 actual))))
 
 (deftest from-lte
-  (let [assertions (make {:from-lte 68} 7)
+  (let [assertions (make {:to-change nil :from-lte 68} 7)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>=) operator))
@@ -35,7 +35,7 @@
     (is (= 'before-7 actual))))
 
 (deftest from-less-than-or-equal
-  (let [assertions (make {:from-less-than-or-equal -52} 13)
+  (let [assertions (make {:to-change nil :from-less-than-or-equal -52} 13)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>=) operator))
@@ -43,7 +43,7 @@
     (is (= 'before-13 actual))))
 
 (deftest from-gt
-  (let [assertions (make {:from-gt 44} 6)
+  (let [assertions (make {:to-change nil :from-gt 44} 6)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<) operator))
@@ -51,7 +51,7 @@
     (is (= 'before-6 actual))))
 
 (deftest from-greater-than
-  (let [assertions (make {:from-greater-than -25} 15)
+  (let [assertions (make {:to-change nil :from-greater-than -25} 15)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<) operator))
@@ -59,7 +59,7 @@
     (is (= 'before-15 actual))))
 
 (deftest from-gte
-  (let [assertions (make {:from-gte 14} 31)
+  (let [assertions (make {:to-change nil :from-gte 14} 31)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<=) operator))
@@ -67,7 +67,7 @@
     (is (= 'before-31 actual))))
 
 (deftest from-greater-than-or-equal
-  (let [assertions (make {:from-greater-than-or-equal 26} 4)
+  (let [assertions (make {:to-change nil :from-greater-than-or-equal 26} 4)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<=) operator))
@@ -75,7 +75,7 @@
     (is (= 'before-4 actual))))
 
 (deftest from-not
-  (let [assertions (make {:from-not 228} 42)
+  (let [assertions (make {:to-change nil :from-not 228} 42)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'not=) operator))
@@ -83,7 +83,7 @@
     (is (= 'before-42 actual))))
 
 (deftest to
-  (let [assertions (make {:to -2} 2)
+  (let [assertions (make {:to-change nil :to -2} 2)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'=) operator))
@@ -91,7 +91,7 @@
     (is (= 'after-2 actual))))
 
 (deftest to-lt
-  (let [assertions (make {:to-lt 39} 2)
+  (let [assertions (make {:to-change nil :to-lt 39} 2)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>) operator))
@@ -99,7 +99,7 @@
     (is (= 'after-2 actual))))
 
 (deftest to-less-than
-  (let [assertions (make {:to-less-than -17} 2)
+  (let [assertions (make {:to-change nil :to-less-than -17} 2)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>) operator))
@@ -107,7 +107,7 @@
     (is (= 'after-2 actual))))
 
 (deftest to-lte
-  (let [assertions (make {:to-lte 74} 8)
+  (let [assertions (make {:to-change nil :to-lte 74} 8)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>=) operator))
@@ -115,7 +115,7 @@
     (is (= 'after-8 actual))))
 
 (deftest to-less-than-or-equal
-  (let [assertions (make {:to-less-than-or-equal -5} 0)
+  (let [assertions (make {:to-change nil :to-less-than-or-equal -5} 0)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>=) operator))
@@ -123,7 +123,7 @@
     (is (= 'after-0 actual))))
 
 (deftest to-gt
-  (let [assertions (make {:to-gt 23} 3)
+  (let [assertions (make {:to-change nil :to-gt 23} 3)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<) operator))
@@ -131,7 +131,7 @@
     (is (= 'after-3 actual))))
 
 (deftest to-greater-than
-  (let [assertions (make {:to-greater-than -1} 9)
+  (let [assertions (make {:to-change nil :to-greater-than -1} 9)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<) operator))
@@ -139,7 +139,7 @@
     (is (= 'after-9 actual))))
 
 (deftest to-gte
-  (let [assertions (make {:to-gte 91} 4)
+  (let [assertions (make {:to-change nil :to-gte 91} 4)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<=) operator))
@@ -147,7 +147,7 @@
     (is (= 'after-4 actual))))
 
 (deftest to-greater-than-or-equal
-  (let [assertions (make {:to-greater-than-or-equal 103} 10)
+  (let [assertions (make {:to-change nil :to-greater-than-or-equal 103} 10)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<=) operator))
@@ -155,7 +155,7 @@
     (is (= 'after-10 actual))))
 
 (deftest to-not
-  (let [assertions (make {:to-not 121} 22)
+  (let [assertions (make {:to-change nil :to-not 121} 22)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'not=) operator))
@@ -163,7 +163,7 @@
     (is (= 'after-22 actual))))
 
 (deftest by
-  (let [assertions (make {:by 10} 0)
+  (let [assertions (make {:to-change nil :by 10} 0)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'=) operator))
@@ -173,7 +173,7 @@
     (is (= 'before-0 (nth actual 2 nil)))))
 
 (deftest by-lt
-  (let [assertions (make {:by-lt 39} 16)
+  (let [assertions (make {:to-change nil :by-lt 39} 16)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>) operator))
@@ -183,7 +183,7 @@
     (is (= 'before-16 (nth actual 2 nil)))))
 
 (deftest by-less-than
-  (let [assertions (make {:by-less-than -8} 24)
+  (let [assertions (make {:to-change nil :by-less-than -8} 24)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>) operator))
@@ -193,7 +193,7 @@
     (is (= 'before-24 (nth actual 2 nil)))))
 
 (deftest by-lte
-  (let [assertions (make {:by-lte 43} 34)
+  (let [assertions (make {:to-change nil :by-lte 43} 34)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>=) operator))
@@ -203,7 +203,7 @@
     (is (= 'before-34 (nth actual 2 nil)))))
 
 (deftest by-less-than-or-equal
-  (let [assertions (make {:by-less-than-or-equal 66} 26)
+  (let [assertions (make {:to-change nil :by-less-than-or-equal 66} 26)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'>=) operator))
@@ -213,7 +213,7 @@
     (is (= 'before-26 (nth actual 2 nil)))))
 
 (deftest by-gt
-  (let [assertions (make {:by-gt 40} 38)
+  (let [assertions (make {:to-change nil :by-gt 40} 38)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<) operator))
@@ -223,7 +223,7 @@
     (is (= 'before-38 (nth actual 2 nil)))))
 
 (deftest by-greater-than
-  (let [assertions (make {:by-greater-than -10} 29)
+  (let [assertions (make {:to-change nil :by-greater-than -10} 29)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<) operator))
@@ -233,7 +233,7 @@
     (is (= 'before-29 (nth actual 2 nil)))))
 
 (deftest by-gte
-  (let [assertions (make {:by-gte 51} 33)
+  (let [assertions (make {:to-change nil :by-gte 51} 33)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<=) operator))
@@ -243,7 +243,7 @@
     (is (= 'before-33 (nth actual 2 nil)))))
 
 (deftest by-greater-than-or-equal
-  (let [assertions (make {:by-greater-than-or-equal 52} 46)
+  (let [assertions (make {:to-change nil :by-greater-than-or-equal 52} 46)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'<=) operator))
@@ -253,7 +253,7 @@
     (is (= 'before-46 (nth actual 2 nil)))))
 
 (deftest by-not
-  (let [assertions (make {:by-not 71} 49)
+  (let [assertions (make {:to-change nil :by-not 71} 49)
         [operator expected actual] (:predicate (first assertions))]
     (is (= 1 (count assertions)))
     (is (= (symbol #'not=) operator))
@@ -263,7 +263,7 @@
     (is (= 'before-49 (nth actual 2 nil)))))
 
 (deftest multiple
-  (let [assertions (make {:from 1 :to 21 :by 20} 7)
+  (let [assertions (make {:to-change nil :from 1 :to 21 :by 20} 7)
         [from-assertion to-assertion by-assertion] assertions]
     (is (= 3 (count assertions)))
     (is (= 1 (-> from-assertion :predicate (nth 1 nil))))

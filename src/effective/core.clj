@@ -2,6 +2,7 @@
   (:require [effective.assertion :as assertion]
             [effective.assertion.composer :as composer]
             [effective.checkpoint :as checkpoint]
+            [effective.config :as config]
             [effective.validation :as validation]))
 
 (defmacro expect
@@ -9,20 +10,45 @@
 
    `effect` is a Clojure form representing the effect to test.
 
-   `config` is expected to be a collection of monitor configurations. Each of
-   those to be a hashmap with the following keys:
+   `config` is a collection of declarations, each of which consists of:
+     * an **observable**
+     * one or more **assertions** on the observable
 
-   | key          | required? | description                    |
-   | ------------ | --------- | ------------------------------ |
-   | `:to-change` | **yes**   | expression to evaluate         |
-   | `:from`      | **no**    | expected value of `:to-change` |
-   |              |           | before the effect              |
-   | `:to`        | **no**    | expected value of `:to-change` |
-   |              |           | after the effect               |
-   | `:by`        | **no**    | expected numerical difference  |
-   |              |           | of `:to-change` before and     |
-   |              |           | after the effect               |
-  
+   The observable is an expression and is declared by one of the following keys:
+
+   | key            | use when the value of the observable is expected |
+   | -------------- | ------------------------------------------------ |
+   | :to-change     | to change with the effect                        |
+   | :to-not-change | to remain unchanged by the effect                |
+   | :to-conjoin    | to be a collection which the effect conjoins to  |
+   | :to-pop        | to be a collection which the effect pops         |
+
+   Assertions are bound to **checkpoints**. Each observable has two checkpoints:
+     * **before** the effect (**b-val**)
+     * **after** the effect (**a-val**)
+
+   Assertions are declared by the following keys:
+
+   | key          | description                                               |
+   | ------------ | --------------------------------------------------------- |
+   | :from        | b-val or predicate to assert on b-val                     |
+   | :from-lt     | non-inclusive upper bound of b-val                        |
+   | :from-lte    | inclusive upper bound of b-val                            |
+   | :from-gt     | non-inclusive lower bound of b-val                        |
+   | :from-gte    | inclusive lower bound of b-val                            |
+   | :from-not    | value which b-val is expected to not be equal to          |
+   | :from-within | radius declaration vector (see example below) on b-val    |
+   | :to          | a-val or predicate to assert on a-val                     |
+   | :to-lt       | non-inclusive upper bound of a-val                        |
+   | :to-lte      | inclusive upper bound of a-val                            |
+   | :to-gt       | non-inclusive lower bound of a-val                        |
+   | :to-gte      | inclusive lower bound of a-val                            |
+   | :to-not      | value which a-val is expected to not be equal to          |
+   | :to-within   | radius declaration vector (see example below) on a-val    |
+   | :by          | numerical difference between b-val and a-val or predicate |
+   |              |  to assert on that difference.                            |
+   | :times       | number of times to pop b-val collection                   |
+
    **Examples**:
    ``` clojure
    (let [x (atom 10)]
@@ -83,12 +109,52 @@
        (is (or (and (= 3 before-0)
                     (= 4 after-0))
                (= after-1 before-1)))))
+   ```
+
+   ---
+
+   ``` clojure
+   (let [x (atom 0)]
+     (expect (swap! x inc)
+             [{:to-change @x :from-within [0.6 :of -0.05]}]))
+   ```
+
+   The above expands to the following:
+
+   ``` clojure
+   (let [x (atom 0)]
+     (let [before-0 @x
+           _ (swap! x inc)
+           after-0 @x]
+       (is (>= 0.6 (java.lang.Math/abs (- before-0 -0.05)))
+           \":from-within check failed\")))
+   ```
+
+   ---
+
+   ``` clojure
+   (let [x (atom [-2 -1])]
+     (expect (reset! x [-2 -1 0 1 2])
+             [{:to-conjoin @x :with [zero? 1 even?]}]))
+   ```
+
+   The above expands to the following:
+
+   ``` clojure
+   (let [x (atom [-2 -1])]
+     (let [before-0 @x
+           _ (reset! x [-2 -1 0 1 2])
+           after-0 @x]
+       (is (= before-0 (pop (pop (pop after-0)))) \":with check failed\")
+       (is (zero? (peek (pop (pop after-0)))) \":with check failed\")
+       (is (= 1 (peek (pop after-0))) \":with check failed\")
+       (is (even? (peek after-0)) \":with check failed\")))
    ```"
   ([effect config]
    `(expect ~effect :all ~config))
   ([effect composition config]
    (if (validation/config-valid? config)
-     (let [observables-seq (map #(or (:to-change %) (:to-not-change %)) config)
+     (let [observables-seq (config/observables config)
            before (interleave (map checkpoint/before (range)) observables-seq)
            after (interleave (map checkpoint/after (range)) observables-seq)
            composer (composer/make composition)

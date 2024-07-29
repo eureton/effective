@@ -1,5 +1,6 @@
 (ns effective.core-test
-  (:require [clojure.test :refer [deftest]]
+  (:require [clojure.set :as cljset]
+            [clojure.test :refer [deftest]]
             [effective.core :refer [expect]]))
 
 (deftest from-value
@@ -184,3 +185,73 @@
             :any
             [{:to-change @x :from odd? :to even?}
              {:to-change @x :from 10}])))
+
+(deftest conjoin-vector-with-value
+  (let [x (atom [:a :b])]
+    (expect (reset! x [:a :b :c])
+            [{:to-conjoin @x :with [:c]}])))
+
+(deftest conjoin-vector-with-multiple-values
+  (let [x (atom [:a :b])]
+    (expect (reset! x [:a :b :c :d])
+            [{:to-conjoin @x :with [:c :d]}])))
+
+(deftest conjoin-vector-with-value-and-function
+  (let [x (atom [-2 -1])]
+    (expect (reset! x [-2 -1 0 1 2])
+            [{:to-conjoin @x :with [zero? 1 even?]}])))
+
+(deftest conjoin-list-with-value
+  (let [x (atom '(:b :c))]
+    (expect (reset! x '(:a :b :c))
+            [{:to-conjoin @x :with [:a]}])))
+
+(deftest conjoin-list-with-multiple-values
+  (let [x (atom '(:c :d))]
+    (expect (reset! x '(:a :b :c :d))
+            [{:to-conjoin @x :with [:b :a]}])))
+
+(deftest conjoin-list-with-value-and-function
+  (let [x (atom '(1 2))]
+    (expect (reset! x '(-2 -1 0 1 2))
+            [{:to-conjoin @x :with [zero? -1 (every-pred neg? even?)]}])))
+
+(defn- contains-hash? [h1]
+  (fn [h2]
+    (cljset/subset? (set h1) (set h2))))
+
+(deftest conjoin-vector-with-function
+  (let [x (atom [{:a 1 :w 0 :z -9}
+                 {:b 2 :w 0 :z -8}])]
+    (expect (reset! x [{:a 1 :w 0 :z -9}
+                       {:b 2 :w 0 :z -8}
+                       {:c 3 :w 0 :z -7}])
+            [{:to-conjoin @x :with [(contains-hash? {:c 3 :z -7})]}])))
+
+(deftest conjoin-list-with-function
+  (let [x (atom '({:b 2 :w 0 :z -8}
+                  {:c 3 :w 0 :z -7}))]
+    (expect (reset! x '({:a 1 :w 0 :z -9}
+                        {:b 2 :w 0 :z -8}
+                        {:c 3 :w 0 :z -7}))
+            [{:to-conjoin @x :with [(contains-hash? {:a 1 :z -9})]}])))
+
+(deftest pop-vector-single
+  (let [x (atom [:a :b :c])]
+    (expect (reset! x [:a :b])
+            [{:to-pop @x}])))
+
+(deftest pop-vector-multiple
+  (let [x (atom [:a :b :c :d :e])]
+    (expect (reset! x [:a :b])
+            [{:to-pop @x :times 3}])))
+
+(deftest pop-list-single
+  (let [x (atom '(:a :b :c))]
+    (expect (reset! x '(:b :c))
+            [{:to-pop @x}])))
+
+(deftest pop-list-multiple
+  (let [x (atom '(:a :b :c :d :e))]
+    (expect (reset! x '(:d :e))
+            [{:to-pop @x :times 3}])))

@@ -1,4 +1,6 @@
-(ns effective.validation)
+(ns effective.validation
+  (:require [clojure.set :as cljset]
+            [effective.config :as config]))
 
 (def ^:private within-valid?
   (every-pred vector?
@@ -6,18 +8,35 @@
               (comp #{:of} #(nth % 1))
               (comp number? #(nth % 2))))
 
+(defn- single-observable? [assertion]
+  (->> assertion
+       (keys)
+       (set)
+       (cljset/intersection config/OPERATIONS)
+       (count)
+       (= 1)))
+
+(defn- missing?
+  "Predicate which returns `true` if the input contains `x`, `false` otherwise."
+  [x]
+  #(not (contains? % x)))
+
+(def ^:private to-conjoin-valid?
+  (every-pred map?
+              :to-conjoin
+              (comp vector? :with)))
+
 (def ^:private assertion-config-valid?
-  (let [change? (comp some? :to-change)
-        no-change? (comp some? :to-not-change)]
-    (every-pred map?
-                (some-fn (every-pred change? (complement no-change?))
-                         (every-pred (complement change?) no-change?))
-                (some-fn #(not (contains? % :from-within))
-                         (comp within-valid? :from-within))
-                (some-fn #(not (contains? % :to-within))
-                         (comp within-valid? :to-within))
-                (some-fn #(not (contains? % :by-within))
-                         (comp within-valid? :by-within)))))
+  (every-pred map?
+              single-observable?
+              (some-fn (missing? :to-conjoin)
+                       to-conjoin-valid?)
+              (some-fn (missing? :from-within)
+                       (comp within-valid? :from-within))
+              (some-fn (missing? :to-within)
+                       (comp within-valid? :to-within))
+              (some-fn (missing? :by-within)
+                       (comp within-valid? :by-within))))
 
 (def config-valid?
   (every-pred coll?

@@ -1,6 +1,7 @@
 (ns effective.assertion
   "Generates data representations of assertions."
   (:require [clojure.set :as cljset]
+            [effective.config :as config]
             [effective.predicate :as predicate]))
 
 (defn- message
@@ -42,7 +43,7 @@
    :by :by-lt :by-lte :by-gt :by-gte :by-not :by-within
    :by-less-than :by-less-than-or-equal
    :by-greater-than :by-greater-than-or-equal
-   :to-not-change])
+   :to-not-change :with :to-pop :times])
 
 (defn- normalize
   "Transforms user input to a consistent, unambiguous format."
@@ -55,14 +56,24 @@
   [config]
   (select-keys config CONFIG_KEYS))
 
+(defn- initialize
+  "Applies default values, where necessary."
+  [config]
+  (cond->> config
+    (:to-pop config) (merge {:times 1})))
+
 (defn- inflate
-  "Builds a function which turns a flag-value pair into a data structure."
-  [index]
+  "Builds a function which turns a flag-value pair into a collection
+   of data structures."
+  [index operation]
   (fn [[k v]]
-    {:flag k
-     :value v
-     :predicate (predicate/make k v index)
-     :message (message k)}))
+    (map (fn [x]
+           {:flag k
+            :value v
+            :operation operation
+            :predicate x
+            :message (message k)})
+         (predicate/make operation k v index))))
 
 (defn make
   "Vector of the assertions which correspond to `config`.
@@ -71,4 +82,5 @@
   (->> config
        (normalize)
        (sanitize)
-       (map (inflate index))))
+       (initialize)
+       (mapcat (inflate index (config/operation config)))))
