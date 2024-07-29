@@ -3,6 +3,23 @@ All notable changes to this project will be documented in this file. This change
 
 ## [Unreleased]
 
+## [0.6.0] - 2024-07-29
+### Added
+- operations:
+  - `:to-conjoin`
+  - `:to-pop`
+- flags:
+  - `:with` for asserting on conjoined values
+  - `:times` for asserting on number of `pop`s
+- discounted conformance of input to an implicit schema
+
+### Fixed
+- treats symbol-headed lists as functions (#5)
+
+### Changed
+- flags may be shared across operations
+- improves validation of input
+
 ## [0.5.0] - 2024-01-24
 ### Added
 - Support for disjunction of generated assertions
@@ -75,7 +92,8 @@ Renamed:
 - Initial commit.
 - asserts only, i.e. runs effect and monitors in a function.
 
-[Unreleased]: https://github.com/eureton/effective/compare/0.5.0...HEAD
+[Unreleased]: https://github.com/eureton/effective/compare/0.6.0...HEAD
+[0.6.0]: https://github.com/eureton/effective/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/eureton/effective/compare/0.4.0...0.5.0
 [0.4.0]: https://github.com/eureton/effective/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/eureton/effective/compare/0.2.0...0.3.0
