@@ -29,7 +29,7 @@
   "Valid if input represents a `:to-change` operation on an observable."
   [:and
    [:map
-    [:to-change [:or symbol? list?]]
+    [:to-change observable]
     [:from OPT :any]
     [:from-lt OPT number?]
     [:from-lte OPT number?]
