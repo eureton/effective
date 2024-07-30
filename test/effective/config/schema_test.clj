@@ -123,3 +123,9 @@
 
 (deftest to-change-from-invalid-range
   (is (not (m/validate schema/to-change {:to-change 'x :from-within 42}))))
+
+(deftest to-conjoin-non-empty-vector
+  (is (m/validate schema/to-conjoin {:to-conjoin 'x :with [42]})))
+
+(deftest to-conjoin-empty-vector
+  (is (not (m/validate schema/to-conjoin {:to-conjoin 'x :with []}))))
