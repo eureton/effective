@@ -1,4 +1,5 @@
-(ns effective.config.schema)
+(ns effective.config.schema
+  (:require [clojure.string :as string]))
 
 (def ^:private ^:const OPT {:optional true})
 
@@ -7,3 +8,7 @@
   [:or
    [:and symbol? [:fn (comp fn? var-get resolve)]]
    [:and list? [:fn (comp symbol? first)]]])
+
+(def observable
+  "Valid if input represents an expression."
+  [:or symbol? list?])
