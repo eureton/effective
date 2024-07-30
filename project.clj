@@ -3,5 +3,6 @@
   :url "https://github.com/eureton/effective"
   :license {:name "MIT"
             :url "https://github.com/eureton/effective/blob/master/LICENSE"}
-  :dependencies [[org.clojure/clojure "1.11.1"]]
+  :dependencies [[org.clojure/clojure "1.11.1"]
+                 [metosin/malli "0.16.2"]]
   :repl-options {:init-ns effective.core})
