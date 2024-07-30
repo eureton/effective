@@ -9,14 +9,17 @@
 (deftest hook-symbol-headed-list
   (is (m/validate schema/hook '(constantly true))))
 
-(deftest hook-function
-  (is (not (m/validate schema/hook odd?))))
-
-(deftest hook-number
-  (is (not (m/validate schema/hook 42))))
-
-(deftest hook-string
-  (is (not (m/validate schema/hook "abc"))))
+(deftest hook-invalid
+  (are [v] (not (m/validate schema/hook v))
+       nil
+       :x
+       "abc"
+       odd?
+       42
+       false
+       {:x 42}
+       [:x :y]
+       #{:x :y}))
 
 (deftest observable-deref
   (is (m/validate schema/observable '@x)))
