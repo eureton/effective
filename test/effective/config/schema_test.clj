@@ -32,6 +32,7 @@
        nil
        :x
        "abc"
+       odd?
        42
        false
        {:x 42}
