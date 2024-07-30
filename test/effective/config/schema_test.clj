@@ -72,3 +72,54 @@
        [1 :of #{2}]
        [:of 2]
        [1 :of]))
+
+(deftest to-change-without-flags
+  (is (not (m/validate schema/to-change {:to-change 'x}))))
+
+(deftest to-change-with-multiple-flags
+  (is (m/validate schema/to-change {:to-change 'x
+                                    :from 42
+                                    :to 142
+                                    :by 'even?})))
+
+(deftest to-change-number
+  (are [flag] (m/validate schema/to-change {:to-change 'x flag 42})
+       :from
+       :to
+       :by
+       :from-lt
+       :to-lt
+       :by-lt
+       :from-lte
+       :to-lte
+       :by-lte
+       :from-gt
+       :to-gt
+       :by-gt
+       :from-gte
+       :to-gte
+       :by-gte
+       :from-not
+       :to-not
+       :by-not))
+
+(deftest to-change-invalid-numeric-assertions
+  (are [flag] (not (m/validate schema/to-change {:to-change 'x flag "abc"}))
+       :from-lt
+       :to-lt
+       :by-lt
+       :from-lte
+       :to-lte
+       :by-lte
+       :from-gt
+       :to-gt
+       :by-gt
+       :from-gte
+       :to-gte
+       :by-gte))
+
+(deftest to-change-from-valid-range
+  (is (m/validate schema/to-change {:to-change 'x :from-within [1 :of 2]})))
+
+(deftest to-change-from-invalid-range
+  (is (not (m/validate schema/to-change {:to-change 'x :from-within 42}))))
