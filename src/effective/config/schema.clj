@@ -58,3 +58,7 @@
      :error/path [:to-change]}
     (fn [m]
       ((apply some-fn TO_CHANGE_FLAGS) m))]])
+
+(def to-not-change
+  "Valid if input represents a `:to-not-change` operation on an observable."
+  [:map [:to-not-change observable]])
