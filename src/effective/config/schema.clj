@@ -12,3 +12,6 @@
 (def observable
   "Valid if input represents an expression."
   [:or symbol? list?])
+
+(def value-range
+  [:tuple number? [:= :of] number?])
