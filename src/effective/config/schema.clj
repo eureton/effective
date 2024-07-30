@@ -63,7 +63,6 @@
   "Valid if input represents a `:to-not-change` operation on an observable."
   [:map [:to-not-change observable]])
 
-
 (def to-conjoin
   "Valid if input represents a `:to-conjoin` operation on an observable."
   [:map
