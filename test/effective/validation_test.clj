@@ -14,13 +14,32 @@
   (let [x (atom 0)]
     (is-invalid? (expect (swap! x inc) [{:to-change @x
                                          :to-not-change @x
+                                         :to-conjoin @x
+                                         :to-pop @x}]))
+    (is-invalid? (expect (swap! x inc) [{:to-change @x
+                                         :to-not-change @x
                                          :to-conjoin @x}]))
+    (is-invalid? (expect (swap! x inc) [{:to-change @x
+                                         :to-not-change @x
+                                         :to-pop @x}]))
+    (is-invalid? (expect (swap! x inc) [{:to-change @x
+                                         :to-conjoin @x
+                                         :to-pop @x}]))
+    (is-invalid? (expect (swap! x inc) [{:to-not-change @x
+                                         :to-conjoin @x
+                                         :to-pop @x}]))
     (is-invalid? (expect (swap! x inc) [{:to-change @x
                                          :to-not-change @x}]))
     (is-invalid? (expect (swap! x inc) [{:to-change @x
                                          :to-conjoin @x}]))
+    (is-invalid? (expect (swap! x inc) [{:to-change @x
+                                         :to-pop @x}]))
     (is-invalid? (expect (swap! x inc) [{:to-not-change @x
-                                         :to-conjoin @x}]))))
+                                         :to-conjoin @x}]))
+    (is-invalid? (expect (swap! x inc) [{:to-not-change @x
+                                         :to-pop @x}]))
+    (is-invalid? (expect (swap! x inc) [{:to-conjoin @x
+                                         :to-pop @x}]))))
 
 (deftest to-conjoin-with-scalar-value
   (is (not (valid? [{:to-conjoin 'x :with 123}]))))
