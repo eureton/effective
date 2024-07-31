@@ -70,3 +70,9 @@
    [:with [:and
            vector?
            [:fn seq]]]])
+
+(def to-pop
+  "Valid if input represents a `:to-conjoin` operation on an observable."
+  [:map
+   [:to-pop observable]
+   [:times [integer? {:default 1}]]])

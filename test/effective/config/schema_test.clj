@@ -1,6 +1,7 @@
 (ns effective.config.schema-test
   (:require [clojure.test :refer [deftest is are]]
             [malli.core :as m]
+            [malli.transform :as mt]
             [effective.config.schema :as schema]))
 
 (deftest hook-quoted-function
@@ -129,3 +130,13 @@
 
 (deftest to-conjoin-empty-vector
   (is (not (m/validate schema/to-conjoin {:to-conjoin 'x :with []}))))
+
+(deftest to-pop-without-times
+  (is (= 1 (-> schema/to-pop
+               (m/decode {:to-pop 'x} mt/default-value-transformer)
+               (:times)))))
+
+(deftest to-pop-with-times
+  (is (= 42 (-> schema/to-pop
+                (m/decode {:to-pop 'x :times 42} mt/default-value-transformer)
+                (:times)))))
