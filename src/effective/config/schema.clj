@@ -27,7 +27,9 @@
        (= 1)))
 
 (def assertion
-  [:fn single-observable?])
+  [:fn
+   {:error/message "must have exactly one observable"}
+   single-observable?])
 
 (def ^:private ^:const TO_CHANGE_FLAGS
   [:from        :to        :by
