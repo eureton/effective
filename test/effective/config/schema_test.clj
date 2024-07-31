@@ -74,6 +74,20 @@
        [:of 2]
        [1 :of]))
 
+(deftest assertion-with-multiple-observables
+  (is (not (m/validate schema/assertion {:to-change 'x
+                                         :to-not-change 'x}))))
+
+(deftest assertion-with-no-observables
+  (is (not (m/validate schema/assertion {:y 'x}))))
+
+(deftest assertion-with-one-observable
+  (are [operation] (m/validate schema/assertion {operation 'x})
+       :to-change
+       :to-not-change
+       :to-conjoin
+       :to-pop))
+
 (deftest to-change-without-flags
   (is (not (m/validate schema/to-change {:to-change 'x}))))
 

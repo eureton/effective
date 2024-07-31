@@ -1,5 +1,7 @@
 (ns effective.config.schema
-  (:require [clojure.string :as string]))
+  (:require [clojure.set :as cljset]
+            [clojure.string :as string]
+            [effective.config.constants :as const]))
 
 (def ^:private ^:const OPT {:optional true})
 
@@ -15,6 +17,17 @@
 
 (def value-range
   [:tuple number? [:= :of] number?])
+
+(defn- single-observable? [assertion]
+  (->> assertion
+       (keys)
+       (set)
+       (cljset/intersection const/OPERATIONS)
+       (count)
+       (= 1)))
+
+(def assertion
+  [:fn single-observable?])
 
 (def ^:private ^:const TO_CHANGE_FLAGS
   [:from        :to        :by
