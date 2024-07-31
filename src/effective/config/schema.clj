@@ -70,22 +70,29 @@
                          (str "one of the following must be present: "))
      :error/path [:to-change]}
     (fn [m]
-      ((apply some-fn TO_CHANGE_FLAGS) m))]])
+      ((apply some-fn TO_CHANGE_FLAGS) m))]
+   assertion])
 
 (def to-not-change
   "Valid if input represents a `:to-not-change` operation on an observable."
-  [:map [:to-not-change observable]])
+  [:and
+   [:map [:to-not-change observable]]
+   assertion])
 
 (def to-conjoin
   "Valid if input represents a `:to-conjoin` operation on an observable."
-  [:map
-   [:to-conjoin observable]
-   [:with [:and
-           vector?
-           [:fn seq]]]])
+  [:and
+   [:map
+    [:to-conjoin observable]
+    [:with [:and
+            vector?
+            [:fn seq]]]]
+   assertion])
 
 (def to-pop
   "Valid if input represents a `:to-conjoin` operation on an observable."
-  [:map
-   [:to-pop observable]
-   [:times [integer? {:default 1}]]])
+  [:and
+   [:map
+    [:to-pop observable]
+    [:times [integer? {:default 1}]]]
+   assertion])
