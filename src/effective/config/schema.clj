@@ -96,3 +96,6 @@
     [:to-pop observable]
     [:times [integer? {:default 1}]]]
    assertion])
+
+(def root
+  [:+ [:cat [:alt to-change to-not-change to-conjoin to-pop]]])
