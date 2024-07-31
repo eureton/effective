@@ -2,8 +2,7 @@
   (:require [effective.assertion :as assertion]
             [effective.assertion.composer :as composer]
             [effective.checkpoint :as checkpoint]
-            [effective.config :as config]
-            [effective.validation :as validation]))
+            [effective.config :as config]))
 
 (defmacro expect
   "Asserts modifications specified by `config` using the `clojure.test` API.
@@ -153,7 +152,7 @@
   ([effect config]
    `(expect ~effect :all ~config))
   ([effect composition config]
-   (if (validation/config-valid? config)
+   (if (config/valid? config)
      (let [observables-seq (config/observables config)
            before (interleave (map checkpoint/before (range)) observables-seq)
            after (interleave (map checkpoint/after (range)) observables-seq)
@@ -167,4 +166,4 @@
               _# ~effect
               ~@after]
           ~@assertions))
-     `(throw (IllegalArgumentException. "Invalid configuration")))))
+     `(throw (IllegalArgumentException. ~(str (config/errors config)))))))
