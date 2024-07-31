@@ -18,18 +18,16 @@
 (def value-range
   [:tuple number? [:= :of] number?])
 
-(defn- single-observable? [assertion]
-  (->> assertion
-       (keys)
-       (set)
-       (cljset/intersection const/OPERATIONS)
-       (count)
-       (= 1)))
-
 (def assertion
   [:fn
    {:error/message "must have exactly one observable"}
-   single-observable?])
+   (fn [m]
+     (->> m
+          (keys)
+          (set)
+          (cljset/intersection const/OPERATIONS)
+          (count)
+          (= 1)))])
 
 (def ^:private ^:const TO_CHANGE_FLAGS
   [:from        :to        :by
