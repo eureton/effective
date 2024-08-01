@@ -15,7 +15,11 @@
   (map (apply some-fn const/OPERATIONS) config))
 
 (def decode
-  (m/decoder schema/root mt/default-value-transformer))
+  (m/decoder
+    schema/root
+    (mt/transformer
+      mt/strip-extra-keys-transformer
+      mt/default-value-transformer)))
 
 (def valid?
   (comp (m/validator schema/root) decode))
