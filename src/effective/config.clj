@@ -21,8 +21,11 @@
       mt/strip-extra-keys-transformer
       mt/default-value-transformer)))
 
+(def validate
+  (m/validator schema/root))
+
 (def valid?
-  (comp (m/validator schema/root) groom))
+  (comp validate groom))
 
 (def errors
   (comp me/humanize
