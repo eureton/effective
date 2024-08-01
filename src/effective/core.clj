@@ -162,10 +162,10 @@
            join-inter (composer/inter composer)
            assertions (->> config
                            (config/groom)
-                           (map-indexed vector)
-                           (map reverse)
-                           (map (ufn/ap assertion/make))
-                           (map join-intra)
+                           (map-indexed (comp join-intra
+                                              (ufn/ap assertion/make)
+                                              reverse
+                                              vector))
                            (join-inter))]
        `(let [~@before
               _# ~effect
