@@ -145,6 +145,12 @@
 (deftest to-conjoin-empty-vector
   (is (not (m/validate schema/to-conjoin {:to-conjoin 'x :with []}))))
 
+(deftest to-conjoin-no-flags
+  (is (not (m/validate schema/to-conjoin {:to-conjoin 'x}))))
+
+(deftest to-conjoin-scalar
+  (is (not (m/validate schema/to-conjoin {:to-conjoin 'x :with 42}))))
+
 (deftest to-pop-without-times
   (is (= 1 (-> schema/to-pop
                (m/decode {:to-pop 'x} mt/default-value-transformer)
