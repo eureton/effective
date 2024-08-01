@@ -22,9 +22,9 @@
          (predicate/make operation k v index))))
 
 (defn make
-  "Vector of the assertions which correspond to `config`.
+  "Vector of the assertions which correspond to `entry`.
    Generates checkpoint references for position `index`."
-  [config index]
+  [entry index]
   (mapcat
-    (inflate index (config/operation config))
-    config))
+    (inflate index (config/operation entry))
+    entry))
