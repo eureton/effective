@@ -13,13 +13,14 @@
    of data structures."
   [index operation]
   (fn [[k v]]
-    (map (fn [x]
-           {:flag k
-            :value v
-            :operation operation
-            :predicate x
-            :message (message k)})
-         (predicate/make operation k v index))))
+    (map
+      (fn [x]
+        {:flag k
+         :value v
+         :operation operation
+         :predicate x
+         :message (message k)})
+      (predicate/make operation k v index))))
 
 (defn make
   "Sequence of assertions which correspond to `entry`.
