@@ -3,6 +3,17 @@ All notable changes to this project will be documented in this file. This change
 
 ## [Unreleased]
 
+## [0.7.0] - 2024-08-01
+### Fixed
+- complicated, manual input validation (#7)
+
+### Added
+- [`malli`](https://github.com/metosin/malli) schemas to replace manual:
+  - normalization
+  - sanitization
+  - initialization
+  - validation
+
 ## [0.6.0] - 2024-07-29
 ### Added
 - operations:
@@ -92,7 +103,8 @@ Renamed:
 - Initial commit.
 - asserts only, i.e. runs effect and monitors in a function.
 
-[Unreleased]: https://github.com/eureton/effective/compare/0.6.0...HEAD
+[Unreleased]: https://github.com/eureton/effective/compare/0.7.0...HEAD
+[0.7.0]: https://github.com/eureton/effective/compare/0.6.0...0.7.0
 [0.6.0]: https://github.com/eureton/effective/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/eureton/effective/compare/0.4.0...0.5.0
 [0.4.0]: https://github.com/eureton/effective/compare/0.3.0...0.4.0
