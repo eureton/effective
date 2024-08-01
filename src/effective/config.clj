@@ -14,7 +14,7 @@
   [config]
   (map (apply some-fn const/OPERATIONS) config))
 
-(def decode
+(def groom
   (m/decoder
     schema/root
     (mt/transformer
@@ -22,9 +22,9 @@
       mt/default-value-transformer)))
 
 (def valid?
-  (comp (m/validator schema/root) decode))
+  (comp (m/validator schema/root) groom))
 
 (def errors
   (comp me/humanize
         (m/explainer schema/root)
-        decode))
+        groom))
