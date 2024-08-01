@@ -32,15 +32,6 @@
           (count)
           (= 1)))])
 
-(def ^:private ^:const TO_CHANGE_FLAGS
-  [:from        :to        :by
-   :from-lt     :to-lt     :by-lt
-   :from-lte    :to-lte    :by-lte
-   :from-gt     :to-gt     :by-gt
-   :from-gte    :to-gte    :by-gte
-   :from-within :to-within :by-within
-   :from-not    :to-not    :by-not])
-
 (def to-change
   "Describes `:to-change` entries."
   [:and
@@ -68,12 +59,12 @@
     [:by-within OPT value-range]
     [:by-not OPT :any]]
    [:fn
-    {:error/message (->> TO_CHANGE_FLAGS
+    {:error/message (->> const/TO_CHANGE_FLAGS
                          (string/join ", ")
                          (str "one of the following must be present: "))
      :error/path [:to-change]}
     (fn [m]
-      ((apply some-fn TO_CHANGE_FLAGS) m))]
+      ((apply some-fn const/TO_CHANGE_FLAGS) m))]
    assertion])
 
 (def to-not-change

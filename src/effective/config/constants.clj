@@ -25,3 +25,13 @@
    :by-less-than-or-equal      :by-lte
    :by-greater-than            :by-gt
    :by-greater-than-or-equal   :by-gte})
+
+(def ^:const TO_CHANGE_FLAGS
+  "Vector of all flags supported by the `:to-change` operation."
+  [:from        :to        :by
+   :from-lt     :to-lt     :by-lt
+   :from-lte    :to-lte    :by-lte
+   :from-gt     :to-gt     :by-gt
+   :from-gte    :to-gte    :by-gte
+   :from-within :to-within :by-within
+   :from-not    :to-not    :by-not])
