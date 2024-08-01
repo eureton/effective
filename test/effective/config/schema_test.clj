@@ -75,8 +75,35 @@
        [1 :of]))
 
 (deftest assertion-with-multiple-observables
-  (is (not (m/validate schema/assertion {:to-change 'x
-                                         :to-not-change 'x}))))
+  (are [assertion] (not (m/validate schema/assertion assertion))
+    {:to-change 'x
+     :to-not-change 'x
+     :to-conjoin 'x
+     :to-pop 'x}
+    {:to-change 'x
+     :to-not-change 'x
+     :to-conjoin 'x}
+    {:to-change 'x
+     :to-not-change 'x
+     :to-pop 'x}
+    {:to-change 'x
+     :to-conjoin 'x
+     :to-pop 'x}
+    {:to-not-change 'x
+     :to-conjoin 'x
+     :to-pop 'x}
+    {:to-change 'x
+     :to-not-change 'x}
+    {:to-change 'x
+     :to-conjoin 'x}
+    {:to-change 'x
+     :to-pop 'x}
+    {:to-not-change 'x
+     :to-conjoin 'x}
+    {:to-not-change 'x
+     :to-pop 'x}
+    {:to-conjoin 'x
+     :to-pop 'x}))
 
 (deftest assertion-with-no-observables
   (is (not (m/validate schema/assertion {:y 'x}))))
