@@ -1,5 +1,5 @@
 (ns effective.assertion
-  "Generates data representations of assertions."
+  "Data representations of assertions."
   (:require [effective.config :as config]
             [effective.predicate :as predicate]))
 
@@ -22,7 +22,7 @@
          (predicate/make operation k v index))))
 
 (defn make
-  "Vector of the assertions which correspond to `entry`.
+  "Sequence of assertions which correspond to `entry`.
    Generates checkpoint references for position `index`."
   [entry index]
   (mapcat

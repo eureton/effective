@@ -1,6 +1,8 @@
 (ns effective.config.constants)
 
-(def ^:const OPERATIONS #{:to-change :to-not-change :to-conjoin :to-pop})
+(def ^:const OPERATIONS
+  "Comprehensive set of all operations supported on the observables."
+  #{:to-change :to-not-change :to-conjoin :to-pop})
 
 (def ^:const ABBREVIATION_MAP
   "Associates config keys which resolve to the same predicate.

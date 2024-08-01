@@ -1,4 +1,5 @@
 (ns effective.config.schema
+  "Malli schemas."
   (:require [clojure.set :as cljset]
             [clojure.string :as string]
             [effective.config.constants :as const]))
@@ -16,9 +17,11 @@
   [:or symbol? list? seq?])
 
 (def value-range
+  "Describes ranges used for e.g. `:from-within`."
   [:tuple number? [:= :of] number?])
 
 (def assertion
+  "Describes parts common to all entries."
   [:fn
    {:error/message "must have exactly one observable"}
    (fn [m]
@@ -39,7 +42,7 @@
    :from-not    :to-not    :by-not])
 
 (def to-change
-  "Valid if input represents a `:to-change` operation on an observable."
+  "Describes `:to-change` entries."
   [:and
    [:map
     [:to-change observable]
@@ -74,13 +77,13 @@
    assertion])
 
 (def to-not-change
-  "Valid if input represents a `:to-not-change` operation on an observable."
+  "Describes `:to-not-change` entries."
   [:and
    [:map [:to-not-change observable]]
    assertion])
 
 (def to-conjoin
-  "Valid if input represents a `:to-conjoin` operation on an observable."
+  "Describes `:to-conjoin` entries."
   [:and
    [:map
     [:to-conjoin observable]
@@ -90,7 +93,7 @@
    assertion])
 
 (def to-pop
-  "Valid if input represents a `:to-conjoin` operation on an observable."
+  "Describes `:to-pop` entries."
   [:and
    [:map
     [:to-pop observable]
@@ -98,4 +101,5 @@
    assertion])
 
 (def root
+  "Top-level schema intended for use against the config passed to `expect`."
   [:+ [:cat [:alt to-change to-not-change to-conjoin to-pop]]])

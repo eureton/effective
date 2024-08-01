@@ -6,7 +6,9 @@
             [effective.config.constants :as const]
             [effective.config.schema :as schema]))
 
-(defn operation [entry]
+(defn operation
+  "Operation declared on `entry`."
+  [entry]
   (->> entry (keys) (set) (cljset/intersection const/OPERATIONS) (first)))
 
 (defn observables
@@ -15,6 +17,7 @@
   (map (apply some-fn const/OPERATIONS) config))
 
 (def groom
+  "Normalizes, initializes and sanitizes."
   (m/decoder
     schema/root
     (mt/transformer
