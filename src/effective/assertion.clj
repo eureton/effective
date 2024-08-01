@@ -56,12 +56,6 @@
   [config]
   (select-keys config CONFIG_KEYS))
 
-(defn- initialize
-  "Applies default values, where necessary."
-  [config]
-  (cond->> config
-    (:to-pop config) (merge {:times 1})))
-
 (defn- inflate
   "Builds a function which turns a flag-value pair into a collection
    of data structures."
@@ -82,5 +76,4 @@
   (->> config
        (normalize)
        (sanitize)
-       (initialize)
        (mapcat (inflate index (config/operation config)))))
