@@ -1,7 +1,7 @@
 (ns effective.config.constants)
 
 (def ^:const OPERATIONS
-  "Comprehensive set of all operations supported on the observables."
+  "Set of all operations supported on the observables."
   #{:to-change :to-not-change :to-conjoin :to-pop})
 
 (def ^:const ABBREVIATION_MAP
