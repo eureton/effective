@@ -18,8 +18,9 @@
   (m/decoder
     schema/root
     (mt/transformer
-      mt/strip-extra-keys-transformer
-      mt/default-value-transformer)))
+      (mt/key-transformer {:decode #(get const/ABBREVIATION_MAP % %)})
+      mt/default-value-transformer
+      mt/strip-extra-keys-transformer)))
 
 (def validate
   (m/validator schema/root))

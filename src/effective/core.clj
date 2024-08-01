@@ -1,5 +1,6 @@
 (ns effective.core
-  (:require [effective.assertion :as assertion]
+  (:require [flatland.useful.fn :as ufn]
+            [effective.assertion :as assertion]
             [effective.assertion.composer :as composer]
             [effective.checkpoint :as checkpoint]
             [effective.config :as config]))
@@ -159,7 +160,11 @@
            composer (composer/make composition)
            join-intra (composer/intra composer)
            join-inter (composer/inter composer)
-           assertions (->> (map assertion/make config (range))
+           assertions (->> config
+                           (config/groom)
+                           (map-indexed vector)
+                           (map reverse)
+                           (map (ufn/ap assertion/make))
                            (map join-intra)
                            (join-inter))]
        `(let [~@before

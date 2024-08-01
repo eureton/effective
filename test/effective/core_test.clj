@@ -18,30 +18,60 @@
     (expect (swap! x inc)
             [{:to-change @x :from-lt 0}])))
 
+(deftest from-less-than
+  (let [x (atom -1)]
+    (expect (swap! x inc)
+            [{:to-change @x :from-less-than 0}])))
+
 (deftest from-lte-equality
   (let [x (atom -1)]
     (expect (swap! x dec)
             [{:to-change @x :from-lte -1}])))
+
+(deftest from-less-than-or-equal-equality
+  (let [x (atom -1)]
+    (expect (swap! x dec)
+            [{:to-change @x :from-less-than-or-equal -1}])))
 
 (deftest from-lte-inequality
   (let [x (atom -1)]
     (expect (swap! x dec)
             [{:to-change @x :from-lte 2}])))
 
+(deftest from-less-than-or-equal-inequality
+  (let [x (atom -1)]
+    (expect (swap! x dec)
+            [{:to-change @x :from-less-than-or-equal 2}])))
+
 (deftest from-gt
   (let [x (atom -1)]
     (expect (swap! x dec)
             [{:to-change @x :from-gt -2}])))
+
+(deftest from-greater-than
+  (let [x (atom -1)]
+    (expect (swap! x dec)
+            [{:to-change @x :from-greater-than -2}])))
 
 (deftest from-gte-equality
   (let [x (atom -1)]
     (expect (swap! x dec)
             [{:to-change @x :from-gte -1}])))
 
+(deftest from-greater-than-or-equal-equality
+  (let [x (atom -1)]
+    (expect (swap! x dec)
+            [{:to-change @x :from-greater-than-or-equal -1}])))
+
 (deftest from-gte-inequality
   (let [x (atom -1)]
     (expect (swap! x dec)
             [{:to-change @x :from-gte -2}])))
+
+(deftest from-greater-than-or-equal-inequality
+  (let [x (atom -1)]
+    (expect (swap! x dec)
+            [{:to-change @x :from-greater-than-or-equal -2}])))
 
 (deftest from-not
   (let [x (atom (rand-int 4))]
@@ -73,30 +103,60 @@
     (expect (swap! x inc)
             [{:to-change @x :to-lt 1}])))
 
+(deftest to-less-than
+  (let [x (atom -1)]
+    (expect (swap! x inc)
+            [{:to-change @x :to-less-than 1}])))
+
 (deftest to-lte-equality
   (let [x (atom -1)]
     (expect (swap! x dec)
             [{:to-change @x :to-lte -2}])))
+
+(deftest to-less-than-or-equal-equality
+  (let [x (atom -1)]
+    (expect (swap! x dec)
+            [{:to-change @x :to-less-than-or-equal -2}])))
 
 (deftest to-lte-inequality
   (let [x (atom -1)]
     (expect (swap! x dec)
             [{:to-change @x :to-lte 0}])))
 
+(deftest to-less-than-or-equal-inequality
+  (let [x (atom -1)]
+    (expect (swap! x dec)
+            [{:to-change @x :to-less-than-or-equal 0}])))
+
 (deftest to-gt
   (let [x (atom -1)]
     (expect (swap! x inc)
             [{:to-change @x :to-gt -1}])))
+
+(deftest to-greater-than
+  (let [x (atom -1)]
+    (expect (swap! x inc)
+            [{:to-change @x :to-greater-than -1}])))
 
 (deftest to-gte-equality
   (let [x (atom -1)]
     (expect (swap! x inc)
             [{:to-change @x :to-gte 0}])))
 
+(deftest to-greater-than-or-equal-equality
+  (let [x (atom -1)]
+    (expect (swap! x inc)
+            [{:to-change @x :to-greater-than-or-equal 0}])))
+
 (deftest to-gte-inequality
   (let [x (atom -1)]
     (expect (swap! x inc)
             [{:to-change @x :to-gte -1}])))
+
+(deftest to-greater-than-or-equal-inequality
+  (let [x (atom -1)]
+    (expect (swap! x inc)
+            [{:to-change @x :to-greater-than-or-equal -1}])))
 
 (deftest to-not
   (let [x (atom 4)]
@@ -128,30 +188,60 @@
     (expect (swap! x #(* % %))
             [{:to-change @x :by-lt 20}])))
 
+(deftest by-less-than
+  (let [x (atom 4)]
+    (expect (swap! x #(* % %))
+            [{:to-change @x :by-less-than 20}])))
+
 (deftest by-lte-equality
   (let [x (atom 4)]
     (expect (swap! x #(* % %))
             [{:to-change @x :by-lte 12}])))
+
+(deftest by-less-than-or-equal-equality
+  (let [x (atom 4)]
+    (expect (swap! x #(* % %))
+            [{:to-change @x :by-less-than-or-equal 12}])))
 
 (deftest by-lte-inequality
   (let [x (atom 4)]
     (expect (swap! x #(* % %))
             [{:to-change @x :by-lte 13}])))
 
+(deftest by-less-than-or-equal-inequality
+  (let [x (atom 4)]
+    (expect (swap! x #(* % %))
+            [{:to-change @x :by-less-than-or-equal 13}])))
+
 (deftest by-gt
   (let [x (atom 4)]
     (expect (swap! x #(* % %))
             [{:to-change @x :by-gt 11}])))
+
+(deftest by-greater-than
+  (let [x (atom 4)]
+    (expect (swap! x #(* % %))
+            [{:to-change @x :by-greater-than 11}])))
 
 (deftest by-gte-equality
   (let [x (atom 4)]
     (expect (swap! x #(* % %))
             [{:to-change @x :by-gte 12}])))
 
+(deftest by-greater-than-or-equal-equality
+  (let [x (atom 4)]
+    (expect (swap! x #(* % %))
+            [{:to-change @x :by-greater-than-or-equal 12}])))
+
 (deftest by-gte-inequality
   (let [x (atom 4)]
     (expect (swap! x #(* % %))
             [{:to-change @x :by-gte 11}])))
+
+(deftest by-greater-than-or-equal-inequality
+  (let [x (atom 4)]
+    (expect (swap! x #(* % %))
+            [{:to-change @x :by-greater-than-or-equal 11}])))
 
 (deftest by-not
   (let [x (atom 4)]
