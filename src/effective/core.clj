@@ -172,3 +172,8 @@
               ~@after]
           ~@assertions))
      `(throw (IllegalArgumentException. ~(str (config/errors config)))))))
+
+(defmacro expect-test
+  "Shorthand for calling `expect` with a `:test` composition policy."
+  [effect config]
+  `(expect ~effect :test ~config))
