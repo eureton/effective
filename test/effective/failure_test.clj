@@ -58,3 +58,27 @@
 
 (deftest to-not
   (is (= 1 (failures :to-change :to-not 11))))
+
+(deftest by-value
+  (is (= 1 (failures :to-change :by -1))))
+
+(deftest by-function
+  (is (= 1 (failures :to-change :by zero?))))
+
+(deftest by-lt
+  (is (= 1 (failures :to-change :by-lt 1))))
+
+(deftest by-lte
+  (is (= 1 (failures :to-change :by-lte 0))))
+
+(deftest by-gt
+  (is (= 1 (failures :to-change :by-gt 1))))
+
+(deftest by-gte
+  (is (= 1 (failures :to-change :by-gte 2))))
+
+(deftest by-within
+  (is (= 1 (failures :to-change :by-within [1 :of 3]))))
+
+(deftest by-not
+  (is (= 1 (failures :to-change :by-not 1))))
