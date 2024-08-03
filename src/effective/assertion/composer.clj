@@ -28,9 +28,28 @@
   (inter [_]
     (fn [assertions] `[(is (or ~@assertions))])))
 
+(deftype Test []
+  Composer
+
+  (intra [_]
+    (fn [assertions]
+      (reduce (fn [acc x]
+                (let [{:keys [operation flag predicate]} x]
+                  (conj acc
+                        `(not ~predicate)
+                        `(update-in [~operation ~flag] (fnil inc 0)))))
+              []
+              assertions)))
+
+  (inter [_]
+    (fn [assertions]
+      [`(cond-> {}
+          ~@(reduce concat assertions))])))
+
 (defn make
   "Creates instance of `Composer` which matches the input `policy`."
   [policy]
   (case (keyword policy)
     :all (->All)
-    :any (->Any)))
+    :any (->Any)
+    :test (->Test)))
