@@ -3,6 +3,16 @@ All notable changes to this project will be documented in this file. This change
 
 ## [Unreleased]
 
+## [0.8.0] - 2024-08-04
+### Added
+- implementation of `Composer` which:
+  - tallies number of failures
+  - groups them by operation / flag
+- exposes new composer via the `:test` composition policy
+- suite of tests (fixes [#9](https://github.com/eureton/effective/issues/9)) which:
+  - provoke failure of generated assertions
+  - assert the number of failures
+
 ## [0.7.0] - 2024-08-01
 ### Fixed
 - complicated, manual input validation (#7)
@@ -103,7 +113,8 @@ Renamed:
 - Initial commit.
 - asserts only, i.e. runs effect and monitors in a function.
 
-[Unreleased]: https://github.com/eureton/effective/compare/0.7.0...HEAD
+[Unreleased]: https://github.com/eureton/effective/compare/0.8.0...HEAD
+[0.8.0]: https://github.com/eureton/effective/compare/0.7.0...0.8.0
 [0.7.0]: https://github.com/eureton/effective/compare/0.6.0...0.7.0
 [0.6.0]: https://github.com/eureton/effective/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/eureton/effective/compare/0.4.0...0.5.0
