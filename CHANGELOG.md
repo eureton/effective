@@ -9,13 +9,13 @@ All notable changes to this project will be documented in this file. This change
   - tallies number of failures
   - groups them by operation / flag
 - exposes new composer via the `:test` composition policy
-- suite of tests (fixes [#9](https://github.com/eureton/effective/issues/9)) which:
+- suite of tests ([#9](https://github.com/eureton/effective/issues/9)) which:
   - provoke failure of generated assertions
   - assert the number of failures
 
 ## [0.7.0] - 2024-08-01
 ### Fixed
-- complicated, manual input validation (#7)
+- complicated, manual input validation ([#7](https://github.com/eureton/effective/issues/7))
 
 ### Added
 - [`malli`](https://github.com/metosin/malli) schemas to replace manual:
@@ -35,7 +35,7 @@ All notable changes to this project will be documented in this file. This change
 - discounted conformance of input to an implicit schema
 
 ### Fixed
-- treats symbol-headed lists as functions (#5)
+- treats symbol-headed lists as functions ([#5](https://github.com/eureton/effective/issues/5))
 
 ### Changed
 - flags may be shared across operations
