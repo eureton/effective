@@ -1,4 +1,4 @@
-(ns effective.failure-test
+(ns effective.failure.to-change-test
   (:require [clojure.test :refer [deftest is]]
             [effective.core :refer [expect]]))
 
