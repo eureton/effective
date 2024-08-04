@@ -1,10 +1,11 @@
 (ns effective.assertion.composer
-  "Composes data representations of assertions into `clojure.test` assertions."
+  "Converts abstract assertions into concrete ones."
   (:require [clojure.test :refer [is]]))
 
 (defprotocol Composer
-  (intra [this] "Builds a function to compose assertions within a single item.")
-  (inter [this] "Builds a function to compose assertions of all items."))
+  "Composes data representations of assertions into `clojure.test` assertions."
+  (intra [this] "Builds a function to compose assertions of a single entry.")
+  (inter [this] "Builds a function to compose the results of `intra`."))
 
 (deftype All []
   Composer
@@ -28,9 +29,28 @@
   (inter [_]
     (fn [assertions] `[(is (or ~@assertions))])))
 
+(deftype Test []
+  Composer
+
+  (intra [_]
+    (fn [assertions]
+      (reduce (fn [acc x]
+                (let [{:keys [operation flag predicate]} x]
+                  (conj acc
+                        `(not ~predicate)
+                        `(update-in [~operation ~flag] (fnil inc 0)))))
+              []
+              assertions)))
+
+  (inter [_]
+    (fn [assertions]
+      [`(cond-> {}
+          ~@(reduce concat assertions))])))
+
 (defn make
-  "Creates instance of `Composer` which matches the input `policy`."
+  "Creates instance of `Composer` which matches `policy`."
   [policy]
   (case (keyword policy)
     :all (->All)
-    :any (->Any)))
+    :any (->Any)
+    :test (->Test)))
