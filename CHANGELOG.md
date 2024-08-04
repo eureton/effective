@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file. This change
   - tallies number of failures
   - groups them by operation / flag
 - exposes new composer via the `:test` composition policy
-- suite of tests ([#9](https://github.com/eureton/effective/issues/9)) which:
+- suite of tests which:
   - provoke failure of generated assertions
   - assert the number of failures
 
