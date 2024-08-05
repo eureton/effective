@@ -28,7 +28,7 @@
 
 (defn- minimum-one-constraint
   "Asserts that the incoming value contains at least one of `options`.
-   Errors get reported under `error-path`."
+   Reports errors under `error-path`."
   [options error-path]
   [:fn
    {:error/message (->> options
