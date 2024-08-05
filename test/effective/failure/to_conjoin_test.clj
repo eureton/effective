@@ -19,7 +19,8 @@
 
 (deftest with-fn
   (are [with tally] (= tally (failures :with-fn with))
-    [even? odd?] 0
-    [even?]      2
-    [odd?]       1
-    [odd? even?] 2))
+    [even? odd?]       0
+    [even?]            2
+    [odd?]             1
+    [odd? even?]       2
+    [even? odd? even?] 4))
