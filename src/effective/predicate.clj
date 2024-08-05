@@ -5,13 +5,6 @@
   "Quoted expressions representing the check specified by `flag`."
   (fn [operation flag _ _] [operation flag]))
 
-(def ^:private function?
-  "True if input represents a function, false otherwise."
-  (some-fn (every-pred symbol?
-                       (comp fn? var-get resolve))
-           (every-pred list?
-                       (comp symbol? first))))
-
 (defmethod make :default
   [_ _ _ _]
   [])
