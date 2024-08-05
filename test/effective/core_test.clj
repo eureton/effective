@@ -1,7 +1,7 @@
 (ns effective.core-test
-  (:require [clojure.set :as cljset]
-            [clojure.test :refer [deftest]]
-            [effective.core :refer [expect]]))
+  (:require [clojure.test :refer [deftest]]
+            [effective.core :refer [expect]]
+            [effective.util :as util]))
 
 (deftest from
   (let [x (atom -1)]
@@ -296,17 +296,13 @@
     (expect (reset! x '(:a :b :c :d))
             [{:to-conjoin @x :with [:b :a]}])))
 
-(defn- contains-map? [h1]
-  (fn [h2]
-    (cljset/subset? (set h1) (set h2))))
-
 (deftest conjoin-vector-with-function
   (let [x (atom [{:a 1 :w 0 :z -9}
                  {:b 2 :w 0 :z -8}])]
     (expect (reset! x [{:a 1 :w 0 :z -9}
                        {:b 2 :w 0 :z -8}
                        {:c 3 :w 0 :z -7}])
-            [{:to-conjoin @x :with-fn [(contains-map? {:c 3 :z -7})]}])))
+            [{:to-conjoin @x :with-fn [(util/contains-map? {:c 3 :z -7})]}])))
 
 (deftest conjoin-list-with-function
   (let [x (atom '({:b 2 :w 0 :z -8}
@@ -314,7 +310,7 @@
     (expect (reset! x '({:a 1 :w 0 :z -9}
                         {:b 2 :w 0 :z -8}
                         {:c 3 :w 0 :z -7}))
-            [{:to-conjoin @x :with-fn [(contains-map? {:a 1 :z -9})]}])))
+            [{:to-conjoin @x :with-fn [(util/contains-map? {:a 1 :z -9})]}])))
 
 (deftest pop-vector-single
   (let [x (atom [:a :b :c])]
