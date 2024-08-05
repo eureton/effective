@@ -3,12 +3,12 @@
             [clojure.test :refer [deftest]]
             [effective.core :refer [expect]]))
 
-(deftest from-value
+(deftest from
   (let [x (atom -1)]
     (expect (swap! x inc)
             [{:to-change @x :from -1}])))
 
-(deftest from-predicate
+(deftest from-f
   (let [x (atom -1)]
     (expect (swap! x inc)
             [{:to-change @x :from-f neg?}])))
