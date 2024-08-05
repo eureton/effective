@@ -76,12 +76,12 @@ The above expands to the following:
 
 ---
 
-`:from`, `:to` and `:by` could also be assigned a function. In that case, we assert the result of applying the function to the corresponding checkpoint:
+`:from-fn`, `:to-fn` and `:by-fn` are to be assigned a function. In that case, we assert the result of applying the function to the corresponding checkpoint:
 
 ``` clojure
 (let [x (atom 1)]
   (expect (swap! x inc)
-          [{:to-change @x :from odd? :to even?}]))
+          [{:to-change @x :from-fn odd? :to-fn even?}]))
 ```
 
 The above expands to the following:
@@ -90,8 +90,8 @@ The above expands to the following:
 (let [before-0 @x
       _ (swap! x inc)
       after-0 @x]
-  (is (odd? before-0) ":from check failed")
-  (is (even? after-0) ":to check failed"))
+  (is (odd? before-0) ":from-fn check failed")
+  (is (even? after-0) ":to-fn check failed"))
 ```
 
 ---
@@ -117,12 +117,30 @@ The above expands to the following:
 
 ---
 
-Assert growth of sequential collections with `:to-conjoin`. It may be given either static values or predicates:
+Assert growth of sequential collections with `:to-conjoin`:
+
+``` clojure
+(let [x (atom [1 2])]
+  (expect (reset! x [1 2 3 4 5])
+          [{:to-conjoin @x :with [3 4 5]}]))
+```
+
+The above expands to the following:
+
+``` clojure
+(let [x (atom [1 2])]
+  (let [before-0 @x
+        _ (reset! x [1 2 3 4 5])
+        after-0 @x]
+    (is (= after-0 (conj before-0 3 4 5)) ":with check failed")))
+```
+
+Alternatively, provide `:with-fn` with predicates to apply:
 
 ``` clojure
 (let [x (atom [-2 -1])]
   (expect (reset! x [-2 -1 0 1 2])
-          [{:to-conjoin @x :with [zero? 1 even?]}]))
+          [{:to-conjoin @x :with-fn [zero? odd? even?]}]))
 ```
 
 The above expands to the following:
@@ -132,10 +150,10 @@ The above expands to the following:
   (let [before-0 @x
         _ (reset! x [-2 -1 0 1 2])
         after-0 @x]
-    (is (= before-0 (pop (pop (pop after-0)))) ":with check failed")
-    (is (zero? (peek (pop (pop after-0)))) ":with check failed")
-    (is (= 1 (peek (pop after-0))) ":with check failed")
-    (is (even? (peek after-0)) ":with check failed")))
+    (is (= before-0 (pop (pop (pop after-0)))) ":with-fn check failed")
+    (is (zero? (peek (pop (pop after-0)))) ":with-fn check failed")
+    (is (odd? (peek (pop after-0))) ":with-fn check failed")
+    (is (even? (peek after-0)) ":with-fn check failed")))
 ```
 
 ## Development

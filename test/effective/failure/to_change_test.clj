@@ -11,11 +11,11 @@
                          ~flag ~value}])
          (get-in [~operation ~flag] 0))))
 
-(deftest from-value
+(deftest from
   (is (= 1 (failures :to-change :from 9))))
 
-(deftest from-function
-  (is (= 1 (failures :to-change :from zero?))))
+(deftest from-fn
+  (is (= 1 (failures :to-change :from-fn zero?))))
 
 (deftest from-lt
   (is (= 1 (failures :to-change :from-lt 10))))
@@ -35,11 +35,11 @@
 (deftest from-not
   (is (= 1 (failures :to-change :from-not 10))))
 
-(deftest to-value
+(deftest to
   (is (= 1 (failures :to-change :to 10))))
 
-(deftest to-function
-  (is (= 1 (failures :to-change :to zero?))))
+(deftest to-fn
+  (is (= 1 (failures :to-change :to-fn zero?))))
 
 (deftest to-lt
   (is (= 1 (failures :to-change :to-lt 11))))
@@ -59,11 +59,11 @@
 (deftest to-not
   (is (= 1 (failures :to-change :to-not 11))))
 
-(deftest by-value
+(deftest by
   (is (= 1 (failures :to-change :by -1))))
 
-(deftest by-function
-  (is (= 1 (failures :to-change :by zero?))))
+(deftest by-fn
+  (is (= 1 (failures :to-change :by-fn zero?))))
 
 (deftest by-lt
   (is (= 1 (failures :to-change :by-lt 1))))

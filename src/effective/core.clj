@@ -31,22 +31,25 @@
 
    | key          | description                                               |
    | ------------ | --------------------------------------------------------- |
-   | :from        | b-val or predicate to assert on b-val                     |
+   | :from        | b-val                                                     |
+   | :from-fn     | predicate to assert on b-val                              |
    | :from-lt     | non-inclusive upper bound of b-val                        |
    | :from-lte    | inclusive upper bound of b-val                            |
    | :from-gt     | non-inclusive lower bound of b-val                        |
    | :from-gte    | inclusive lower bound of b-val                            |
    | :from-not    | value which b-val is expected to not be equal to          |
    | :from-within | radius declaration vector (see example below) on b-val    |
-   | :to          | a-val or predicate to assert on a-val                     |
+   | :to          | a-val                                                     |
+   | :to-fn       | predicate to assert on a-val                              |
    | :to-lt       | non-inclusive upper bound of a-val                        |
    | :to-lte      | inclusive upper bound of a-val                            |
    | :to-gt       | non-inclusive lower bound of a-val                        |
    | :to-gte      | inclusive lower bound of a-val                            |
    | :to-not      | value which a-val is expected to not be equal to          |
    | :to-within   | radius declaration vector (see example below) on a-val    |
-   | :by          | numerical difference between b-val and a-val or predicate |
-   |              |  to assert on that difference.                            |
+   | :by          | numerical difference between b-val and a-val              |
+   | :by-fn       | predicate to assert on numerical difference between       |
+   |              | b-val and a-val              |.                           |
    | :times       | number of times to pop b-val collection                   |
 
    **Examples**:
@@ -141,15 +144,34 @@
    The above expands to the following:
 
    ``` clojure
+   (let [x (atom [1 2])]
+     (let [before-0 @x
+           _ (reset! x [1 2 3 4 5])
+           after-0 @x]
+       (is (= after-0 (conj before-0 3 4 5)) \":with check failed\")))
+   ```
+
+   ---
+
+   ``` clojure
+   (let [x (atom [-2 -1])]
+     (expect (reset! x [-2 -1 0 1 2])
+             [{:to-conjoin @x :with-fn [zero? odd? even?]}]))
+   ```
+
+   The above expands to the following:
+
+   ``` clojure
    (let [x (atom [-2 -1])]
      (let [before-0 @x
            _ (reset! x [-2 -1 0 1 2])
            after-0 @x]
-       (is (= before-0 (pop (pop (pop after-0)))) \":with check failed\")
-       (is (zero? (peek (pop (pop after-0)))) \":with check failed\")
-       (is (= 1 (peek (pop after-0))) \":with check failed\")
-       (is (even? (peek after-0)) \":with check failed\")))
-   ```"
+       (is (= before-0 (pop (pop (pop after-0)))) \":with-fn check failed\")
+       (is (zero? (peek (pop (pop after-0)))) \":with-fn check failed\")
+       (is (odd? (peek (pop after-0))) \":with-fn check failed\")
+       (is (even? (peek after-0)) \":with-fn check failed\")))
+   ```
+  "
   ([effect config]
    `(expect ~effect :all ~config))
   ([effect composition config]

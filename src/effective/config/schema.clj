@@ -6,12 +6,6 @@
 
 (def ^:private ^:const OPT {:optional true})
 
-(def hook
-  "True if input represents a function, false otherwise."
-  [:or
-   [:and symbol? [:fn (comp fn? var-get resolve)]]
-   [:and list? [:fn (comp symbol? first)]]])
-
 (def observable
   "Valid if input represents an expression."
   [:or symbol? list? seq?])
@@ -32,12 +26,25 @@
           (count)
           (= 1)))])
 
+(defn- minimum-one-constraint
+  "Asserts that the incoming value contains at least one of `options`.
+   Reports errors under `error-path`."
+  [options error-path]
+  [:fn
+   {:error/message (->> options
+                        (string/join ", ")
+                        (str "one of the following must be present: "))
+    :error/path error-path}
+   (fn [m]
+     ((apply some-fn options) m))])
+
 (def to-change
   "Describes `:to-change` entries."
   [:and
    [:map
     [:to-change observable]
     [:from OPT :any]
+    [:from-fn OPT :any]
     [:from-lt OPT number?]
     [:from-lte OPT number?]
     [:from-gt OPT number?]
@@ -45,26 +52,22 @@
     [:from-within OPT value-range]
     [:from-not OPT :any]
     [:to OPT :any]
+    [:to-fn OPT :any]
     [:to-lt OPT number?]
     [:to-lte OPT number?]
     [:to-gt OPT number?]
     [:to-gte OPT number?]
     [:to-within OPT value-range]
     [:to-not OPT :any]
-    [:by OPT [:or number? hook]]
+    [:by OPT number?]
+    [:by-fn OPT :any]
     [:by-lt OPT number?]
     [:by-lte OPT number?]
     [:by-gt OPT number?]
     [:by-gte OPT number?]
     [:by-within OPT value-range]
     [:by-not OPT :any]]
-   [:fn
-    {:error/message (->> const/TO_CHANGE_FLAGS
-                         (string/join ", ")
-                         (str "one of the following must be present: "))
-     :error/path [:to-change]}
-    (fn [m]
-      ((apply some-fn const/TO_CHANGE_FLAGS) m))]
+   (minimum-one-constraint const/TO_CHANGE_FLAGS [:to-change])
    assertion])
 
 (def to-not-change
@@ -73,14 +76,17 @@
    [:map [:to-not-change observable]]
    assertion])
 
+(def ^:private non-empty-vector
+  [:and vector? [:fn seq]])
+
 (def to-conjoin
   "Describes `:to-conjoin` entries."
   [:and
    [:map
     [:to-conjoin observable]
-    [:with [:and
-            vector?
-            [:fn seq]]]]
+    [:with OPT non-empty-vector]
+    [:with-fn OPT non-empty-vector]]
+   (minimum-one-constraint const/TO_CONJOIN_FLAGS [:to-conjoin])
    assertion])
 
 (def to-pop

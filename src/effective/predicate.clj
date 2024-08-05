@@ -5,23 +5,17 @@
   "Quoted expressions representing the check specified by `flag`."
   (fn [operation flag _ _] [operation flag]))
 
-(def ^:private function?
-  "True if input represents a function, false otherwise."
-  (some-fn (every-pred symbol?
-                       (comp fn? var-get resolve))
-           (every-pred list?
-                       (comp symbol? first))))
-
 (defmethod make :default
   [_ _ _ _]
   [])
 
 (defmethod make [:to-change :from]
   [_ _ from index]
-  (let [before (checkpoint/before index)]
-    [(if (function? from)
-       `(~from ~before)
-       `(= ~from ~before))]))
+  [`(= ~from ~(checkpoint/before index))])
+
+(defmethod make [:to-change :from-fn]
+  [_ _ from-fn index]
+  [`(~from-fn ~(checkpoint/before index))])
 
 (defmethod make [:to-change :from-lt]
   [_ _ from-lt index]
@@ -51,10 +45,11 @@
 
 (defmethod make [:to-change :to]
   [_ _ to index]
-  (let [after (checkpoint/after index)]
-    [(if (function? to)
-       `(~to ~after)
-       `(= ~to ~after))]))
+  [`(= ~to ~(checkpoint/after index))])
+
+(defmethod make [:to-change :to-fn]
+  [_ _ to-fn index]
+  [`(~to-fn ~(checkpoint/after index))])
 
 (defmethod make [:to-change :to-lt]
   [_ _ to-lt index]
@@ -83,11 +78,11 @@
 
 (defmethod make [:to-change :by]
   [_ _ by index]
-  (let [before (checkpoint/before index)
-        after (checkpoint/after index)]
-    [(if (function? by)
-       `(~by (- ~after ~before))
-       `(= ~by (- ~after ~before)))]))
+  [`(= ~by (- ~(checkpoint/after index) ~(checkpoint/before index)))])
+
+(defmethod make [:to-change :by-fn]
+  [_ _ by-fn index]
+  [`(~by-fn (- ~(checkpoint/after index) ~(checkpoint/before index)))])
 
 (defmethod make [:to-change :by-lt]
   [_ _ by-lt index]
@@ -133,21 +128,20 @@
 
 (defmethod make [:to-conjoin :with]
   [_ _ with index]
+  [`(= ~(checkpoint/after index) (conj ~(checkpoint/before index) ~@with))])
+
+(defmethod make [:to-conjoin :with-fn]
+  [_ _ with-fn index]
   (let [before (checkpoint/before index)
         after (checkpoint/after index)
-        tally (count with)
+        tally (count with-fn)
         pick (fn [i]
                `(peek ~(pop-times after (- tally i 1))))]
-    (if (not-any? function? with)
-      [`(= ~after (conj ~before ~@with))]
-      (cons `(= ~before ~(pop-times after tally))
-            (->> with
-                 (map-indexed vector)
-                 (map (fn [[i x]]
-                        (let [head (pick i)]
-                          (if (function? x)
-                            `(~x ~head)
-                            `(= ~x ~head))))))))))
+    (cons `(= ~before ~(pop-times after tally))
+          (->> with-fn
+               (map-indexed vector)
+               (map (fn [[i x]]
+                      `(~x ~(pick i))))))))
 
 (defmethod make [:to-pop :times]
   [_ _ times index]

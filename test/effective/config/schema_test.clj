@@ -4,24 +4,6 @@
             [malli.transform :as mt]
             [effective.config.schema :as schema]))
 
-(deftest hook-quoted-function
-  (is (m/validate schema/hook 'odd?)))
-
-(deftest hook-symbol-headed-list
-  (is (m/validate schema/hook '(constantly true))))
-
-(deftest hook-invalid
-  (are [v] (not (m/validate schema/hook v))
-       nil
-       :x
-       "abc"
-       odd?
-       42
-       false
-       {:x 42}
-       [:x :y]
-       #{:x :y}))
-
 (deftest observable-deref
   (is (m/validate schema/observable '@x)))
 
@@ -115,14 +97,26 @@
        :to-conjoin
        :to-pop))
 
-(deftest to-change-without-flags
+(deftest to-change-no-flags
   (is (not (m/validate schema/to-change {:to-change 'x}))))
 
 (deftest to-change-with-multiple-flags
   (is (m/validate schema/to-change {:to-change 'x
                                     :from 42
                                     :to 142
-                                    :by 'even?})))
+                                    :by 100})))
+
+(deftest to-change-by-not-number
+  (are [value] (not (m/validate schema/to-change {:to-change 'x
+                                                  :by value}))
+    nil
+    :x
+    "abc"
+    odd?
+    false
+    {:x 42}
+    [:x :y]
+    #{:x :y}))
 
 (deftest to-change-number
   (are [flag] (m/validate schema/to-change {:to-change 'x flag 42})
