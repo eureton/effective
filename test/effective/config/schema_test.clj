@@ -97,7 +97,7 @@
        :to-conjoin
        :to-pop))
 
-(deftest to-change-without-flags
+(deftest to-change-no-flags
   (is (not (m/validate schema/to-change {:to-change 'x}))))
 
 (deftest to-change-with-multiple-flags
