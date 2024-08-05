@@ -70,14 +70,23 @@
    [:map [:to-not-change observable]]
    assertion])
 
+(def ^:private non-empty-vector
+  [:and vector? [:fn seq]])
+
 (def to-conjoin
   "Describes `:to-conjoin` entries."
   [:and
    [:map
     [:to-conjoin observable]
-    [:with [:and
-            vector?
-            [:fn seq]]]]
+    [:with OPT non-empty-vector]
+    [:with-fn OPT non-empty-vector]]
+   [:fn
+    {:error/message (->> const/TO_CONJOIN_FLAGS
+                         (string/join ", ")
+                         (str "one of the following must be present: "))
+     :error/path [:to-conjoin]}
+    (fn [m]
+      ((apply some-fn const/TO_CONJOIN_FLAGS) m))]
    assertion])
 
 (def to-pop

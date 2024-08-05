@@ -36,3 +36,7 @@
    :from-gte    :to-gte    :by-gte
    :from-within :to-within :by-within
    :from-not    :to-not    :by-not])
+
+(def ^:const TO_CONJOIN_FLAGS
+  "Vector of all flags supported by the `:to-conjoin` operation."
+  [:with :with-fn])
