@@ -46,6 +46,7 @@
     [:from-within OPT value-range]
     [:from-not OPT :any]
     [:to OPT :any]
+    [:to-f OPT :any]
     [:to-lt OPT number?]
     [:to-lte OPT number?]
     [:to-gt OPT number?]

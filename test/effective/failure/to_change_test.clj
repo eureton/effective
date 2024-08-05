@@ -35,11 +35,11 @@
 (deftest from-not
   (is (= 1 (failures :to-change :from-not 10))))
 
-(deftest to-value
+(deftest to
   (is (= 1 (failures :to-change :to 10))))
 
-(deftest to-function
-  (is (= 1 (failures :to-change :to zero?))))
+(deftest to-f
+  (is (= 1 (failures :to-change :to-f zero?))))
 
 (deftest to-lt
   (is (= 1 (failures :to-change :to-lt 11))))

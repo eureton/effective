@@ -52,10 +52,11 @@
 
 (defmethod make [:to-change :to]
   [_ _ to index]
-  (let [after (checkpoint/after index)]
-    [(if (function? to)
-       `(~to ~after)
-       `(= ~to ~after))]))
+  [`(= ~to ~(checkpoint/after index))])
+
+(defmethod make [:to-change :to-f]
+  [_ _ to index]
+  [`(~to ~(checkpoint/after index))])
 
 (defmethod make [:to-change :to-lt]
   [_ _ to-lt index]
