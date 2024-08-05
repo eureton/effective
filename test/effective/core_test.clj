@@ -296,7 +296,7 @@
     (expect (reset! x '(:a :b :c :d))
             [{:to-conjoin @x :with [:b :a]}])))
 
-(defn- contains-hash? [h1]
+(defn- contains-map? [h1]
   (fn [h2]
     (cljset/subset? (set h1) (set h2))))
 
@@ -306,7 +306,7 @@
     (expect (reset! x [{:a 1 :w 0 :z -9}
                        {:b 2 :w 0 :z -8}
                        {:c 3 :w 0 :z -7}])
-            [{:to-conjoin @x :with-fn [(contains-hash? {:c 3 :z -7})]}])))
+            [{:to-conjoin @x :with-fn [(contains-map? {:c 3 :z -7})]}])))
 
 (deftest conjoin-list-with-function
   (let [x (atom '({:b 2 :w 0 :z -8}
@@ -314,7 +314,7 @@
     (expect (reset! x '({:a 1 :w 0 :z -9}
                         {:b 2 :w 0 :z -8}
                         {:c 3 :w 0 :z -7}))
-            [{:to-conjoin @x :with-fn [(contains-hash? {:a 1 :z -9})]}])))
+            [{:to-conjoin @x :with-fn [(contains-map? {:a 1 :z -9})]}])))
 
 (deftest pop-vector-single
   (let [x (atom [:a :b :c])]
