@@ -173,15 +173,15 @@
     (expect (swap! x inc)
             [{:to-change @x :to-within [0.1 :of 1.09]}])))
 
-(deftest by-value
+(deftest by
   (let [x (atom 4)]
     (expect (swap! x #(* % %))
             [{:to-change @x :by 12}])))
 
-(deftest by-function
+(deftest by-f
   (let [x (atom -2)]
     (expect (swap! x #(* % 2))
-            [{:to-change @x :by neg?}])))
+            [{:to-change @x :by-f neg?}])))
 
 (deftest by-lt
   (let [x (atom 4)]

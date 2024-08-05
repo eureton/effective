@@ -59,11 +59,11 @@
 (deftest to-not
   (is (= 1 (failures :to-change :to-not 11))))
 
-(deftest by-value
+(deftest by
   (is (= 1 (failures :to-change :by -1))))
 
-(deftest by-function
-  (is (= 1 (failures :to-change :by zero?))))
+(deftest by-f
+  (is (= 1 (failures :to-change :by-f zero?))))
 
 (deftest by-lt
   (is (= 1 (failures :to-change :by-lt 1))))

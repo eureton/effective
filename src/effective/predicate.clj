@@ -85,11 +85,11 @@
 
 (defmethod make [:to-change :by]
   [_ _ by index]
-  (let [before (checkpoint/before index)
-        after (checkpoint/after index)]
-    [(if (function? by)
-       `(~by (- ~after ~before))
-       `(= ~by (- ~after ~before)))]))
+  [`(= ~by (- ~(checkpoint/after index) ~(checkpoint/before index)))])
+
+(defmethod make [:to-change :by-f]
+  [_ _ by index]
+  [`(~by (- ~(checkpoint/after index) ~(checkpoint/before index)))])
 
 (defmethod make [:to-change :by-lt]
   [_ _ by-lt index]

@@ -122,7 +122,19 @@
   (is (m/validate schema/to-change {:to-change 'x
                                     :from 42
                                     :to 142
-                                    :by 'even?})))
+                                    :by 100})))
+
+(deftest to-change-by-not-number
+  (are [value] (not (m/validate schema/to-change {:to-change 'x
+                                                  :by value}))
+    nil
+    :x
+    "abc"
+    odd?
+    false
+    {:x 42}
+    [:x :y]
+    #{:x :y}))
 
 (deftest to-change-number
   (are [flag] (m/validate schema/to-change {:to-change 'x flag 42})
