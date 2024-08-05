@@ -38,6 +38,7 @@
    [:map
     [:to-change observable]
     [:from OPT :any]
+    [:from-f OPT :any]
     [:from-lt OPT number?]
     [:from-lte OPT number?]
     [:from-gt OPT number?]

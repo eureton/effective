@@ -11,11 +11,11 @@
                          ~flag ~value}])
          (get-in [~operation ~flag] 0))))
 
-(deftest from-value
+(deftest from
   (is (= 1 (failures :to-change :from 9))))
 
-(deftest from-function
-  (is (= 1 (failures :to-change :from zero?))))
+(deftest from-f
+  (is (= 1 (failures :to-change :from-f zero?))))
 
 (deftest from-lt
   (is (= 1 (failures :to-change :from-lt 10))))

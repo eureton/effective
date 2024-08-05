@@ -18,10 +18,11 @@
 
 (defmethod make [:to-change :from]
   [_ _ from index]
-  (let [before (checkpoint/before index)]
-    [(if (function? from)
-       `(~from ~before)
-       `(= ~from ~before))]))
+  [`(= ~from ~(checkpoint/before index))])
+
+(defmethod make [:to-change :from-f]
+  [_ _ from index]
+  [`(~from ~(checkpoint/before index))])
 
 (defmethod make [:to-change :from-lt]
   [_ _ from-lt index]

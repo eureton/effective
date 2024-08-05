@@ -29,6 +29,7 @@
 (def ^:const TO_CHANGE_FLAGS
   "Vector of all flags supported by the `:to-change` operation."
   [:from        :to        :by
+   :from-f
    :from-lt     :to-lt     :by-lt
    :from-lte    :to-lte    :by-lte
    :from-gt     :to-gt     :by-gt

@@ -11,7 +11,7 @@
 (deftest from-predicate
   (let [x (atom -1)]
     (expect (swap! x inc)
-            [{:to-change @x :from neg?}])))
+            [{:to-change @x :from-f neg?}])))
 
 (deftest from-lt
   (let [x (atom -1)]
@@ -273,7 +273,7 @@
   (let [x (atom 1)]
     (expect (swap! x inc)
             :any
-            [{:to-change @x :from odd? :to even?}
+            [{:to-change @x :from-f odd?}
              {:to-change @x :from 10}])))
 
 (deftest conjoin-vector-with-value
