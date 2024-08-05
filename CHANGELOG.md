@@ -9,10 +9,10 @@ All notable changes to this project will be documented in this file. This change
 
 ### Added
 - new flags:
-  - `:from-fn`
-  - `:to-fn`
-  - `:by-fn`
-  - `:with-fn`
+  - `:from-fn` / `:from-fulfilling`
+  - `:to-fn` / `:to-fulfilling`
+  - `:by-fn` / `:by-fulfilling`
+  - `:with-fn` / `:with-fulfilling`
 - `effective.util` namespace
   - maiden entry is `contains-map?`
   - placeholder for useful helpers
