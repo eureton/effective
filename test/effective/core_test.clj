@@ -288,7 +288,7 @@
   (let [x (atom 1)]
     (expect (swap! x inc)
             :any
-            [{:to-change @x :from-fn odd?}
+            [{:to-change @x :from-fn odd? :to-fn even?}
              {:to-change @x :from 10}])))
 
 (deftest conjoin-vector-with-value
