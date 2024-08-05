@@ -20,7 +20,7 @@
   [_ _ from index]
   [`(= ~from ~(checkpoint/before index))])
 
-(defmethod make [:to-change :from-f]
+(defmethod make [:to-change :from-fn]
   [_ _ from index]
   [`(~from ~(checkpoint/before index))])
 
@@ -54,7 +54,7 @@
   [_ _ to index]
   [`(= ~to ~(checkpoint/after index))])
 
-(defmethod make [:to-change :to-f]
+(defmethod make [:to-change :to-fn]
   [_ _ to index]
   [`(~to ~(checkpoint/after index))])
 
@@ -87,7 +87,7 @@
   [_ _ by index]
   [`(= ~by (- ~(checkpoint/after index) ~(checkpoint/before index)))])
 
-(defmethod make [:to-change :by-f]
+(defmethod make [:to-change :by-fn]
   [_ _ by index]
   [`(~by (- ~(checkpoint/after index) ~(checkpoint/before index)))])
 

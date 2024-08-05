@@ -14,8 +14,8 @@
 (deftest from
   (is (= 1 (failures :to-change :from 9))))
 
-(deftest from-f
-  (is (= 1 (failures :to-change :from-f zero?))))
+(deftest from-fn
+  (is (= 1 (failures :to-change :from-fn zero?))))
 
 (deftest from-lt
   (is (= 1 (failures :to-change :from-lt 10))))
@@ -38,8 +38,8 @@
 (deftest to
   (is (= 1 (failures :to-change :to 10))))
 
-(deftest to-f
-  (is (= 1 (failures :to-change :to-f zero?))))
+(deftest to-fn
+  (is (= 1 (failures :to-change :to-fn zero?))))
 
 (deftest to-lt
   (is (= 1 (failures :to-change :to-lt 11))))
@@ -62,8 +62,8 @@
 (deftest by
   (is (= 1 (failures :to-change :by -1))))
 
-(deftest by-f
-  (is (= 1 (failures :to-change :by-f zero?))))
+(deftest by-fn
+  (is (= 1 (failures :to-change :by-fn zero?))))
 
 (deftest by-lt
   (is (= 1 (failures :to-change :by-lt 1))))

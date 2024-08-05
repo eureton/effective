@@ -8,10 +8,10 @@
     (expect (swap! x inc)
             [{:to-change @x :from -1}])))
 
-(deftest from-f
+(deftest from-fn
   (let [x (atom -1)]
     (expect (swap! x inc)
-            [{:to-change @x :from-f neg?}])))
+            [{:to-change @x :from-fn neg?}])))
 
 (deftest from-lt
   (let [x (atom -1)]
@@ -93,10 +93,10 @@
     (expect (swap! x inc)
             [{:to-change @x :to 0}])))
 
-(deftest to-f
+(deftest to-fn
   (let [x (atom -1)]
     (expect (swap! x inc)
-            [{:to-change @x :to-f zero?}])))
+            [{:to-change @x :to-fn zero?}])))
 
 (deftest to-lt
   (let [x (atom -1)]
@@ -178,10 +178,10 @@
     (expect (swap! x #(* % %))
             [{:to-change @x :by 12}])))
 
-(deftest by-f
+(deftest by-fn
   (let [x (atom -2)]
     (expect (swap! x #(* % 2))
-            [{:to-change @x :by-f neg?}])))
+            [{:to-change @x :by-fn neg?}])))
 
 (deftest by-lt
   (let [x (atom 4)]
@@ -273,7 +273,7 @@
   (let [x (atom 1)]
     (expect (swap! x inc)
             :any
-            [{:to-change @x :from-f odd?}
+            [{:to-change @x :from-fn odd?}
              {:to-change @x :from 10}])))
 
 (deftest conjoin-vector-with-value
