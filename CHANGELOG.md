@@ -3,6 +3,20 @@ All notable changes to this project will be documented in this file. This change
 
 ## [Unreleased]
 
+## [0.9.0] - 2024-08-05
+### Fixed
+- lopsided interpretation of arguments ([#11](https://github.com/eureton/effective/issues/11))
+
+### Added
+- new flags:
+  - `:from-fn`
+  - `:to-fn`
+  - `:by-fn`
+  - `:with-fn`
+- `effective.util` namespace
+  - maiden entry is `contains-map?`
+  - placeholder for useful helpers
+
 ## [0.8.0] - 2024-08-04
 ### Added
 - implementation of `Composer` which:
@@ -113,7 +127,8 @@ Renamed:
 - Initial commit.
 - asserts only, i.e. runs effect and monitors in a function.
 
-[Unreleased]: https://github.com/eureton/effective/compare/0.8.0...HEAD
+[Unreleased]: https://github.com/eureton/effective/compare/0.9.0...HEAD
+[0.9.0]: https://github.com/eureton/effective/compare/0.8.0...0.9.0
 [0.8.0]: https://github.com/eureton/effective/compare/0.7.0...0.8.0
 [0.7.0]: https://github.com/eureton/effective/compare/0.6.0...0.7.0
 [0.6.0]: https://github.com/eureton/effective/compare/0.5.0...0.6.0
