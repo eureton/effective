@@ -10,6 +10,13 @@
     (is (= 4 expected))
     (is (= 'before-3 actual))))
 
+(deftest from-fn
+  (let [assertions (make {:to-change nil :from-fn nil?} 9)
+        [function operand] (:predicate (first assertions))]
+    (is (= 1 (count assertions)))
+    (is (= nil? function))
+    (is (= 'before-9 operand))))
+
 (deftest from-lt
   (let [assertions (make {:to-change nil :from-lt 31} 9)
         [operator expected actual] (:predicate (first assertions))]
@@ -57,6 +64,13 @@
     (is (= (symbol #'=) operator))
     (is (= -2 expected))
     (is (= 'after-2 actual))))
+
+(deftest to-fn
+  (let [assertions (make {:to-change nil :to-fn float?} 51)
+        [function operand] (:predicate (first assertions))]
+    (is (= 1 (count assertions)))
+    (is (= float? function))
+    (is (= 'after-51 operand))))
 
 (deftest to-lt
   (let [assertions (make {:to-change nil :to-lt 39} 2)
@@ -107,6 +121,15 @@
     (is (= (symbol #'-) (nth actual 0 nil)))
     (is (= 'after-0 (nth actual 1 nil)))
     (is (= 'before-0 (nth actual 2 nil)))))
+
+(deftest by-fn
+  (let [assertions (make {:to-change nil :by-fn neg?} 101)
+        [function operand] (:predicate (first assertions))]
+    (is (= 1 (count assertions)))
+    (is (= neg? function))
+    (is (= (symbol #'-) (nth operand 0 nil)))
+    (is (= 'after-101 (nth operand 1 nil)))
+    (is (= 'before-101 (nth operand 2 nil)))))
 
 (deftest by-lt
   (let [assertions (make {:to-change nil :by-lt 39} 16)
