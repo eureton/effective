@@ -13,6 +13,11 @@
     (expect (swap! x inc)
             [{:to-change @x :from-fn neg?}])))
 
+(deftest from-fulfilling
+  (let [x (atom -1)]
+    (expect (swap! x inc)
+            [{:to-change @x :from-fulfilling neg?}])))
+
 (deftest from-lt
   (let [x (atom -1)]
     (expect (swap! x inc)
@@ -98,6 +103,11 @@
     (expect (swap! x inc)
             [{:to-change @x :to-fn zero?}])))
 
+(deftest to-fulfilling
+  (let [x (atom -1)]
+    (expect (swap! x inc)
+            [{:to-change @x :to-fulfilling zero?}])))
+
 (deftest to-lt
   (let [x (atom -1)]
     (expect (swap! x inc)
@@ -182,6 +192,11 @@
   (let [x (atom -2)]
     (expect (swap! x #(* % 2))
             [{:to-change @x :by-fn neg?}])))
+
+(deftest by-fulfilling
+  (let [x (atom -2)]
+    (expect (swap! x #(* % 2))
+            [{:to-change @x :by-fulfilling neg?}])))
 
 (deftest by-lt
   (let [x (atom 4)]
@@ -296,7 +311,7 @@
     (expect (reset! x '(:a :b :c :d))
             [{:to-conjoin @x :with [:b :a]}])))
 
-(deftest conjoin-vector-with-function
+(deftest conjoin-vector-with-fn
   (let [x (atom [{:a 1 :w 0 :z -9}
                  {:b 2 :w 0 :z -8}])]
     (expect (reset! x [{:a 1 :w 0 :z -9}
@@ -304,13 +319,26 @@
                        {:c 3 :w 0 :z -7}])
             [{:to-conjoin @x :with-fn [(util/contains-map? {:c 3 :z -7})]}])))
 
-(deftest conjoin-list-with-function
+(deftest conjoin-vector-with-fulfilling
+  (let [x (atom [:a :b])]
+    (expect (reset! x [:a :b :c])
+            [{:to-conjoin @x :with-fulfilling [#{:c :d}]}])))
+
+(deftest conjoin-list-with-fn
   (let [x (atom '({:b 2 :w 0 :z -8}
                   {:c 3 :w 0 :z -7}))]
     (expect (reset! x '({:a 1 :w 0 :z -9}
                         {:b 2 :w 0 :z -8}
                         {:c 3 :w 0 :z -7}))
             [{:to-conjoin @x :with-fn [(util/contains-map? {:a 1 :z -9})]}])))
+
+(deftest conjoin-list-with-fulfilling
+  (let [x (atom '({:b 2}
+                  {:c 3}))]
+    (expect (reset! x '({:a 1}
+                        {:b 2}
+                        {:c 3}))
+            [{:to-conjoin @x :with-fulfilling [(comp odd? :a)]}])))
 
 (deftest pop-vector-single
   (let [x (atom [:a :b :c])]

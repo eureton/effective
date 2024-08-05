@@ -13,18 +13,22 @@
    ``` clojure
    {:from-lt 10 :from-less-than 11}
    ```"
-  {:from-less-than             :from-lt
+  {:from-fulfilling            :from-fn
+   :from-less-than             :from-lt
    :from-less-than-or-equal    :from-lte
    :from-greater-than          :from-gt
    :from-greater-than-or-equal :from-gte
+   :to-fulfilling              :to-fn
    :to-less-than               :to-lt
    :to-less-than-or-equal      :to-lte
    :to-greater-than            :to-gt
    :to-greater-than-or-equal   :to-gte
+   :by-fulfilling              :by-fn
    :by-less-than               :by-lt
    :by-less-than-or-equal      :by-lte
    :by-greater-than            :by-gt
-   :by-greater-than-or-equal   :by-gte})
+   :by-greater-than-or-equal   :by-gte
+   :with-fulfilling            :with-fn})
 
 (def ^:const TO_CHANGE_FLAGS
   "Vector of all flags supported by the `:to-change` operation."
