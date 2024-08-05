@@ -11,6 +11,7 @@
 
 (deftest with
   (are [with tally] (= tally (failures :with with))
+    [4 5]   0
     [4]     1
     [5]     1
     [5 4]   1
@@ -18,6 +19,7 @@
 
 (deftest with-fn
   (are [with tally] (= tally (failures :with-fn with))
+    [even? odd?] 0
     [even?]      2
     [odd?]       1
     [odd? even?] 2))
