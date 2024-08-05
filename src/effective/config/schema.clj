@@ -26,6 +26,18 @@
           (count)
           (= 1)))])
 
+(defn- minimum-one-constraint
+  "Asserts that the incoming value contains at least one of `options`.
+   Errors get reported under `error-path`."
+  [options error-path]
+  [:fn
+   {:error/message (->> options
+                        (string/join ", ")
+                        (str "one of the following must be present: "))
+    :error/path error-path}
+   (fn [m]
+     ((apply some-fn options) m))])
+
 (def to-change
   "Describes `:to-change` entries."
   [:and
@@ -55,13 +67,7 @@
     [:by-gte OPT number?]
     [:by-within OPT value-range]
     [:by-not OPT :any]]
-   [:fn
-    {:error/message (->> const/TO_CHANGE_FLAGS
-                         (string/join ", ")
-                         (str "one of the following must be present: "))
-     :error/path [:to-change]}
-    (fn [m]
-      ((apply some-fn const/TO_CHANGE_FLAGS) m))]
+   (minimum-one-constraint const/TO_CHANGE_FLAGS [:to-change])
    assertion])
 
 (def to-not-change
@@ -80,13 +86,7 @@
     [:to-conjoin observable]
     [:with OPT non-empty-vector]
     [:with-fn OPT non-empty-vector]]
-   [:fn
-    {:error/message (->> const/TO_CONJOIN_FLAGS
-                         (string/join ", ")
-                         (str "one of the following must be present: "))
-     :error/path [:to-conjoin]}
-    (fn [m]
-      ((apply some-fn const/TO_CONJOIN_FLAGS) m))]
+   (minimum-one-constraint const/TO_CONJOIN_FLAGS [:to-conjoin])
    assertion])
 
 (def to-pop
