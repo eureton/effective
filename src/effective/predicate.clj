@@ -1,9 +1,11 @@
 (ns effective.predicate
-  (:require [effective.checkpoint :as checkpoint]))
+  (:require [effective.checkpoint :as checkpoint]
+            [effective.config :as config]))
 
 (defmulti make
   "Quoted expressions representing the check specified by `flag`."
-  (fn [operation flag _ _] [operation flag]))
+  (fn [entry flag _ _]
+    [(config/operation entry) flag]))
 
 (defmethod make :default
   [_ _ _ _]
@@ -111,6 +113,13 @@
           (-> (- ~(checkpoint/after index) ~(checkpoint/before index))
               (- ~by-origin)
               (Math/abs)))]))
+
+(defmethod make [:to-change :to-change]
+  [entry _ _ index]
+  (let [solitary? (-> entry (dissoc :to-change) (empty?))]
+    (cond-> []
+      solitary? (conj `(not= ~(checkpoint/after index)
+                             ~(checkpoint/before index))))))
 
 (defmethod make [:to-not-change :to-not-change]
   [_ _ _ index]

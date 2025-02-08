@@ -11,21 +11,21 @@
 (defn- inflate
   "Builds a function which turns a flag-value pair into a collection
    of data structures."
-  [index operation]
+  [index entry]
   (fn [[k v]]
     (map
       (fn [x]
         {:flag k
          :value v
-         :operation operation
+         :operation (config/operation entry)
          :predicate x
          :message (message k)})
-      (predicate/make operation k v index))))
+      (predicate/make entry k v index))))
 
 (defn make
   "Sequence of assertions which correspond to `entry`.
    Generates checkpoint references for position `index`."
   [entry index]
   (mapcat
-    (inflate index (config/operation entry))
+    (inflate index entry)
     entry))
