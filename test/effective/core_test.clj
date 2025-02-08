@@ -273,6 +273,11 @@
     (expect (swap! x inc)
             [{:to-change @x :by-within [0.1 :of 1.09]}])))
 
+(deftest change
+  (let [x (atom 2)]
+    (expect (swap! x inc)
+            [{:to-change @x}])))
+
 (deftest not-change
   (let [x (atom 2)]
     (expect (swap! x #(/ (* % %) 2))

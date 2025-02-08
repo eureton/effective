@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file. This change
 
 ## [Unreleased]
 
+## [0.10.0] - 2025-02-08
+### Fixed
+- `:to-change` now stands alone ([#15](https://github.com/eureton/effective/issues/15))
+- problematic dependencies in binary ([#16](https://github.com/eureton/effective/issues/16))
+
 ## [0.9.0] - 2024-08-05
 ### Fixed
 - lopsided interpretation of arguments ([#11](https://github.com/eureton/effective/issues/11))
@@ -127,7 +132,8 @@ Renamed:
 - Initial commit.
 - asserts only, i.e. runs effect and monitors in a function.
 
-[Unreleased]: https://github.com/eureton/effective/compare/0.9.0...HEAD
+[Unreleased]: https://github.com/eureton/effective/compare/0.10.0...HEAD
+[0.10.0]: https://github.com/eureton/effective/compare/0.9.0...0.10.0
 [0.9.0]: https://github.com/eureton/effective/compare/0.8.0...0.9.0
 [0.8.0]: https://github.com/eureton/effective/compare/0.7.0...0.8.0
 [0.7.0]: https://github.com/eureton/effective/compare/0.6.0...0.7.0
