@@ -98,7 +98,7 @@
        :to-pop))
 
 (deftest to-change-no-flags
-  (is (not (m/validate schema/to-change {:to-change 'x}))))
+  (is (m/validate schema/to-change {:to-change 'x})))
 
 (deftest to-change-with-multiple-flags
   (is (m/validate schema/to-change {:to-change 'x

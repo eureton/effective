@@ -67,7 +67,6 @@
     [:by-gte OPT number?]
     [:by-within OPT value-range]
     [:by-not OPT :any]]
-   (minimum-one-constraint const/TO_CHANGE_FLAGS [:to-change])
    assertion])
 
 (def to-not-change
