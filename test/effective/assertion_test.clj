@@ -191,6 +191,17 @@
     (is (= 'after-15 expected))
     (is (= 'before-15 actual))))
 
+(deftest and-be
+  (let [assertions (make {:to-not-change nil :and-be 24} 55)
+        predicate (:predicate (first assertions))
+        [operator expected actual-1 actual-2] predicate]
+    (is (= 1 (count assertions)))
+    (is (= 4 (count predicate)))
+    (is (= (symbol #'=) operator))
+    (is (= 24 expected))
+    (is (= 'after-55 actual-1))
+    (is (= 'before-55 actual-2))))
+
 (deftest multiple
   (let [assertions (make {:to-change nil :from 1 :to 21 :by 20} 7)
         [from-assertion to-assertion by-assertion] assertions]

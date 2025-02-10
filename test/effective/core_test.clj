@@ -283,6 +283,11 @@
     (expect (swap! x #(/ (* % %) 2))
             [{:to-not-change @x}])))
 
+(deftest not-change-and-be
+  (let [x (atom 2)]
+    (expect (swap! x #(/ (* % %) 2))
+            [{:to-not-change @x :and-be 2}])))
+
 (deftest multiple
   (let [x (atom {:a 1 :b 10})]
     (expect (swap! x assoc :a 10 :b 100)
