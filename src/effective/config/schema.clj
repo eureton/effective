@@ -72,7 +72,9 @@
 (def to-not-change
   "Describes `:to-not-change` entries."
   [:and
-   [:map [:to-not-change observable]]
+   [:map
+    [:to-not-change observable]
+    [:and-be OPT :any]]
    assertion])
 
 (def ^:private non-empty-vector

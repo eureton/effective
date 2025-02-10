@@ -2,6 +2,11 @@
   (:require [effective.checkpoint :as checkpoint]
             [effective.config :as config]))
 
+(defn- solitary?
+  "True if `k` is the only key in `entry`, false otherwise."
+  [entry k]
+  (-> entry (dissoc k) (empty?)))
+
 (defmulti make
   "Quoted expressions representing the check specified by `flag`."
   (fn [entry flag _ _]
@@ -115,15 +120,22 @@
               (Math/abs)))]))
 
 (defmethod make [:to-change :to-change]
-  [entry _ _ index]
-  (let [solitary? (-> entry (dissoc :to-change) (empty?))]
-    (cond-> []
-      solitary? (conj `(not= ~(checkpoint/after index)
-                             ~(checkpoint/before index))))))
+  [entry k _ index]
+  (cond-> []
+    (solitary? entry k) (conj `(not= ~(checkpoint/after index)
+                                     ~(checkpoint/before index)))))
 
 (defmethod make [:to-not-change :to-not-change]
-  [_ _ _ index]
-  [`(= ~(checkpoint/after index) ~(checkpoint/before index))])
+  [entry k _ index]
+  (cond-> []
+   (solitary? entry k) (conj `(= ~(checkpoint/after index)
+                                 ~(checkpoint/before index)))))
+
+(defmethod make [:to-not-change :and-be]
+  [_ _ and-be index]
+  [`(= ~and-be
+       ~(checkpoint/after index)
+       ~(checkpoint/before index))])
 
 (defn- pop-times
   "Builds a form which `pop`s `coll` `n` times."
