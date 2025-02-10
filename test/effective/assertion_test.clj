@@ -181,6 +181,16 @@
     (is (= 'after-49 (nth actual 1 nil)))
     (is (= 'before-49 (nth actual 2 nil)))))
 
+(deftest not-change
+  (let [assertions (make {:to-not-change nil} 15)
+        predicate (:predicate (first assertions))
+        [operator expected actual] predicate]
+    (is (= 1 (count assertions)))
+    (is (= 3 (count predicate)))
+    (is (= (symbol #'=) operator))
+    (is (= 'after-15 expected))
+    (is (= 'before-15 actual))))
+
 (deftest multiple
   (let [assertions (make {:to-change nil :from 1 :to 21 :by 20} 7)
         [from-assertion to-assertion by-assertion] assertions]
