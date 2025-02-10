@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file. This change
 
 ## [Unreleased]
 
+## [0.11.0] - 2025-02-10
+### Added
+- `:and-be` flag to `:to-not-change` ([#18](https://github.com/eureton/effective/issues/18))
+
 ## [0.10.0] - 2025-02-08
 ### Fixed
 - `:to-change` now stands alone ([#15](https://github.com/eureton/effective/issues/15))
@@ -132,7 +136,8 @@ Renamed:
 - Initial commit.
 - asserts only, i.e. runs effect and monitors in a function.
 
-[Unreleased]: https://github.com/eureton/effective/compare/0.10.0...HEAD
+[Unreleased]: https://github.com/eureton/effective/compare/0.11.0...HEAD
+[0.11.0]: https://github.com/eureton/effective/compare/0.10.0...0.11.0
 [0.10.0]: https://github.com/eureton/effective/compare/0.9.0...0.10.0
 [0.9.0]: https://github.com/eureton/effective/compare/0.8.0...0.9.0
 [0.8.0]: https://github.com/eureton/effective/compare/0.7.0...0.8.0
